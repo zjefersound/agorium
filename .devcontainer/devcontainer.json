@@ -1,0 +1,20 @@
+{
+    "name": "Agorium Development Environment",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "www",
+    "workspaceFolder": "/var/www",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            },
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "xdebug.php-debug",
+                "mtxr.sqltools",
+                "mtxr.sqltools-driver-mysql"
+            ]
+        }
+    },
+    "remoteUser": "vscode"
+}
