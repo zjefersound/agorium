@@ -1,14 +1,15 @@
 <?php
 
-use Nyholm\Psr7\Response;
-use Slim\Factory\AppFactory;
+use Slim\App;
+use App\DI;
 
-require __DIR__ . '/vendor/autoload.php';
+$container = require_once __DIR__ . '/src/bootstrap.php';
 
-$app = AppFactory::create();
+$container->register(new DI\Doctrine());
+$container->register(new DI\Slim());
 
-$app->get('/', function () {
-    return new Response(200, ['Content-Type' => 'application/json'], "Hello, world!");
-});
+$app = $container->get(App::class);
+
+(require __DIR__ . '/src/routes.php')($app);
 
 $app->run();

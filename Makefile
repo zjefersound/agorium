@@ -16,8 +16,14 @@ install:
 i:
 	@$(MAKE) install
 
+migrate:
+	@echo "Migrating database..."
+	@(cd backend && composer migrate)
+
 lazy:
 	@echo "Starting backend server in screen session..."
+	@(cd backend && composer install)
+	@(cd backend && composer migrate)
 	@screen -dmS backend_server bash -c 'cd backend && composer serve'
 	@echo "Installing frontend dependencies and starting frontend server in screen session..."
 	@screen -dmS frontend_server bash -c 'cd frontend && npm i && npm run dev'
