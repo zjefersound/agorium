@@ -3,6 +3,12 @@
 # Agorium
 Agorium is a gamified educational app where students connect, ask questions, and share knowledge. With subject-linked posts and a ranking system, it turns learning into a social and interactive experience.
 
+## Prototype
+[![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/design/jIUV83hfRi71MMvYTA6WUe/AGORIUM?node-id=0-1&t=qMOL9wcIFERkfNZB-1)
+
+![image](https://github.com/user-attachments/assets/6b8932dc-bae1-4c49-b886-b9373f834024)
+
+
 ## Tech Stack
 
 TODO: Add tech logos
