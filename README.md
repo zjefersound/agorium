@@ -21,22 +21,31 @@ $ make [target]
 
 ### Must-know Terms
 
-**Feature**: new feature/functionality, doesn't exist yet.
-**Fix**: adjustments and corrections to things that are not working properly.
-**Improvement**: enhancements and text or style adjustments on things that are working.
-**Wip**: Work in progress
+- **Feature**: new feature/functionality, doesn't exist yet.
+- **Fix**: adjustments and corrections to things that are not working properly.
+- **Improvement**: enhancements and text or style adjustments on things that are working.
+- **Wip**: Work in progress
 
 ### Branch names
 
-feature/my-cool-feature
-fix/my-cool-fix
-improvement/my-cool-improvement
-wip/my-cool-wip
+- feature/my-cool-feature
+- fix/my-cool-fix
+- improvement/my-cool-improvement
+- wip/my-cool-wip
 
 ### Commit tips
 
 For having a good commit history it's recommended to add a category as in the examples below:
 
-"Feat: Introduce Login Page"
-"Improvement: Increase title font size"
-"Fix: Treat undefined user error on login"
+- "Feat: Introduce Login Page"
+- "Improvement: Increase title font size"
+- "Fix: Treat undefined user error on login"
+
+### Workflow
+
+To work on the project:
+1. Go to the main branch and pull
+2. Create your branch
+3. Create Pull Request
+4. Apply corrections from review
+5. Merge Pull Request
