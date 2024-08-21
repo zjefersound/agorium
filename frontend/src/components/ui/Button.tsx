@@ -51,19 +51,19 @@ export const Button = forwardRef(
           "disabled:opacity-50 disabled:pointer-events-none select-none",
           className,
           {
-            "bg-slate-900 hover:bg-slate-800 active:bg-slate-700 text-white":
+            "bg-agorium-50 hover:bg-agorium-100 active:bg-agorium-200 text-agorium-900":
               color === "primary",
-            "bg-slate-500 hover:bg-slate-600 active:bg-slate-700 text-white":
+            "bg-agorium-400 hover:bg-agorium-300 active:bg-agorium-200 text-agorium-900":
               color === "secondary",
-            "bg-slate-200 hover:bg-slate-300 active:bg-slate-400 text-slate-900":
+            "bg-agorium-700 hover:bg-agorium-700 active:bg-agorium-500 text-agorium-50":
               color === "tertiary",
-            "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white":
+            "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-agorium-900":
               color === "success",
-            "bg-red-600 hover:bg-red-700 active:bg-red-800 text-white":
+            "bg-red-600 hover:bg-red-700 active:bg-red-800 text-agorium-900":
               color === "danger",
-            "bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-white":
+            "bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-agorium-900":
               color === "warning",
-            "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white":
+            "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-agorium-900":
               color === "info",
           }
         )}

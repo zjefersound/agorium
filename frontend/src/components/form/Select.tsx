@@ -37,20 +37,20 @@ const SelectRoot = ({
     {...props}
   >
     <InputRoot className="h-10 w-full" borderColor={borderColor}>
-      <SelectPrimitive.Trigger className="outline-0 bg-transparent flex-1 flex items-center space-x-2 text-slate-900 text-sm data-[placeholder]:text-slate-500 disabled:opacity-50 disabled:cursor-not-allowed">
+      <SelectPrimitive.Trigger className="outline-0 bg-transparent flex-1 flex items-center space-x-2 text-agorium-50 text-sm data-[placeholder]:text-agorium-400 disabled:opacity-50 disabled:cursor-not-allowed">
         <SelectPrimitive.Value placeholder={placeholder} />
-        <SelectPrimitive.Icon className="text-slate-500">
+        <SelectPrimitive.Icon className="text-agorium-400">
           <RxChevronDown />
         </SelectPrimitive.Icon>
       </SelectPrimitive.Trigger>
     </InputRoot>
     <SelectPrimitive.Portal>
-      <SelectPrimitive.Content className="z-50 overflow-hidden bg-white border rounded shadow-[0px_10px_38px_-10px_rgba(0,_0,_0,_0.4),_0px_8px_16px_-15px_rgba(22,_23,_24,_0.2)]">
-        <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] bg-white text-slate-300 cursor-default">
+      <SelectPrimitive.Content className="z-50 overflow-hidden bg-agorium-900 border rounded shadow-[0px_10px_38px_-10px_rgba(0,_0,_0,_0.4),_0px_8px_16px_-15px_rgba(22,_23,_24,_0.2)]">
+        <SelectPrimitive.ScrollUpButton className="flex items-center justify-center h-[25px] bg-agorium-900 text-agorium-700 cursor-default">
           <RxChevronUp />
         </SelectPrimitive.ScrollUpButton>
         <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
-        <SelectPrimitive.ScrollDownButton className="flex items-center justify-center h-[25px] bg-white text-slate-300 cursor-default">
+        <SelectPrimitive.ScrollDownButton className="flex items-center justify-center h-[25px] bg-agorium-900 text-agorium-700 cursor-default">
           <RxChevronDown />
         </SelectPrimitive.ScrollDownButton>
       </SelectPrimitive.Content>
@@ -72,7 +72,7 @@ const SelectItem = React.forwardRef(
     return (
       <SelectPrimitive.Item
         className={clsx(
-          "text-[13px] cursor-pointer leading-none text-slate-500 rounded-md flex items-center h-10 pr-9 pl-6 relative select-none data-[disabled]:text-slate-300 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-slate-100 data-[highlighted]:text-slate-900",
+          "text-[13px] cursor-pointer leading-none text-agorium-400 rounded-md flex items-center h-10 pr-9 pl-6 relative select-none data-[disabled]:text-agorium-700 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-agorium-800 data-[highlighted]:text-agorium-50",
           className
         )}
         {...props}

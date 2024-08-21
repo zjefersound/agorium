@@ -55,7 +55,7 @@ function FileInputDropzone({
       className={clsx(
         "relative focus-within:ring-2 rounded-md overflow-hidden max-w-full",
         {
-          "focus-within:ring-slate-500": !borderColor,
+          "focus-within:ring-agorium-400": !borderColor,
           "[&>*>*]:border-red-600": borderColor === "danger",
           "[&>*>*]:border-emerald-600": borderColor === "success",
         },
@@ -147,10 +147,10 @@ function FileInputInput({
         className={clsx(
           "h-full w-full flex items-center justify-center p-4 rounded-md border-2 border-dashed transition-colors",
           {
-            "hover:bg-slate-100": !disabled,
+            "hover:bg-agorium-800": !disabled,
             "cursor-not-allowed": disabled,
-            "border-slate-500 bg-slate-200": isDragActive,
-            "border-slate-300 bg-white": !isDragActive,
+            "border-agorium-400 bg-agorium-700": isDragActive,
+            "border-agorium-700 bg-agorium-900": !isDragActive,
           }
         )}
         onDragEnter={handleDragEnter}
@@ -173,7 +173,7 @@ function FileInputInput({
           disabled={disabled}
           accept={allowedFileTypes?.join("|") ?? ""}
         />
-        <p className="text-center text-slate-500">
+        <p className="text-center text-agorium-400">
           {placeholder || "Drag & drop files here, or click to select files"}
         </p>
       </div>
@@ -205,15 +205,15 @@ function FileInputList({
       {files.map((file, index) => (
         <li
           key={index}
-          className="flex p-2 space-x-2 border-b border-slate-200"
+          className="flex p-2 space-x-2 border-b border-agorium-700"
         >
-          <span className="font-medium text-slate-500">
+          <span className="font-medium text-agorium-400">
             <MdOutlineAttachment className="size-5" />
           </span>
-          <span className="font-medium flex-1 text-sm text-slate-900">
+          <span className="font-medium flex-1 text-sm text-agorium-50">
             {file.name}
           </span>
-          <span className="text-sm text-slate-500">
+          <span className="text-sm text-agorium-400">
             {printFileSize(file.size)}
           </span>
           <button
@@ -259,7 +259,7 @@ function FileInputPreview({
         onClick={onRemove}
         className={clsx(
           "h-full w-full absolute left-0 top-0 flex items-center justify-center opacity-0 hover:opacity-100 z-10",
-          "bg-[#0006] text-white"
+          "bg-[#0006] text-agorium-900"
         )}
       >
         <MdOutlineDeleteOutline className="size-6" />
@@ -310,7 +310,7 @@ const FileInputFilePreview = forwardRef(
       );
     }
     return (
-      <div className="w-full h-full absolute top-0 left-0 object-cover flex items-center justify-center bg-slate-100 text-slate-500">
+      <div className="w-full h-full absolute top-0 left-0 object-cover flex items-center justify-center bg-agorium-800 text-agorium-400">
         <span className="text-sm">{file.name}</span>
       </div>
     );

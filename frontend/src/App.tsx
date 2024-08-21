@@ -1,6 +1,8 @@
+import { SmartFieldExamples } from "./examples/SmartFieldExamples";
+
 function App() {
-  return <div>
-    <div className="size-80 bg-agorium-900"></div>
+  return <div className="flex flex-1 bg-agorium-900 text-agorium-50 overflow-auto">
+    <SmartFieldExamples />
   </div>;
 }
 

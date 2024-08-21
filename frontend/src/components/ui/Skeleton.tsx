@@ -10,7 +10,7 @@ export function Skeleton({ className, children, ...rest}: Props) {
     <div
       {...rest}
       role="status"
-      className= {`flex items-center justify-center bg-slate-200 rounded animate-pulse ${className}`}
+      className= {`flex items-center justify-center bg-agorium-700 rounded animate-pulse ${className}`}
     >
       {children}
       <span className="sr-only">Loading...</span>

@@ -13,7 +13,7 @@ export function Heading({ size = "md", children, asChild }: HeadingProps) {
   
   return (
     <Comp
-      className={clsx("text-slate-900 font-bold", {
+      className={clsx("text-agorium-50 font-bold", {
         "text-md": size === "xs",
         "text-lg": size === "sm",
         "text-xl": size === "md",

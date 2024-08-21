@@ -35,7 +35,7 @@ export function FormControl({
     <div>
       <Label id={id}>
         {label}:{" "}
-        {optional && <span className="text-sm text-slate-500">(optional)</span>}
+        {optional && <span className="text-sm text-agorium-400">(optional)</span>}
       </Label>
       {children}
       <FieldError message={error} />

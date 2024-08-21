@@ -43,7 +43,7 @@ export function DialogContent({
       <DialogPrimitive.Content
         className={clsx(
           "z-50 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] translate-x-[-50%] translate-y-[-50%] rounded-md focus:outline-none",
-          "bg-white p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]",
+          "bg-agorium-900 p-4 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px]",
           "w-[calc(100%-24px)]",
           {
             "max-w-[450px]": size === "sm",
@@ -52,11 +52,11 @@ export function DialogContent({
           }
         )}
       >
-        <DialogPrimitive.Title className="text-slate-900 mb-2 font-bold">
+        <DialogPrimitive.Title className="text-agorium-50 mb-2 font-bold">
           {title}
         </DialogPrimitive.Title>
         <DialogPrimitive.Description
-          className="mb-4 text-slate-500 text-sm font-sans"
+          className="mb-4 text-agorium-400 text-sm font-sans"
           asChild
         >
           {description}
@@ -64,7 +64,7 @@ export function DialogContent({
         {children}
         <DialogPrimitive.Close asChild>
           <button
-            className="text-slate-500 hover:bg-slate-100 focus:shadow-slate-100 absolute top-3 right-3 inline-flex size-6 appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
+            className="text-agorium-400 hover:bg-agorium-800 focus:shadow-agorium-800 absolute top-3 right-3 inline-flex size-6 appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
             aria-label="Close"
           >
             <AiOutlineClose />

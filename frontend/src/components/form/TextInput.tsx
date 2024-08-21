@@ -29,7 +29,7 @@ export interface TextInputIconProps {
 
 // eslint-disable-next-line react-refresh/only-export-components
 function TextInputIcon({ children }: TextInputIconProps) {
-  return <Slot className="w-5 h-5 text-slate-500">{children}</Slot>;
+  return <Slot className="w-5 h-5 text-agorium-400">{children}</Slot>;
 }
 TextInputIcon.displayName = "TextInput.Icon";
 
@@ -37,7 +37,7 @@ TextInputIcon.displayName = "TextInput.Icon";
 function TextInputInput(props: TextInputInputProps) {
   return (
     <input
-      className="outline-0 bg-transparent flex-1 text-slate-900 text-sm placeholder:text-slate-500 disabled:opacity-50 disabled:cursor-not-allowed"
+      className="outline-0 bg-transparent flex-1 text-agorium-50 text-sm placeholder:text-agorium-400 disabled:opacity-50 disabled:cursor-not-allowed"
       {...props}
     />
   );

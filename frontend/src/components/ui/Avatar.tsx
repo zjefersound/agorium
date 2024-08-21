@@ -29,7 +29,7 @@ export function Avatar({ name, url, size = "sm", ...rest }: Props) {
         alt={name}
       />
       <AvatarPrimitive.Fallback
-        className=" text-white leading-1 flex h-full w-full items-center justify-center bg-slate-500 text-sm font-semibold"
+        className=" text-agorium-900 leading-1 flex h-full w-full items-center justify-center bg-agorium-400 text-sm font-semibold"
         delayMs={600}
       >
         {getInitials(name)}

@@ -178,11 +178,11 @@ export function SmartFieldExamples() {
   return (
     <div className="p-8 space-y-4">
       <h1 className="font-bold">All Smart Fields</h1>
-      <div className="flex border-b pb-4">
+      <div className="flex border-b border-agorium-700 pb-4">
         <Checkbox checked={disabled} onChange={() => setDisabled(!disabled)} />
         <CheckLabel>Disabled all fields</CheckLabel>
       </div>
-      <div className="flex border-b pb-4">
+      <div className="flex border-b border-agorium-700 pb-4">
         <Checkbox
           checked={!!Object.entries(errors).length}
           onChange={() =>
@@ -205,12 +205,12 @@ export function SmartFieldExamples() {
       ))}
 
       <h2>Data:</h2>
-      <pre className="bg-slate-800 text-slate-400 whitespace-pre-wrap p-4 rounded-md">
+      <pre className="bg-agorium-100 text-agorium-500 whitespace-pre-wrap p-4 rounded-md">
         const data = {JSON.stringify(data, undefined, 2)}
       </pre>
 
       <h2>Errors:</h2>
-      <pre className="bg-slate-800 text-slate-400 whitespace-pre-wrap p-4 rounded-md">
+      <pre className="bg-agorium-100 text-agorium-500 whitespace-pre-wrap p-4 rounded-md">
         const errors = {JSON.stringify(errors, undefined, 2)}
       </pre>
     </div>

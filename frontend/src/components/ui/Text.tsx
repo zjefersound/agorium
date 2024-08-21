@@ -13,7 +13,7 @@ export function Text({ size = "md", children, asChild }: TextProps) {
   
   return (
     <Comp
-      className={clsx("text-slate-500 font-sans", {
+      className={clsx("text-agorium-400 font-sans", {
         "text-xs": size === "sm",
         "text-sm": size === "md",
         "text-md": size === "lg",

@@ -43,13 +43,13 @@ export function Slider({
       orientation={orientation}
     >
       <SliderPrimitive.Track
-        className={clsx("bg-slate-300 relative grow rounded-full", {
+        className={clsx("bg-agorium-700 relative grow rounded-full", {
           "w-[3px]": orientation === "vertical",
           "h-[3px]": orientation === "horizontal",
         })}
       >
         <SliderPrimitive.Range
-          className={clsx("absolute bg-slate-900 rounded-full", {
+          className={clsx("absolute bg-agorium-50 rounded-full", {
             "w-full": orientation === "vertical",
             "h-full": orientation === "horizontal",
           })}
@@ -61,7 +61,7 @@ export function Slider({
         .map((_, index) => (
           <SliderPrimitive.Thumb
             key={index}
-            className="block size-5 rounded-full bg-slate-900 hover:bg-slate-800"
+            className="block size-5 rounded-full bg-agorium-50 hover:bg-agorium-100"
           />
         ))}
     </SliderPrimitive.Root>

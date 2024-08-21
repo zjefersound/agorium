@@ -45,13 +45,13 @@ const RadioGroupItem = React.forwardRef(
     return (
       <div className="flex">
         <RadioGroupPrimitive.Item
-          className="bg-white size-6 ring-1 ring-slate-300 rounded-full"
+          className="bg-agorium-900 size-6 ring-1 ring-agorium-700 rounded-full"
           {...props}
           id={props.value}
           ref={forwardedRef as LegacyRef<HTMLButtonElement>}
           role="radio"
         >
-          <RadioGroupPrimitive.Indicator className="flex items-center justify-center w-full h-full after:content-[''] after:block after:size-3 after:rounded-[50%] after:bg-slate-900" />
+          <RadioGroupPrimitive.Indicator className="flex items-center justify-center w-full h-full after:content-[''] after:block after:size-3 after:rounded-[50%] after:bg-agorium-50" />
         </RadioGroupPrimitive.Item>
 
         <CheckLabel htmlFor={props.value}>{children}</CheckLabel>
