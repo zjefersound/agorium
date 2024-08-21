@@ -1,12 +1,11 @@
 import clsx from "clsx";
 import { ButtonHTMLAttributes, forwardRef, LegacyRef, ReactNode } from "react";
-import { SemanticColor } from "../../models/semanticColor";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * What background color to use
    */
-  color?: SemanticColor;
+  color?: "primary" | "secondary" | "success" | "danger"
   /**
    * Html button type
    */
@@ -51,20 +50,14 @@ export const Button = forwardRef(
           "disabled:opacity-50 disabled:pointer-events-none select-none",
           className,
           {
-            "bg-agorium-50 hover:bg-agorium-100 active:bg-agorium-200 text-agorium-900":
+            "bg-amber-100 hover:opacity-90 active:bg-amber-50 text-agorium-900":
               color === "primary",
-            "bg-agorium-400 hover:bg-agorium-300 active:bg-agorium-200 text-agorium-900":
+            "bg-agorium-700 hover:bg-agorium-600 active:bg-agorium-500 text-amber-100 ring-agorium-600 ring-1":
               color === "secondary",
-            "bg-agorium-700 hover:bg-agorium-700 active:bg-agorium-500 text-agorium-50":
-              color === "tertiary",
             "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-agorium-900":
               color === "success",
             "bg-red-600 hover:bg-red-700 active:bg-red-800 text-agorium-900":
               color === "danger",
-            "bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-agorium-900":
-              color === "warning",
-            "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-agorium-900":
-              color === "info",
           }
         )}
         type={behavior}

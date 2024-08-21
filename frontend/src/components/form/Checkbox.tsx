@@ -35,7 +35,7 @@ export function Checkbox({
       <CheckboxPrimitive.CheckboxIndicator>
         <MdCheck
           className={clsx("size-6 rounded p-[3px]", {
-            "bg-agorium-50 hover:bg-agorium-100 active:bg-agorium-200 text-agorium-900":
+            "bg-amber-50 hover:bg-amber-100 active:bg-amber-200 text-agorium-900":
               color === "primary",
             "bg-agorium-400 hover:bg-agorium-300 active:bg-agorium-200 text-agorium-900":
               color === "secondary",

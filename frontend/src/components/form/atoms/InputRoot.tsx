@@ -20,14 +20,14 @@ export const InputRoot = React.forwardRef(
         flex items-center space-x-2
         py-2.5 px-3 rounded-md
         ring-1
-        bg-agorium-900
+        bg-agorium-700
         text-sm
         text-agorium-50
         focus-within:ring-2 focus-within:ring-agorium-400
         placeholder:text-agorium-400
       `,
           {
-            "ring-agorium-700": !borderColor,
+            "ring-agorium-600": !borderColor,
             "ring-red-600": borderColor === "danger",
             "ring-emerald-600": borderColor === "success",
           },
