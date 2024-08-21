@@ -1,12 +1,7 @@
-import { Layout } from "./components/layout/Layout";
-import { Header } from "./components/layout/Header";
+import { Routes } from "./routes/Routes";
 
 function App() {
-  return (
-    <Layout>
-      <Header />
-    </Layout>
-  );
+  return <Routes />;
 }
 
 export default App;
