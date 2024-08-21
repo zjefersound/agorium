@@ -1,5 +1,7 @@
 function App() {
-  return <h1>Hello Dev</h1>;
+  return <div>
+    <div className="size-80 bg-agorium-900"></div>
+  </div>;
 }
 
 export default App;

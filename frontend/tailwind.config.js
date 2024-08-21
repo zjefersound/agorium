@@ -11,6 +11,20 @@ export default {
       serif: ["Vollkorn SC"]
     },
     extend: {
+      colors: {
+        agorium: {
+          50: '#F8FBFC',
+          100: '#F1F6F9',
+          200: '#E2EBF0',
+          300: '#CBD9E1',
+          400: '#94ABB8',
+          500: '#647D8B',
+          600: '#475D69',
+          700: '#334955',
+          800: '#1E313B',
+          900: '#142127',
+        },
+      },
       keyframes: {
         hide: {
           from: { opacity: "1" },

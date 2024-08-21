@@ -12,7 +12,10 @@
                 "bmewburn.vscode-intelephense-client",
                 "xdebug.php-debug",
                 "mtxr.sqltools",
-                "mtxr.sqltools-driver-mysql"
+                "mtxr.sqltools-driver-mysql",
+                "dbaeumer.vscode-eslint",
+                "bradlc.vscode-tailwindcss",
+                "esbenp.prettier-vscode"
             ]
         }
     },
