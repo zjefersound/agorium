@@ -5,7 +5,11 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * What background color to use
    */
-  color?: "primary" | "secondary" | "success" | "danger"
+  color?: "primary" | "secondary" | "success" | "danger";
+  /**
+   * Button size
+   */
+  size?: "sm" | "md";
   /**
    * Html button type
    */
@@ -34,6 +38,7 @@ export const Button = forwardRef(
   (
     {
       color = "primary",
+      size = "md",
       children,
       onClick,
       className,
@@ -46,10 +51,12 @@ export const Button = forwardRef(
       <button
         ref={forwardedRef as LegacyRef<HTMLButtonElement>}
         className={clsx(
-          "rounded-md flex items-center py-2.5 px-3.5 text-sm leading-5 font-semibold transition space-x-2.5",
+          "rounded-md flex items-center text-sm leading-5 font-semibold transition",
           "disabled:opacity-50 disabled:pointer-events-none select-none",
           className,
           {
+            "h-10 px-4": size === "md",
+            "h-8 px-3": size === "sm",
             "bg-amber-100 hover:opacity-90 active:bg-amber-50 text-agorium-900":
               color === "primary",
             "bg-agorium-700 hover:bg-agorium-600 active:bg-agorium-500 text-amber-100 ring-agorium-600 ring-1":
