@@ -149,8 +149,8 @@ function FileInputInput({
           {
             "hover:bg-agorium-800": !disabled,
             "cursor-not-allowed": disabled,
-            "border-agorium-400 bg-agorium-700": isDragActive,
-            "border-agorium-700 bg-agorium-900": !isDragActive,
+            "border-agorium-400 bg-agorium-600": isDragActive,
+            "border-agorium-700 bg-agorium-700": !isDragActive,
           }
         )}
         onDragEnter={handleDragEnter}
