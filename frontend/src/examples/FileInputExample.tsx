@@ -3,7 +3,7 @@ import { FileInput, UploadedFile } from "../components/form/FileInput";
 
 export function FileInputExample() {
   const [profilePicture, setProfilePicture] = useState<UploadedFile | null>(
-    null
+    null,
   );
   const [files, setFiles] = useState<UploadedFile[]>([]);
 

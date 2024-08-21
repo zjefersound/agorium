@@ -12,7 +12,7 @@ export interface ToastContextType {
 }
 
 export const ToastContext = createContext<ToastContextType>(
-  {} as ToastContextType
+  {} as ToastContextType,
 );
 
 export const ToastProvider = ({ children }: ToastProviderProps) => {

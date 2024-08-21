@@ -41,7 +41,7 @@ export function CurrencyInput({
   disabled,
 }: CurrencyInputProps) {
   const [displayValue, setDisplayValue] = useState(
-    defaultValue?.toFixed(2).replace(/\D/g, "") || ""
+    defaultValue?.toFixed(2).replace(/\D/g, "") || "",
   );
   const numericValue = Number(displayValue) / 100;
 
