@@ -1,20 +1,31 @@
 {
-    "name": "Agorium Development Environment",
-    "dockerComposeFile": "docker-compose.yml",
-    "service": "www",
-    "workspaceFolder": "/var/www",
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash"
-            },
-            "extensions": [
-                "bmewburn.vscode-intelephense-client",
-                "xdebug.php-debug",
-                "mtxr.sqltools",
-                "mtxr.sqltools-driver-mysql"
-            ]
-        }
-    },
-    "remoteUser": "vscode"
+  "name": "Agorium Development Environment",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "www",
+  "workspaceFolder": "/var/www",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "eslint.alwaysShowStatus": true,
+        "eslint.format.enable": true,
+        "prettier.singleQuote": false,
+        "prettier.semi": true,
+        "prettier.trailingComma": "all"
+      },
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-mysql",
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "dsznajder.es7-react-js-snippets"
+      ]
+    }
+  },
+  "remoteUser": "vscode"
 }
