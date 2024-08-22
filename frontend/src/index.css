@@ -2,10 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --agorium-50: #f8fbfc;
+  --agorium-700: #334955;
+  --agorium-900: #142127;
+
+  --header-height: 5rem;
+  --page-padding-x: 2rem;
+  --left-bar-width: 260px;
+  --right-bar-width: 300px;
+
+  --main-content-width: 1000px;
+  --main-content-max-width: calc(
+    100vw - var(--left-bar-width) - var(--right-bar-width) -
+      var(--page-padding-x) - var(--page-padding-x)
+  );
+}
+
 #root {
   width: 100%;
   height: 100dvh;
   display: flex;
-  background: #142127;
-  color: #f8fbfc;
+  background: var(--agorium-900);
+  color: var(--agorium-50);
+}
+
+* {
+  scrollbar-color: var(--agorium-900) var(--agorium-900);
+  scrollbar-width: thin;
+}
+
+*:hover {
+  scrollbar-color: var(--agorium-700) var(--agorium-900);
 }
