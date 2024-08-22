@@ -13,7 +13,10 @@
         "eslint.format.enable": true,
         "prettier.singleQuote": false,
         "prettier.semi": true,
-        "prettier.trailingComma": "all"
+        "prettier.trailingComma": "all",
+        "[javascript][javascriptreact][typescript][typescriptreact]": {
+          "editor.tabSize": 2
+        }
       },
       "extensions": [
         "bmewburn.vscode-intelephense-client",

@@ -4,16 +4,17 @@ import {
   RouteObject,
   RouterProvider,
 } from "react-router-dom";
-import PublicOnlyRoutes from "./PublicOnlyRoutes";
-import ProtectedRoutes from "./ProtectedRoutes";
+import { PublicOnlyRoutes } from "./PublicOnlyRoutes";
+import { ProtectedRoutes } from "./ProtectedRoutes";
 import { Header } from "../components/layout/Header";
 import { Layout } from "../components/layout/Layout";
+import { Home } from "../pages/Home";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
     {
       path: "/",
-      element: "<Home />",
+      element: <Home />,
     },
   ],
   publicOnly: [
