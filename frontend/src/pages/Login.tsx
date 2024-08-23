@@ -9,7 +9,9 @@ import { Text } from "../components/ui/Text";
 
 export function Login() {
   return (
-    <Layout className="flex items-center justify-center">
+    <Layout className="flex items-center justify-center relative overflow-hidden">
+      <div className="absolute bottom-[-150px] right-[-150px] w-[300px] h-[300px] bg-amber-100 rounded-full"></div>
+      <div className="absolute top-[-150px] left-[-150px] w-[300px] h-[300px] bg-amber-100 rounded-full"></div>
       <div className="py-12 px-6 w-[360px] max-w-full space-y-6 flex flex-col">
         <LogoHorizontal />
         <Heading>Login</Heading>
