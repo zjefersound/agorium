@@ -16,6 +16,10 @@ TODO: Add tech logos
 ## Setup
 
 TODO: Write installation instructions?
+```
+git clone https://github.com/zjefersound/agorium
+cd agorium
+```
 
 ## Makefile
 
