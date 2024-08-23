@@ -3,6 +3,8 @@ import { Card } from "../components/ui/Card";
 import { NavigationCard } from "../components/shared/NavigationCard";
 import { SimpleUserCard } from "../components/shared/SimpleUserCard";
 import { PopularItemCard } from "../components/shared/PopularItemCard";
+import { TrendingPosts } from "../components/shared/TrendingPosts";
+import { mockedPosts } from "../examples/mocks/mocks";
 
 export function Home() {
   return (
@@ -49,6 +51,7 @@ export function Home() {
           username="@joanadarc"
           url=""
         />
+        <TrendingPosts posts={mockedPosts} />
         <Card className="h-[200px]">asdsa</Card>
         <Card className="h-[200px]">asdsa</Card>
         <Card className="h-[200px]">asdsa</Card>

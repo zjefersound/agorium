@@ -5,7 +5,7 @@ import clsx from "clsx";
 interface Props extends AvatarPrimitive.AvatarProps {
   name: string;
   url?: string;
-  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "full";
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 }
 export function Avatar({ name, url, size = "sm", ...rest }: Props) {
   return (
@@ -14,13 +14,14 @@ export function Avatar({ name, url, size = "sm", ...rest }: Props) {
       className={clsx(
         "inline-flex select-none items-center justify-center overflow-hidden rounded-full align-middle",
         {
+          "h-5 w-5": size === "xs",
           "h-10 w-10": size === "sm",
           "h-14 w-14": size === "md",
           "h-[70px] w-[70px]": size === "lg",
           "h-[128px] w-[128px]": size === "xl",
           "h-[200px] w-[200px]": size === "2xl",
           "w-full aspect-square": size === "full",
-        }
+        },
       )}
     >
       <AvatarPrimitive.Image
@@ -29,7 +30,13 @@ export function Avatar({ name, url, size = "sm", ...rest }: Props) {
         alt={name}
       />
       <AvatarPrimitive.Fallback
-        className=" text-agorium-900 leading-1 flex h-full w-full items-center justify-center bg-agorium-400 text-sm font-semibold"
+        className={clsx(
+          "text-agorium-900 leading-1 flex h-full w-full items-center justify-center bg-agorium-400 font-semibold",
+          {
+            "text-xs": size === "xs",
+            "text-sm": size !== "xs",
+          },
+        )}
         delayMs={600}
       >
         {getInitials(name)}
