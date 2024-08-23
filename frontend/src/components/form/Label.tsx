@@ -12,7 +12,7 @@ interface Props {
 }
 export function Label({ id, children }: Props) {
   return (
-    <label htmlFor={id} className="flex text-sm mb-1 text-agorium-100">
+    <label htmlFor={id} className="flex text-sm mb-1 text-agorium-50">
       {children}
     </label>
   );

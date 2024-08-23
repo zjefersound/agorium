@@ -8,6 +8,7 @@ import PublicOnlyRoutes from "./PublicOnlyRoutes";
 import ProtectedRoutes from "./ProtectedRoutes";
 import { Header } from "../components/layout/Header";
 import { Layout } from "../components/layout/Layout";
+import { Login } from "../pages/Login";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
@@ -19,7 +20,7 @@ const routes: { [key: string]: RouteObject[] } = {
   publicOnly: [
     {
       path: "/login",
-      element: "<Login />",
+      element: <Login />,
     },
   ],
   public: [
