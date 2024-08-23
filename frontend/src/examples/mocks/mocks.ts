@@ -1,3 +1,4 @@
+import { RankingCardItem } from "../../components/shared/RankingCard";
 import { Post } from "../../models/Post";
 
 export const mockedPosts: Post[] = [
@@ -23,7 +24,7 @@ export const mockedPosts: Post[] = [
       fullName: "John Doe",
       avatar:
         "https://hopkinsrp.org/wp-content/uploads/2019/03/IMG_9136-900x563.jpg",
-      createAt: "2024-01-01T09:00:00Z",
+      createdAt: "2024-01-01T09:00:00Z",
       updatedAt: "2024-08-01T10:00:00Z",
     },
     tags: [
@@ -44,7 +45,7 @@ export const mockedPosts: Post[] = [
           email: "jane.smith@example.com",
           fullName: "Jane Smith",
           avatar: "https://example.com/avatar2.png",
-          createAt: "2024-01-05T09:00:00Z",
+          createdAt: "2024-01-05T09:00:00Z",
           updatedAt: "2024-08-01T10:00:00Z",
         },
         upvotes: [
@@ -60,7 +61,7 @@ export const mockedPosts: Post[] = [
               email: "john.doe@example.com",
               fullName: "John Doe",
               avatar: "https://example.com/avatar1.png",
-              createAt: "2024-01-01T09:00:00Z",
+              createdAt: "2024-01-01T09:00:00Z",
               updatedAt: "2024-08-01T10:00:00Z",
             },
           },
@@ -80,7 +81,7 @@ export const mockedPosts: Post[] = [
           email: "jane.smith@example.com",
           fullName: "Jane Smith",
           avatar: "https://example.com/avatar2.png",
-          createAt: "2024-01-05T09:00:00Z",
+          createdAt: "2024-01-05T09:00:00Z",
           updatedAt: "2024-08-05T12:00:00Z",
         },
       },
@@ -106,7 +107,7 @@ export const mockedPosts: Post[] = [
       email: "jane.smith@example.com",
       fullName: "Jane Smith",
       avatar: "https://example.com/avatar2.png",
-      createAt: "2024-01-05T09:00:00Z",
+      createdAt: "2024-01-05T09:00:00Z",
       updatedAt: "2024-08-05T12:00:00Z",
     },
     tags: [
@@ -127,7 +128,7 @@ export const mockedPosts: Post[] = [
           email: "john.doe@example.com",
           fullName: "John Doe",
           avatar: "https://example.com/avatar1.png",
-          createAt: "2024-01-01T09:00:00Z",
+          createdAt: "2024-01-01T09:00:00Z",
           updatedAt: "2024-08-01T10:00:00Z",
         },
         upvotes: [
@@ -143,7 +144,7 @@ export const mockedPosts: Post[] = [
               email: "jane.smith@example.com",
               fullName: "Jane Smith",
               avatar: "https://example.com/avatar2.png",
-              createAt: "2024-01-05T09:00:00Z",
+              createdAt: "2024-01-05T09:00:00Z",
               updatedAt: "2024-08-05T12:00:00Z",
             },
           },
@@ -163,7 +164,7 @@ export const mockedPosts: Post[] = [
           email: "john.doe@example.com",
           fullName: "John Doe",
           avatar: "https://example.com/avatar1.png",
-          createAt: "2024-01-01T09:00:00Z",
+          createdAt: "2024-01-01T09:00:00Z",
           updatedAt: "2024-08-01T10:00:00Z",
         },
       },
@@ -190,7 +191,7 @@ export const mockedPosts: Post[] = [
       email: "john.doe@example.com",
       fullName: "John Doe",
       avatar: "https://example.com/avatar1.png",
-      createAt: "2024-01-01T09:00:00Z",
+      createdAt: "2024-01-01T09:00:00Z",
       updatedAt: "2024-08-01T10:00:00Z",
     },
     tags: [
@@ -211,10 +212,78 @@ export const mockedPosts: Post[] = [
           email: "jane.smith@example.com",
           fullName: "Jane Smith",
           avatar: "https://example.com/avatar2.png",
-          createAt: "2024-01-05T09:00:00Z",
+          createdAt: "2024-01-05T09:00:00Z",
           updatedAt: "2024-08-05T12:00:00Z",
         },
       },
     ],
+  },
+];
+
+export const rankingCardItems: RankingCardItem[] = [
+  {
+    position: 1,
+    user: {
+      id: 1,
+      username: "john_doe",
+      email: "john.doe@example.com",
+      fullName: "John Doe",
+      avatar: "https://example.com/avatar1.png",
+      createdAt: "2024-01-01T09:00:00Z",
+      updatedAt: "2024-08-01T10:00:00Z",
+    },
+    totalUpvotes: 120,
+  },
+  {
+    position: 2,
+    user: {
+      id: 2,
+      username: "jane_smith",
+      email: "jane.smith@example.com",
+      fullName: "Jane Smith",
+      avatar: "https://example.com/avatar2.png",
+      createdAt: "2024-01-05T09:00:00Z",
+      updatedAt: "2024-08-05T12:00:00Z",
+    },
+    totalUpvotes: 110,
+  },
+  {
+    position: 3,
+    user: {
+      id: 3,
+      username: "michael_brown",
+      email: "michael.brown@example.com",
+      fullName: "Michael Brown",
+      avatar: "https://example.com/avatar3.png",
+      createdAt: "2024-02-10T09:00:00Z",
+      updatedAt: "2024-08-10T10:00:00Z",
+    },
+    totalUpvotes: 95,
+  },
+  {
+    position: 4,
+    user: {
+      id: 4,
+      username: "emily_white",
+      email: "emily.white@example.com",
+      fullName: "Emily White",
+      avatar: "https://example.com/avatar4.png",
+      createdAt: "2024-03-15T09:00:00Z",
+      updatedAt: "2024-08-15T10:00:00Z",
+    },
+    totalUpvotes: 85,
+  },
+  {
+    position: 5,
+    user: {
+      id: 5,
+      username: "daniel_jones",
+      email: "daniel.jones@example.com",
+      fullName: "Daniel Jones",
+      avatar: "https://example.com/avatar5.png",
+      createdAt: "2024-04-20T09:00:00Z",
+      updatedAt: "2024-08-20T10:00:00Z",
+    },
+    totalUpvotes: 75,
   },
 ];

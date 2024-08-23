@@ -15,8 +15,8 @@ export function Avatar({ name, url, size = "sm", ...rest }: Props) {
         "inline-flex select-none items-center justify-center overflow-hidden rounded-full align-middle",
         {
           "h-5 w-5": size === "xs",
-          "h-10 w-10": size === "sm",
-          "h-14 w-14": size === "md",
+          "h-9 w-9": size === "sm",
+          "h-10 w-10": size === "md",
           "h-[70px] w-[70px]": size === "lg",
           "h-[128px] w-[128px]": size === "xl",
           "h-[200px] w-[200px]": size === "2xl",
