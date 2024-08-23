@@ -3,7 +3,7 @@ export type User = {
   username: string;
   email: string;
   fullName: string;
-  avatar: string;
+  avatar?: string;
   createAt: string;
   updatedAt: string;
 };
