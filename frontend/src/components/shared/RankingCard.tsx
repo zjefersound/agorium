@@ -51,7 +51,7 @@ export function RankingCard({ items }: RankingCardProps) {
                 url={item.user.avatar}
               />
               <span className="ml-3 flex flex-1 text-xs truncate tracking-wider">
-                {item.user.fullName} Da Silva Soares
+                {item.user.fullName}
               </span>
               <Text asChild>
                 <span className="ml-3 flex items-center tracking-wider">
