@@ -4,6 +4,6 @@ export type User = {
   email: string;
   fullName: string;
   avatar?: string;
-  createAt: string;
+  createdAt: string;
   updatedAt: string;
 };

@@ -1,6 +1,6 @@
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import clsx from "clsx";
-import { SemanticColor } from "../../models/semanticColor";
+import { SemanticColor } from "../../models/SemanticColor";
 import { MdCheck } from "react-icons/md";
 
 export interface CheckboxProps extends CheckboxPrimitive.CheckboxProps {
@@ -19,16 +19,12 @@ export function Checkbox({
   return (
     <CheckboxPrimitive.Root
       checked={checked}
-      className={clsx(
-        "size-6 rounded shrink-0 ring-1",
-        className,
-        {
-          "opacity-50 cursor-not-allowed": props.disabled,
-          "ring-agorium-700": !borderColor,
-          "ring-red-600": borderColor === "danger",
-          "ring-emerald-600": borderColor === "success",
-        }
-      )}
+      className={clsx("size-6 rounded shrink-0 ring-1", className, {
+        "opacity-50 cursor-not-allowed": props.disabled,
+        "ring-agorium-700": !borderColor,
+        "ring-red-600": borderColor === "danger",
+        "ring-emerald-600": borderColor === "success",
+      })}
       onClick={onChange}
       {...props}
     >
