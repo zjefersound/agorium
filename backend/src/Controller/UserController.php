@@ -72,7 +72,7 @@ class UserController
     public function getUserAvatar($req, $res, $args) {
         $userId = $args["id"];
         if (!$userId) {
-            $this->badrequest(["error" => "User id is required."]);
+            $this->badRequest(["error" => "User id is required."]);
         }
 
         $user = $this->userService->getUserById($userId);
@@ -82,6 +82,9 @@ class UserController
         }
 
         $filePath = $_SERVER["DOCUMENT_ROOT"] . "/uploads/" . $avatar;
+        if (!file_exists($filePath)) {
+            return $this->notFound("File not found");
+        }
 
         $responseHeaders = ["Content-Type" => mime_content_type($filePath), "Content-Length" => filesize($filePath)];
 

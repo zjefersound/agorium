@@ -24,7 +24,7 @@ final class User
     #[ORM\Id, ORM\Column(type: 'integer'), ORM\GeneratedValue(strategy: 'AUTO')]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 150, nullable: false)]
+    #[ORM\Column(type: 'string', length: 255, nullable: false)]
     private string $fullName;
 
     #[ORM\Column(type: 'string', length: 50, unique: true, nullable: false)]

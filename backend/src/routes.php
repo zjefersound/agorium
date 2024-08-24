@@ -11,10 +11,10 @@ return function (App $app) {
 
     $app->post('/signup', UserController::class . ':signup');
     $app->post('/login', UserController::class . ':login');
+    $app->get('/user/avatar/{id}', UserController::class . ':getUserAvatar');
     
     $app->group('user', function () use ($app) {
         $app->get('/user/me', UserController::class . ':getUser');
-        $app->get('/user/avatar/{id}', UserController::class . ':getUserAvatar');
     })->add(AuthMiddleware::class);
 
     $app->get('/swagger', function ($req, $res) {

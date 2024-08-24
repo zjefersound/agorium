@@ -22,7 +22,7 @@ trait HttpResponse
         return $this->jsonResponse(201, $body, $headers);
     }
 
-    protected function badrequest($body = '', array $headers = []): Response
+    protected function badRequest($body = '', array $headers = []): Response
     {
         return $this->jsonResponse(400, $body, $headers);
     }
