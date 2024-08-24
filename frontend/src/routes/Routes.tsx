@@ -10,6 +10,7 @@ import { Header } from "../components/layout/Header";
 import { Layout } from "../components/layout/Layout";
 import { Login } from "../pages/Login";
 import { Home } from "../pages/Home";
+import { Signup } from "../pages/Signup";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
@@ -22,6 +23,10 @@ const routes: { [key: string]: RouteObject[] } = {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/signup",
+      element: <Signup />,
     },
   ],
   public: [

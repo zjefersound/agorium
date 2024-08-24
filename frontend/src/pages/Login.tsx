@@ -6,44 +6,50 @@ import { LogoHorizontal } from "../components/assets/LogoHorizontal";
 import { FormControl } from "../components/form/FormControl";
 import { Button } from "../components/ui/Button";
 import { Text } from "../components/ui/Text";
+import { PublicBackground } from "../components/layout/PublicBackground";
+import { Link } from "react-router-dom";
 
 export function Login() {
   return (
-    <Layout className="flex items-center justify-center relative overflow-hidden">
-      <div className="absolute bottom-[-150px] right-[-150px] w-[300px] h-[300px] bg-amber-100 rounded-full"></div>
-      <div className="absolute top-[-150px] left-[-150px] w-[300px] h-[300px] bg-amber-100 rounded-full"></div>
-      <div className="py-12 px-6 w-[360px] max-w-full space-y-6 flex flex-col">
-        <LogoHorizontal />
-        <Heading>Login</Heading>
-        <FormControl id="username" label="Username or email">
-          <TextInput.Root>
-            <TextInput.Icon>
-              <MdPersonOutline />
-            </TextInput.Icon>
-            <TextInput.Input placeholder="Enter your username" />
-          </TextInput.Root>
-        </FormControl>
-        <FormControl id="password" label="Password">
-          <TextInput.Root>
-            <TextInput.Icon>
-              <MdLockOutline />
-            </TextInput.Icon>
-            <TextInput.Input placeholder="Enter your password" />
-          </TextInput.Root>
-        </FormControl>
-        <a href="#" className="text-amber-100 text-xs font-semibold ml-auto">
-          Forgot password
-        </a>
-        <Button className="w-full flex justify-center">Login</Button>
-        <Text asChild>
-          <span className="block text-center">
-            No account?
-            <a href="#">
-              <span className="text-amber-100 font-bold"> Sign up</span>
-            </a>
-          </span>
-        </Text>
-      </div>
-    </Layout>
+    <>
+      <PublicBackground />
+      <Layout className="flex z-10">
+        <div className="py-12 px-6 w-[360px] max-w-full space-y-6 flex flex-col m-auto">
+          <LogoHorizontal />
+          <Heading>Login</Heading>
+          <FormControl id="username" label="Username or email">
+            <TextInput.Root>
+              <TextInput.Icon>
+                <MdPersonOutline />
+              </TextInput.Icon>
+              <TextInput.Input placeholder="Enter your username" />
+            </TextInput.Root>
+          </FormControl>
+          <FormControl id="password" label="Password">
+            <TextInput.Root>
+              <TextInput.Icon>
+                <MdLockOutline />
+              </TextInput.Icon>
+              <TextInput.Input placeholder="Enter your password" />
+            </TextInput.Root>
+          </FormControl>
+          <Link
+            to="/forgot-password"
+            className="text-amber-100 text-xs font-semibold ml-auto"
+          >
+            Forgot password
+          </Link>
+          <Button className="w-full flex justify-center">Login</Button>
+          <Text asChild>
+            <span className="block text-center">
+              No account?
+              <Link to="/signup">
+                <span className="text-amber-100 font-bold"> Sign up</span>
+              </Link>
+            </span>
+          </Text>
+        </div>
+      </Layout>
+    </>
   );
 }
