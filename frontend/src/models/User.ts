@@ -5,5 +5,5 @@ export type User = {
   fullName: string;
   avatar?: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt: string | null;
 };
