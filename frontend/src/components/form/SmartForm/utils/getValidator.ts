@@ -6,7 +6,7 @@ import { validateField } from "./validateField";
 export function getValidator(fields: FieldConfig[]) {
   return (values: FormFields) => {
     const newErrors = fields.reduce((errorsObj, field) => {
-      const errorMessage = validateField(field, values[field.id]);
+      const errorMessage = validateField(field, values[field.id], values);
       if (errorMessage) {
         errorsObj[field.id] = errorMessage;
       }

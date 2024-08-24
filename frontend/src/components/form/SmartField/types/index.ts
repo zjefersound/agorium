@@ -24,7 +24,7 @@ export type FieldType =
 
 export type ValidationRule = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rule: (value: any) => boolean;
+  rule: (value: any, values: any) => boolean;
   message: string;
 };
 
@@ -91,4 +91,3 @@ export type FieldConfig =
   | FieldConfigCurrency
   | FieldConfigWithIcon
   | BaseFieldConfig;
-

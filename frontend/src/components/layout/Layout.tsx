@@ -9,7 +9,7 @@ export function Layout({ children, className }: Props) {
   return (
     <div
       className={clsx(
-        "flex flex-1 flex-col bg-agorium-900 text-agorium-50 overflow-auto",
+        "flex flex-1 flex-col text-agorium-50 overflow-auto",
         className,
       )}
     >
