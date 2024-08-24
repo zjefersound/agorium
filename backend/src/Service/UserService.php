@@ -11,10 +11,12 @@ use Nyholm\Psr7\UploadedFile;
 class UserService
 {
     private UserRepository $userRepository;
+    private MailerService $mailerService;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, MailerService $mailerService)
     {
         $this->userRepository = $userRepository;
+        $this->mailerService = $mailerService;
     }
 
     public function createUser(UserSignupDTO $userSignupDTO, ?UploadedFile $uploadedAvatar = null): User
@@ -36,7 +38,7 @@ class UserService
             if (!array_intersect($fileType, $allowedTypes)) {
                 throw new Exception('Invalid file type. Only JPEG, PNG, and GIF are allowed.');
             }
-    
+
             $avatarGuid = $this->generateGuid() . '.' . pathinfo($uploadedAvatar->getClientFilename(), PATHINFO_EXTENSION);
 
             $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
@@ -52,6 +54,8 @@ class UserService
         } catch (\Throwable $th) {
             throw new Exception("Error adding user!");
         }
+
+        $this->mailerService->sendWelcomeEmail($user->getEmail(), $user->getFullName());
 
         return $user;
     }
