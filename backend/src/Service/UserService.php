@@ -17,14 +17,14 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function createUser(UserSignupDTO $userSignupDTO, UploadedFile $uploadedAvatar): User
+    public function createUser(UserSignupDTO $userSignupDTO, ?UploadedFile $uploadedAvatar = null): User
     {
         if ($this->userRepository->isEmailTaken($userSignupDTO->email)) {
-            throw new Exception("Email já cadastrado!");
+            throw new Exception("Email is already taken!");
         }
 
         if ($this->userRepository->isUsernameTaken($userSignupDTO->username)) {
-            throw new Exception("Nome de usuario já cadastrado!");
+            throw new Exception("Username is already taken!");
         }
 
         $avatarStream = $uploadedAvatar->getStream();
@@ -50,7 +50,7 @@ class UserService
         try {
             $this->userRepository->add($user);
         } catch (\Throwable $th) {
-            throw new Exception("Houve um erro!");
+            throw new Exception("Error adding user!");
         }
 
         return $user;

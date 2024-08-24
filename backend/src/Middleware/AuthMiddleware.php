@@ -28,7 +28,7 @@ class AuthMiddleware implements MiddlewareInterface
         list($jwt) = sscanf($authHeader, 'Bearer %s');
 
         if (!$jwt) {
-            return $this->unauthorized(["error" => "Token de autenticação não fornecido."]);
+            return $this->unauthorized(["error" => "Auth token not provided."]);
         }
 
         try {
@@ -37,7 +37,7 @@ class AuthMiddleware implements MiddlewareInterface
             return $handler->handle($request);
 
         } catch (Throwable $th) {
-            return $this->unauthorized(["error" => "Token JWT invalido."]);
+            return $this->unauthorized(["error" => "Token is invalid."]);
         }
     }
 }

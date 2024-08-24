@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\UserSignupDTO;
+use App\Helper\ErrorMapper;
 use App\Service\AuthService;
 use App\Service\UserService;
 use App\Trait\HttpResponse;
@@ -30,9 +31,9 @@ class UserController
         $data = $req->getParsedBody();
         $userSignupDTO = new UserSignupDTO($data);
         $errors = $this->validator->validate($userSignupDTO);
-    
+
         if (count($errors) > 0) {
-            return $this->unprocessable(["error" => (string)$errors]);
+            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
         }
     
         $uploadedFiles = $req->getUploadedFiles();
@@ -43,7 +44,7 @@ class UserController
             return $this->unprocessable(["error" => $th->getMessage()]);
         }
     
-        return $this->created("User created successfully!");
+        return $this->created("User created successfully.");
     }
 
     public function login(Request $req)
@@ -58,7 +59,7 @@ class UserController
             return $this->ok(["token" => $token]);
         }
 
-        return $this->unauthorized(["error" => "Usuario ou senha incorretos."]);
+        return $this->unauthorized(["error" => "Login or password invalid."]);
     }
 
     public function getUser(Request $req)
