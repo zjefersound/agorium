@@ -10,5 +10,102 @@ paths:
   /ping:
     get:
       responses:
-        '200':
+        "200":
           description: Pong
+
+  /signup:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  default: user@email.com
+                username:
+                  type: string
+                fullName:
+                  type: string
+                password:
+                  type: string
+                avatar:
+                  type: string
+                  format: base64
+            encoding:
+              avatar:
+                contentType: image/png, image/jpeg
+      responses:
+        "201":
+          description: User registered
+        "400":
+          description: Invalid input
+      tags:
+        - user
+
+  /login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  default: user@email.com
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Login successful
+        "401":
+          description: Invalid credentials
+      tags:
+        - user
+
+  /user/me:
+    get:
+      summary: Get self user details
+      responses:
+        "200":
+          description: User details retrieved
+        "401":
+          description: Unauthorized
+      security:
+        - BearerAuth: []
+      tags:
+        - user
+  /user/avatar/{id}:
+    get:
+      summary: Get user avatar
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: User Id
+      responses:
+        "200":
+          description: User avatar retrieved
+        "401":
+          description: Unauthorized
+      security:
+        - BearerAuth: []
+      tags:
+        - user
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
