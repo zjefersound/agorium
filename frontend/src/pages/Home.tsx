@@ -1,11 +1,14 @@
 import { Content } from "../components/layout/Content";
-import { Card } from "../components/ui/Card";
 import { NavigationCard } from "../components/shared/NavigationCard";
 import { SimpleUserCard } from "../components/shared/SimpleUserCard";
 import { PopularItemCard } from "../components/shared/PopularItemCard";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts, rankingCardItems } from "../examples/mocks/mocks";
 import { RankingCard } from "../components/shared/RankingCard";
+import { PostCard } from "../components/shared/PostCard";
+import { MdOutlineCheckCircleOutline, MdOutlineWhatshot } from "react-icons/md";
+import { RxArrowTopRight, RxClock } from "react-icons/rx";
+import { SmallTabs } from "../components/ui/SmallTabs";
 
 export function Home() {
   return (
@@ -36,12 +39,25 @@ export function Home() {
         />
       </Content.Sidebar>
       <Content.Main>
-        <Card className="h-[300px]">Center</Card>
-        <Card className="h-[300px]">Center</Card>
-        <Card className="h-[300px]">Center</Card>
-        <Card className="h-[300px]">Center</Card>
-        <Card className="h-[300px]">Center</Card>
-        <Card className="h-[300px]">Center</Card>
+        <div className="flex flex-col space-y-6">
+          <SmallTabs
+            value="new"
+            onChange={() => {}}
+            options={[
+              { Icon: RxClock, label: "New", value: "new" },
+              { Icon: RxArrowTopRight, label: "Top", value: "top" },
+              { Icon: MdOutlineWhatshot, label: "Hot", value: "hot" },
+              {
+                Icon: MdOutlineCheckCircleOutline,
+                label: "Closed",
+                value: "closed",
+              },
+            ]}
+          />
+          {mockedPosts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </div>
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard
@@ -53,7 +69,9 @@ export function Home() {
           url=""
         />
         <RankingCard items={rankingCardItems} />
-        <TrendingPosts posts={mockedPosts} />
+        <TrendingPosts
+          posts={[mockedPosts[0], mockedPosts[1], mockedPosts[2]]}
+        />
       </Content.Sidebar>
     </Content.Root>
   );
