@@ -30,9 +30,9 @@ export function PostCard({ post }: PostCardProps) {
         </header>
         <div className="space-y-2">
           <p className="font-bold tracking-wider">{post.title}</p>
-          <p className="font-light text-sm line-clamp-2">
-            <Markdown>{post.content}</Markdown>
-          </p>
+          <Markdown className="font-light text-sm line-clamp-2">
+            {post.content}
+          </Markdown>
         </div>
         <footer className="flex items-center flex-1">
           <span className="text-amber-100 font-semibold text-sm">
