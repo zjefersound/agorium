@@ -54,9 +54,8 @@ const users: User[] = [
 const categories: Category[] = [
   {
     id: 1,
-    name: "Programming",
-    description:
-      "Posts related to programming languages, techniques, and best practices.",
+    name: "Issue",
+    description: "Posts that require an answer to solve a problem.",
   },
 ];
 
@@ -203,6 +202,7 @@ export const mockedPosts: Post[] = [
     tags: [
       { id: 7, name: "JavaScript" },
       { id: 8, name: "Engines" },
+      { id: 9, name: "Eventloops" },
     ],
     comments: [],
     upvotes: [

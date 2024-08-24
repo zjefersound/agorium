@@ -34,11 +34,11 @@ export function PostCard({ post }: PostCardProps) {
             <Markdown>{post.content}</Markdown>
           </p>
         </div>
-        <footer className="flex items-center">
+        <footer className="flex items-center flex-1">
           <span className="text-amber-100 font-semibold text-sm">
             {post.category.name}
           </span>
-          <ul className="flex space-x-3 ml-3">
+          <ul className="flex space-x-3 ml-3 flex-1 overflow-x-auto overflow-y-hidden">
             {post.tags?.map((tag) => (
               <li key={tag.id}>
                 <Tag>{tag.name}</Tag>
@@ -46,7 +46,7 @@ export function PostCard({ post }: PostCardProps) {
             ))}
           </ul>
           <Text asChild>
-            <span className="flex items-center ml-auto">
+            <span className="flex items-center ml-4">
               <MdOutlineModeComment className="mr-1 size-4" />{" "}
               {post.comments?.length || 0}
             </span>
