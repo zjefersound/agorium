@@ -7,7 +7,8 @@ import { FormFields } from "../types";
 
 export interface UseSmartFormProps {
   loading?: boolean;
-  onSubmit: (payload: FormFields) => Promise<unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSubmit: (payload: FormFields | any) => Promise<unknown>;
   fields: FieldConfig[];
 }
 
@@ -34,11 +35,11 @@ export function useSmartForm<T = FormFields>({
 
   const disabled = useMemo(
     () => formLoading || loading,
-    [formLoading, loading]
+    [formLoading, loading],
   );
   const serializedFields = useMemo(
     () => fields.map((config) => ({ ...config, required: false })),
-    [fields]
+    [fields],
   );
 
   return {

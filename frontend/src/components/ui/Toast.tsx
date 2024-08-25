@@ -38,11 +38,11 @@ export function Toast({
   return (
     <ToastPrimitive.Provider swipeDirection="right" duration={duration}>
       <ToastPrimitive.Root
-        className="bg-agorium-900 rounded-md shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] p-4 grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-4 items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut"
+        className="bg-agorium-800 ring-1 ring-agorium-700 rounded-md shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] p-4 grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-4 items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut"
         open={open}
         onOpenChange={setOpen}
       >
-        <ToastPrimitive.Title className="[grid-area:_title] mb-[5px] font-medium text-zinc-900 leading-5">
+        <ToastPrimitive.Title className="[grid-area:_title] mb-[5px] font-medium text-agorium-50 leading-5">
           <span className="flex items-center">
             <Icon
               className={clsx("h-6 w-6 mr-2", {
@@ -77,7 +77,7 @@ export function Toast({
                   color === "info",
                 "bg-amber-100 text-amber-600 shadow-amber-700 hover:shadow-amber-700  focus:shadow-amber-700":
                   color === "warning",
-              }
+              },
             )}
             onClick={onActionClick}
           >
