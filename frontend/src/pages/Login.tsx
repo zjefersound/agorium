@@ -1,45 +1,68 @@
 import { MdLockOutline, MdPersonOutline } from "react-icons/md";
-import { TextInput } from "../components/form/TextInput";
 import { Layout } from "../components/layout/Layout";
 import { Heading } from "../components/ui/Heading";
 import { LogoHorizontal } from "../components/assets/LogoHorizontal";
-import { FormControl } from "../components/form/FormControl";
 import { Button } from "../components/ui/Button";
 import { Text } from "../components/ui/Text";
 import { PublicBackground } from "../components/layout/PublicBackground";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { useSmartForm } from "../components/form/SmartForm/hooks/useSmartForm";
+import { SmartField } from "../components/form/SmartField";
+import { FieldConfig } from "../components/form/SmartField/types";
+
+const loginFormFields: FieldConfig[] = [
+  {
+    id: "login",
+    type: "text",
+    label: "Username or email",
+    placeholder: "Enter your username",
+    Icon: MdPersonOutline,
+  },
+  {
+    id: "password",
+    type: "password",
+    label: "Password",
+    placeholder: "Enter your password",
+    Icon: MdLockOutline,
+  },
+];
 
 export function Login() {
+  const { handleLogin } = useAuth();
+  const { data, handleChangeValue, serializedFields, errors, handleSubmit } =
+    useSmartForm({
+      fields: loginFormFields,
+      onSubmit: handleLogin,
+    });
   return (
     <>
       <PublicBackground />
       <Layout className="flex z-10">
-        <div className="py-12 px-6 w-[360px] max-w-full space-y-6 flex flex-col m-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="py-12 px-6 w-[360px] max-w-full space-y-6 flex flex-col m-auto"
+        >
           <LogoHorizontal />
           <Heading>Login</Heading>
-          <FormControl id="username" label="Username or email">
-            <TextInput.Root>
-              <TextInput.Icon>
-                <MdPersonOutline />
-              </TextInput.Icon>
-              <TextInput.Input placeholder="Enter your username" />
-            </TextInput.Root>
-          </FormControl>
-          <FormControl id="password" label="Password">
-            <TextInput.Root>
-              <TextInput.Icon>
-                <MdLockOutline />
-              </TextInput.Icon>
-              <TextInput.Input placeholder="Enter your password" />
-            </TextInput.Root>
-          </FormControl>
+          {serializedFields.map((field) => (
+            <SmartField
+              key={field.id}
+              value={data[field.id]}
+              onChangeValue={handleChangeValue}
+              config={field}
+              error={errors[field.id]}
+            />
+          ))}
           <Link
             to="/forgot-password"
             className="text-amber-100 text-xs font-semibold ml-auto"
           >
             Forgot password
           </Link>
-          <Button className="w-full flex justify-center">Login</Button>
+          <Button className="w-full flex justify-center" behavior="submit">
+            Login
+          </Button>
           <Text asChild>
             <span className="block text-center">
               No account?
@@ -48,7 +71,7 @@ export function Login() {
               </Link>
             </span>
           </Text>
-        </div>
+        </form>
       </Layout>
     </>
   );
