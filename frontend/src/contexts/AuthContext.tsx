@@ -1,7 +1,6 @@
 import {
   createContext,
   PropsWithChildren,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -15,7 +14,7 @@ import { User } from "../models/User";
 import { TOAST_MESSAGES } from "../constants/toastMessages";
 import { IApiErrorResponse } from "../models/IApiErrorResponse";
 
-interface AuthProviderProps {
+export interface AuthProviderProps {
   authenticated: boolean;
   token: string;
   setToken: (token: string) => void;
@@ -25,9 +24,11 @@ interface AuthProviderProps {
   handleLogout: () => void;
 }
 
-const AuthContext = createContext<AuthProviderProps>({} as AuthProviderProps);
+export const AuthContext = createContext<AuthProviderProps>(
+  {} as AuthProviderProps,
+);
 
-const AuthProvider = ({ children }: PropsWithChildren) => {
+export const AuthProvider = ({ children }: PropsWithChildren) => {
   const { launchToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
@@ -107,6 +108,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       setLoading(false);
       handleLogout();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const contextValue = useMemo(
@@ -119,6 +121,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
       user,
       setUser,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [token, authenticated, user],
   );
 
@@ -128,9 +131,3 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
-export default AuthProvider;

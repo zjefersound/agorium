@@ -1,4 +1,4 @@
-import AuthProvider from "./contexts/AuthContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import { ToastProvider } from "./contexts/ToastContext";
 import { Routes } from "./routes/Routes";
 

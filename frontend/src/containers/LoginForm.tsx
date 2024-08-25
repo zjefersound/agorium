@@ -1,6 +1,6 @@
 import { MdLockOutline, MdPersonOutline } from "react-icons/md";
 import { FieldConfig } from "../components/form/SmartField/types";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { useSmartForm } from "../components/form/SmartForm/hooks/useSmartForm";
 import { SmartField } from "../components/form/SmartField";
 import { Link } from "react-router-dom";
