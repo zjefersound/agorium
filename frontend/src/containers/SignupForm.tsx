@@ -5,6 +5,7 @@ import { useSmartForm } from "../components/form/SmartForm/hooks/useSmartForm";
 import { userService, UserSignupPayload } from "../services/userService";
 import { useState } from "react";
 import { Alert } from "../components/ui/Alert";
+import { TOAST_MESSAGES } from "../constants/toastMessages";
 
 const signupFormFields: FieldConfig[] = [
   {
@@ -98,14 +99,6 @@ const signupFormFields: FieldConfig[] = [
   },
 ];
 
-const initialData = {
-  email: "jeferson@gmail.com",
-  username: "jeferson",
-  fullName: "jeferson",
-  password: "jeferson",
-  confirmPassword: "jeferson",
-};
-
 export function SignupForm() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -116,11 +109,13 @@ export function SignupForm() {
         navigate("/login");
       })
       .catch((error) => {
-        setError(error.response.data.error);
+        setError(
+          error.response?.data?.error ||
+            TOAST_MESSAGES.common.unexpectedErrorDescription,
+        );
       });
   };
   const formState = useSmartForm({
-    dataValue: initialData,
     fields: signupFormFields,
     onSubmit,
   });
