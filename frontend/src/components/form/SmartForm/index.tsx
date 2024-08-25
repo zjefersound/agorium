@@ -40,7 +40,7 @@ export function SmartForm({
           config={field}
         />
       ))}
-      <Button className="w-full justify-center" disabled={disabled}>
+      <Button className="w-full justify-center" disabled={disabled} behavior="submit">
         {loading && <Loading size="sm" className="mr-2" />}
         {submitText}
       </Button>

@@ -6,6 +6,8 @@ import { useForm, UseFormReturn } from "./useForm";
 import { FormFields } from "../types";
 
 export interface UseSmartFormProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dataValue?: any;
   loading?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSubmit: (payload: FormFields | any) => Promise<unknown>;
@@ -21,6 +23,7 @@ export interface UseSmartFormReturn<T> extends UseFormReturn<T> {
  * Wrapper of useForm to fit SmartForm requirements
  */
 export function useSmartForm<T = FormFields>({
+  dataValue,
   onSubmit,
   fields,
   loading: formLoading,
@@ -28,6 +31,7 @@ export function useSmartForm<T = FormFields>({
   const initialState = getInitialFormState(fields);
   const { data, errors, loading, handleChangeValue, handleSubmit } =
     useForm<FormFields>({
+      dataValue,
       initialState,
       onSubmit,
       validator: getValidator(fields),
