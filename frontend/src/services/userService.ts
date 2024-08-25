@@ -13,7 +13,7 @@ function login(data: UserLoginPayload) {
 }
 
 function me() {
-  return api.get<User>("/users/me");
+  return api.get<User>("/user/me");
 }
 export const userService = {
   login,
