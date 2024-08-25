@@ -29,9 +29,9 @@ class UserService
             throw new Exception("Username is already taken!");
         }
 
-        $avatarStream = $uploadedAvatar->getStream();
+        $avatarStream = isset($uploadedAvatar) ? $uploadedAvatar->getStream() : null;
 
-        if ($avatarStream->getSize() != null && $avatarStream->getSize() > 0) {
+        if ($avatarStream && $avatarStream->getSize() != null && $avatarStream->getSize() > 0) {
             $fileType = explode(', ', $uploadedAvatar->getClientMediaType());
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
