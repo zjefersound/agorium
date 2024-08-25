@@ -9,6 +9,7 @@ use App\Domain\User;
 use App\Middleware\AuthMiddleware;
 use App\Repository\UserRepository;
 use App\Service\AuthService;
+use App\Service\MailerService;
 use App\Service\UserService;
 use Doctrine\ORM\EntityManager;
 use Psr\Container\ContainerInterface;
@@ -56,10 +57,14 @@ final class Slim implements ServiceProvider
 
     private function provideServices(Container $c): void
     {
+        $c->set(MailerService::class, static function (ContainerInterface $c): MailerService {
+            return new MailerService();
+        });
+
         $c->set(UserService::class, static function (ContainerInterface $c): UserService {
             return new UserService(
                 $c->get(UserRepository::class),
-                $c->get(ValidatorInterface::class)
+                $c->get(MailerService::class)
             );
         });
 
