@@ -1,4 +1,5 @@
 import { useAuth } from "../../hooks/useAuth";
+import { printFirstAndLastName } from "../../utils/printFirstAndLastName";
 import { LogoHorizontal } from "../assets/LogoHorizontal";
 import { Avatar } from "../ui/Avatar";
 
@@ -10,8 +11,11 @@ export function Header() {
 
       <div className="flex items-center space-x-4">
         <Avatar name={user!.fullName} url={user!.avatar} />
-        <p className="hidden md:flex font-serif text-amber-100">
-          {user!.fullName}
+        <p
+          title={user!.fullName}
+          className="hidden md:flex flex-1 font-serif text-amber-100 max-w-52 truncate"
+        >
+          {printFirstAndLastName(user!.fullName)}
         </p>
       </div>
     </header>
