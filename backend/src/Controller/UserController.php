@@ -35,15 +35,17 @@ class UserController
         if (count($errors) > 0) {
             return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
         }
-    
+
         $uploadedFiles = $req->getUploadedFiles();
 
+        $avatar = isset($uploadedFiles["avatar"]) ? $uploadedFiles["avatar"] : null;
+
         try {
-            $this->userService->createUser($userSignupDTO, $uploadedFiles["avatar"]);
+            $this->userService->createUser($userSignupDTO, $avatar);
         } catch (\Throwable $th) {
             return $this->unprocessable(["error" => $th->getMessage()]);
         }
-    
+
         return $this->created("User created successfully.");
     }
 
@@ -69,7 +71,8 @@ class UserController
         return $this->ok($user->jsonSerialize());
     }
 
-    public function getUserAvatar($req, $res, $args) {
+    public function getUserAvatar($req, $res, $args)
+    {
         $userId = $args["id"];
         if (!$userId) {
             $this->badRequest(["error" => "User id is required."]);
