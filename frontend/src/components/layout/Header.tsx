@@ -10,7 +10,9 @@ export function Header() {
 
       <div className="flex items-center space-x-4">
         <Avatar name={user!.fullName} url={user!.avatar} />
-        <p className="font-serif text-amber-100">{user!.fullName}</p>
+        <p className="hidden md:flex font-serif text-amber-100">
+          {user!.fullName}
+        </p>
       </div>
     </header>
   );
