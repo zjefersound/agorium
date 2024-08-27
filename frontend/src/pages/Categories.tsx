@@ -1,10 +1,8 @@
 import { Content } from "../components/layout/Content";
 import { NavigationCard } from "../components/shared/NavigationCard";
-import {} from "../components/shared/SimpleUserCard";
 import { PopularItemCard } from "../components/shared/PopularItemCard";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts } from "../examples/mocks/mocks";
-import {} from "../components/shared/RankingCard";
 import { PostCard } from "../components/shared/PostCard";
 import { SmallTabs } from "../components/ui/SmallTabs";
 import { ButtonGroup } from "../components/ui/ButtonGroup";
