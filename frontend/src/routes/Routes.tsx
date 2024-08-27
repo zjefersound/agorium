@@ -11,12 +11,30 @@ import { Layout } from "../components/layout/Layout";
 import { Login } from "../pages/Login";
 import { Home } from "../pages/Home";
 import { Signup } from "../pages/Signup";
+import { Categories } from "../pages/Categories";
+import { Tags } from "../pages/Tags";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/categories",
+      element: <Categories />,
+    },
+    {
+      path: "/categories/:id",
+      element: <Categories />,
+    },
+    {
+      path: "/tags",
+      element: <Tags />,
+    },
+    {
+      path: "/tags/:id",
+      element: <Tags />,
     },
   ],
   publicOnly: [

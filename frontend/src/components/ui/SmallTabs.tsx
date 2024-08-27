@@ -18,7 +18,7 @@ export function SmallTabs({ value, onChange, options }: SmallTabsProps) {
           <li key={option.value}>
             <button
               className={clsx(
-                "flex items-center text-sm h-8 rounded-full px-2.5",
+                "flex items-center text-sm h-8 rounded-full px-2.5 whitespace-nowrap",
                 {
                   "bg-amber-100 text-agorium-900 font-semibold":
                     value === option.value,
