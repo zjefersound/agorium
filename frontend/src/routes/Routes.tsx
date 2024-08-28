@@ -12,6 +12,8 @@ import { Login } from "../pages/Login";
 import { Home } from "../pages/Home";
 import { Signup } from "../pages/Signup";
 import { Post } from "../pages/Post";
+import { Categories } from "../pages/Categories";
+import { Tags } from "../pages/Tags";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
@@ -20,8 +22,24 @@ const routes: { [key: string]: RouteObject[] } = {
       element: <Home />,
     },
     {
+      path: "/categories",
+      element: <Categories />,
+    },
+    {
+      path: "/categories/:id",
+      element: <Categories />,
+    },
+    {
       path: "/post/:id",
       element: <Post />,
+    },
+    {
+      path: "/tags",
+      element: <Tags />,
+    },
+    {
+      path: "/tags/:id",
+      element: <Tags />,
     },
   ],
   publicOnly: [

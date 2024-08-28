@@ -1,6 +1,7 @@
 import { RankingCardItem } from "../../components/shared/RankingCard";
 import { Category } from "../../models/Category";
 import { Post } from "../../models/Post";
+import { Tag } from "../../models/Tag";
 import { User } from "../../models/User";
 
 const users: User[] = [
@@ -208,4 +209,17 @@ export const rankingCardItems: RankingCardItem[] = [
     user: users[4], // daniel_jones
     totalUpvotes: 75,
   },
+];
+
+export const academicTags: Tag[] = [
+  { id: 1, name: "Research Methodology" },
+  { id: 2, name: "Literature Review" },
+  { id: 3, name: "Data Analysis" },
+  { id: 4, name: "Case Studies" },
+  { id: 5, name: "Qualitative Research" },
+  { id: 6, name: "Quantitative Research" },
+  { id: 7, name: "Ethics in Research" },
+  { id: 8, name: "Peer Review" },
+  { id: 9, name: "Academic Writing" },
+  { id: 10, name: "Funding and Grants" },
 ];
