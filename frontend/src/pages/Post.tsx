@@ -24,6 +24,7 @@ import { GoBack } from "../components/ui/GoBack";
 import { useAuth } from "../hooks/useAuth";
 import { useCallback, useMemo } from "react";
 import { useToast } from "../hooks/useToast";
+import { Empty } from "../components/ui/Empty";
 
 export function Post() {
   const { launchToast } = useToast();
@@ -127,6 +128,18 @@ export function Post() {
         <span id="comments-count" className="block">
           {post.comments?.length || 0} comment(s)
         </span>
+        {!post.comments?.length && (
+          <Empty>
+            <p className="to-amber-100 font-bold mb-3 text-center">
+              No comments were found
+            </p>
+            <Text asChild>
+              <span className="text-center">
+                Be the first to share your thoughts
+              </span>
+            </Text>
+          </Empty>
+        )}
         {post.comments?.map((comment) => (
           <CommentCard
             key={comment.id}
