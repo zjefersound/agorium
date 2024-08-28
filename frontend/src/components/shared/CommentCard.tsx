@@ -9,11 +9,24 @@ import { Card } from "../ui/Card";
 import { AuthorOverview } from "./AuthorOverview";
 import Markdown from "react-markdown";
 import { Text } from "../ui/Text";
+import { useMemo } from "react";
+import { useAuth } from "../../hooks/useAuth";
 
 interface CommentCardProps {
   comment: Comment;
+  accepted?: boolean;
+  isPostAuthor?: boolean;
 }
-export function CommentCard({ comment }: CommentCardProps) {
+export function CommentCard({
+  comment,
+  accepted,
+  isPostAuthor,
+}: CommentCardProps) {
+  const { user } = useAuth();
+  const isAuthor = useMemo(
+    () => user!.id === comment.user!.id,
+    [user, comment],
+  );
   return (
     <Card className="space-y-4">
       <AuthorOverview
@@ -40,10 +53,21 @@ export function CommentCard({ comment }: CommentCardProps) {
         <Button size="sm" color="secondary">
           <MdOutlineReply className="mr-2 size-5" /> Reply
         </Button>
-        <span className="text-sm text-emerald-400 flex items-center">
-          <MdCheckCircleOutline className="size-6 mr-2" /> Accepted by the
-          author
-        </span>
+        {!isPostAuthor && accepted && (
+          <span className="text-sm text-emerald-400 flex items-center">
+            <MdCheckCircleOutline className="size-6 mr-2" /> Accepted by the
+            author
+          </span>
+        )}
+        {!isAuthor && isPostAuthor && (
+          <Button
+            size="sm"
+            color={accepted ? "success" : "secondary"}
+            className="ml-auto"
+          >
+            <MdCheckCircleOutline className="mr-2 size-5" /> Accept answer
+          </Button>
+        )}
       </footer>
     </Card>
   );

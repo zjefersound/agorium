@@ -55,8 +55,7 @@ export function TrendingPosts({ posts }: TrendingPostsProps) {
                   </Text>
                   <Text asChild>
                     <span className="flex items-center">
-                      <MdArrowUpward className="mr-1" />{" "}
-                      {post.upvotes?.length || 0}
+                      <MdArrowUpward className="mr-1" /> {post.totalUpvotes}
                     </span>
                   </Text>
                 </div>

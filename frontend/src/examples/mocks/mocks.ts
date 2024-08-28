@@ -50,6 +50,15 @@ const users: User[] = [
     createdAt: "2024-04-20T09:00:00Z",
     updatedAt: "2024-08-20T10:00:00Z",
   },
+  {
+    id: 6,
+    username: "zjefersound",
+    email: "zjefersound@example.com",
+    fullName: "Jeferson Souza",
+    avatar: "/user/avatar/3",
+    createdAt: "2024-04-20T09:00:00Z",
+    updatedAt: "2024-08-20T10:00:00Z",
+  },
 ];
 
 const categories: Category[] = [
@@ -71,13 +80,14 @@ export const mockedPosts: Post[] = [
     categoryId: 1,
     userId: 1,
     category: categories[0],
-    user: users[0],
+    user: users[5],
     tags: [
       { id: 1, name: "TypeScript" },
       { id: 2, name: "JavaScript" },
     ],
     totalUpvotes: 4,
     voted: false,
+    acceptedCommentId: 1,
     comments: [
       {
         id: 1,
@@ -97,7 +107,19 @@ export const mockedPosts: Post[] = [
         updatedAt: "2024-08-01T11:00:00Z",
         postId: 1,
         userId: 2,
-        user: users[1],
+        user: users[4],
+        parentCommentId: 1,
+        totalUpvotes: 4,
+        voted: true,
+      },
+      {
+        id: 4,
+        content: "Thank you guys. Check it out on my YouTube",
+        createdAt: "2024-08-01T11:00:00Z",
+        updatedAt: "2024-08-01T11:00:00Z",
+        postId: 1,
+        userId: 2,
+        user: users[5],
         parentCommentId: 1,
         totalUpvotes: 4,
         voted: true,

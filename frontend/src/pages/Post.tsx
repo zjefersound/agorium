@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Content } from "../components/layout/Content";
 import { NavigationCard } from "../components/shared/NavigationCard";
 import { PopularItemCard } from "../components/shared/PopularItemCard";
@@ -15,14 +15,21 @@ import Markdown from "react-markdown";
 import { Button } from "../components/ui/Button";
 import {
   MdArrowUpward,
+  MdOutlineEdit,
   MdOutlineModeComment,
   MdOutlineShare,
 } from "react-icons/md";
 import { CommentCard } from "../components/shared/CommentCard";
+import { GoBack } from "../components/ui/GoBack";
+import { useAuth } from "../hooks/useAuth";
+import { useMemo } from "react";
 
 export function Post() {
+  const { user } = useAuth();
   const { id } = useParams();
   const post = mockedPosts.find((p) => String(p.id) === id) || mockedPosts[0];
+
+  const isAuthor = useMemo(() => user!.id === post.user.id, [user, post]);
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -51,6 +58,7 @@ export function Post() {
         />
       </Content.Sidebar>
       <Content.Main>
+        <GoBack to="/" />
         <Card className="space-y-6">
           <header className="flex">
             <Avatar name={post.user.fullName} url={post.user.avatar} />
@@ -64,6 +72,14 @@ export function Post() {
                 </span>
               </Text>
             </div>
+            {isAuthor && (
+              <Link to={`/post/${post.id}/edit`} className="ml-auto">
+                <Button color="secondary" size="sm">
+                  <MdOutlineEdit className="size-5 mr-2" />
+                  Edit
+                </Button>
+              </Link>
+            )}
           </header>
           <div>
             <span className="text-amber-100 font-semibold text-sm">
@@ -89,9 +105,16 @@ export function Post() {
             </Button>
           </div>
         </Card>
-        <Text>{post.comments?.length || 0} comment(s)</Text>
+        <span id="comments-count" className="block">
+          {post.comments?.length || 0} comment(s)
+        </span>
         {post.comments?.map((comment) => (
-          <CommentCard key={comment.id} comment={comment} />
+          <CommentCard
+            key={comment.id}
+            accepted={comment.id === post.acceptedCommentId}
+            comment={comment}
+            isPostAuthor={isAuthor}
+          />
         ))}
       </Content.Main>
       <Content.Sidebar>
