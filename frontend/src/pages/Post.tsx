@@ -22,14 +22,26 @@ import {
 import { CommentCard } from "../components/shared/CommentCard";
 import { GoBack } from "../components/ui/GoBack";
 import { useAuth } from "../hooks/useAuth";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
+import { useToast } from "../hooks/useToast";
 
 export function Post() {
+  const { launchToast } = useToast();
   const { user } = useAuth();
   const { id } = useParams();
   const post = mockedPosts.find((p) => String(p.id) === id) || mockedPosts[0];
 
   const isAuthor = useMemo(() => user!.id === post.user.id, [user, post]);
+  const handleShare = useCallback(() => {
+    navigator.clipboard.writeText(window.location.href);
+    launchToast({
+      color: "info",
+      title: "Copied to clipboard",
+      description: `Copied post link to your clipboard`,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -99,7 +111,7 @@ export function Post() {
               <MdOutlineModeComment className="size-5 mr-2" />
               {post.comments?.length || 0}
             </Button>
-            <Button color="secondary" size="sm">
+            <Button color="secondary" size="sm" onClick={handleShare}>
               <MdOutlineShare className="size-5 mr-2" />
               Share
             </Button>
@@ -131,7 +143,7 @@ export function Post() {
             <Heading size="xs" asChild>
               <h2 className="tracking-wider">Featured tags</h2>
             </Heading>
-            <ul className="flex flex-wrap space-x-3">
+            <ul className="flex flex-wrap space-x-3 mt-6">
               {post.tags.map((tag) => (
                 <li key={tag.id}>
                   <Tag>{tag.name}</Tag>
