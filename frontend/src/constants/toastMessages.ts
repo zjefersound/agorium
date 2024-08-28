@@ -10,5 +10,8 @@ export const TOAST_MESSAGES = {
     unexpectedErrorTitle: "Unexpected error",
     unexpectedErrorDescription:
       "Verify your internet connection and try again later.",
+    sessionUnauthorizedTitle: "Your session is invalid",
+    sessionExpiredTitle: "Session expired",
+    sessionExpiredDescription: "Please login into the app",
   },
 };
