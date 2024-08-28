@@ -54,9 +54,11 @@ export function CommentCard({
           <MdOutlineReply className="mr-2 size-5" /> Reply
         </Button>
         {!isPostAuthor && accepted && (
-          <span className="text-sm text-emerald-400 flex items-center">
-            <MdCheckCircleOutline className="size-6 mr-2" /> Accepted by the
-            author
+          <span className="text-xs leading-3 text-emerald-400 flex items-center">
+            <MdCheckCircleOutline className="size-6 mr-2 shrink-0" />
+            <span className="hidden min-[360px]:inline">
+              Accepted by the author
+            </span>
           </span>
         )}
         {!isAuthor && isPostAuthor && (
