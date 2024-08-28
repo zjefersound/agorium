@@ -100,6 +100,13 @@ export function Post() {
             <Heading size="xs" asChild>
               <h2 className="tracking-wider">{post.title}</h2>
             </Heading>
+            <ul className="flex flex-wrap gap-x-3 gap-y-2 mt-2 lg:hidden">
+              {post.tags?.map((tag) => (
+                <li key={tag.id}>
+                  <Tag>{tag.name}</Tag>
+                </li>
+              ))}
+            </ul>
           </div>
           <Markdown className="leading-7 text-sm">{post.content}</Markdown>
           <div className="flex space-x-3">
