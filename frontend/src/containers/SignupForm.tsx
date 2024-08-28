@@ -6,6 +6,7 @@ import { userService, UserSignupPayload } from "../services/userService";
 import { useState } from "react";
 import { Alert } from "../components/ui/Alert";
 import { TOAST_MESSAGES } from "../constants/toastMessages";
+import { useToast } from "../hooks/useToast";
 
 const signupFormFields: FieldConfig[] = [
   {
@@ -100,6 +101,7 @@ const signupFormFields: FieldConfig[] = [
 ];
 
 export function SignupForm() {
+  const { launchToast } = useToast();
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const onSubmit = (data: UserSignupPayload) => {
@@ -107,6 +109,10 @@ export function SignupForm() {
       .signup(data)
       .then(() => {
         navigate("/login");
+        launchToast({
+          title: TOAST_MESSAGES.Signup.createdTitle,
+          description: TOAST_MESSAGES.Signup.createdDescription,
+        });
       })
       .catch((error) => {
         setError(

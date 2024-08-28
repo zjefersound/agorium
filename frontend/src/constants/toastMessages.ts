@@ -2,7 +2,10 @@ export const TOAST_MESSAGES = {
   Login: {
     loginErrorTitle: "Error when trying to log in",
   },
-  Signup: {},
+  Signup: {
+    createdTitle: "Account created sucessfuly",
+    createdDescription: "Log in using your credentials",
+  },
   common: {
     unexpectedErrorTitle: "Unexpected error",
     unexpectedErrorDescription:
