@@ -13,6 +13,7 @@ import { Home } from "../pages/Home";
 import { Signup } from "../pages/Signup";
 import { Categories } from "../pages/Categories";
 import { Tags } from "../pages/Tags";
+import { NewPost } from "../pages/NewPost";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
@@ -27,6 +28,10 @@ const routes: { [key: string]: RouteObject[] } = {
     {
       path: "/categories/:id",
       element: <Categories />,
+    },
+    {
+      path: "/new-post",
+      element: <NewPost />,
     },
     {
       path: "/tags",
