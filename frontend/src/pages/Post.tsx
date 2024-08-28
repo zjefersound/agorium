@@ -101,7 +101,7 @@ export function Post() {
               <h2 className="tracking-wider">{post.title}</h2>
             </Heading>
           </div>
-          <Markdown className="leading-7">{post.content}</Markdown>
+          <Markdown className="leading-7 text-sm">{post.content}</Markdown>
           <div className="flex space-x-3">
             <Button color={post.voted ? "primary" : "secondary"} size="sm">
               <MdArrowUpward className="size-5 mr-2" />
@@ -143,7 +143,7 @@ export function Post() {
             <Heading size="xs" asChild>
               <h2 className="tracking-wider">Featured tags</h2>
             </Heading>
-            <ul className="flex flex-wrap space-x-3 mt-6">
+            <ul className="flex flex-wrap gap-x-3 gap-y-2 mt-6">
               {post.tags.map((tag) => (
                 <li key={tag.id}>
                   <Tag>{tag.name}</Tag>

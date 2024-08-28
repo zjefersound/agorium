@@ -45,7 +45,7 @@ export function CommentCard({
           </Text>
         </div>
       )}
-      <Markdown>{comment.content}</Markdown>
+      <Markdown className="text-sm">{comment.content}</Markdown>
       <footer className="flex space-x-3">
         <Button size="sm" color={comment.voted ? "primary" : "secondary"}>
           <MdArrowUpward className="mr-2 size-5" /> {comment.totalUpvotes}
