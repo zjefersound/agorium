@@ -18,6 +18,7 @@ import {
   MdOutlineModeComment,
   MdOutlineShare,
 } from "react-icons/md";
+import { CommentCard } from "../components/shared/CommentCard";
 
 export function Post() {
   const { id } = useParams();
@@ -72,14 +73,15 @@ export function Post() {
               <h2 className="tracking-wider">{post.title}</h2>
             </Heading>
           </div>
-          <Markdown className="font-light">{post.content}</Markdown>
+          <Markdown className="leading-7">{post.content}</Markdown>
           <div className="flex space-x-3">
-            <Button color="secondary" size="sm">
+            <Button color={post.voted ? "primary" : "secondary"} size="sm">
               <MdArrowUpward className="size-5 mr-2" />
-              23
+              {post.totalUpvotes}
             </Button>
             <Button color="secondary" size="sm">
-              <MdOutlineModeComment className="size-5 mr-2" />4
+              <MdOutlineModeComment className="size-5 mr-2" />
+              {post.comments?.length || 0}
             </Button>
             <Button color="secondary" size="sm">
               <MdOutlineShare className="size-5 mr-2" />
@@ -88,6 +90,9 @@ export function Post() {
           </div>
         </Card>
         <Text>{post.comments?.length || 0} comment(s)</Text>
+        {post.comments?.map((comment) => (
+          <CommentCard key={comment.id} comment={comment} />
+        ))}
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard

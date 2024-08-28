@@ -45,8 +45,7 @@ export function PostCard({ post }: PostCardProps) {
           </Text>
           <Text asChild>
             <span className="flex items-center ml-4">
-              <MdArrowUpward className="mr-1 size-4" />{" "}
-              {post.upvotes?.length || 0}
+              <MdArrowUpward className="mr-1 size-4" /> {post.totalUpvotes}
             </span>
           </Text>
         </footer>

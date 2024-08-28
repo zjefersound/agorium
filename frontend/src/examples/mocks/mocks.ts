@@ -75,6 +75,8 @@ export const mockedPosts: Post[] = [
       { id: 1, name: "TypeScript" },
       { id: 2, name: "JavaScript" },
     ],
+    totalUpvotes: 4,
+    voted: false,
     comments: [
       {
         id: 1,
@@ -84,26 +86,20 @@ export const mockedPosts: Post[] = [
         postId: 1,
         userId: 2,
         user: users[1],
-        upvotes: [
-          {
-            id: 1,
-            voteType: "upvote",
-            createdAt: "2024-08-01T12:00:00Z",
-            userId: 1,
-            commentId: 1,
-            user: users[0],
-          },
-        ],
+        totalUpvotes: 4,
+        voted: false,
       },
-    ],
-    upvotes: [
       {
         id: 3,
-        voteType: "upvote",
-        createdAt: "2024-08-01T12:30:00Z",
-        userId: 2,
+        content: "Also you should create a blog about it.",
+        createdAt: "2024-08-01T11:00:00Z",
+        updatedAt: "2024-08-01T11:00:00Z",
         postId: 1,
+        userId: 2,
         user: users[1],
+        parentCommentId: 1,
+        totalUpvotes: 4,
+        voted: true,
       },
     ],
   },
@@ -121,6 +117,8 @@ export const mockedPosts: Post[] = [
       { id: 3, name: "React" },
       { id: 4, name: "Frontend" },
     ],
+    totalUpvotes: 24,
+    voted: false,
     comments: [
       {
         id: 2,
@@ -130,26 +128,8 @@ export const mockedPosts: Post[] = [
         postId: 2,
         userId: 1,
         user: users[0],
-        upvotes: [
-          {
-            id: 4,
-            voteType: "upvote",
-            createdAt: "2024-08-05T14:00:00Z",
-            userId: 2,
-            commentId: 2,
-            user: users[1],
-          },
-        ],
-      },
-    ],
-    upvotes: [
-      {
-        id: 5,
-        voteType: "upvote",
-        createdAt: "2024-08-05T15:00:00Z",
-        userId: 1,
-        postId: 2,
-        user: users[0],
+        totalUpvotes: 6,
+        voted: false,
       },
     ],
   },
@@ -177,16 +157,8 @@ export const mockedPosts: Post[] = [
       { id: 6, name: "Backend" },
     ],
     comments: [],
-    upvotes: [
-      {
-        id: 6,
-        voteType: "upvote",
-        createdAt: "2024-08-11T10:00:00Z",
-        userId: 2,
-        postId: 3,
-        user: users[1],
-      },
-    ],
+    totalUpvotes: 97,
+    voted: false,
   },
   {
     id: 4,
@@ -205,16 +177,8 @@ export const mockedPosts: Post[] = [
       { id: 9, name: "Eventloops" },
     ],
     comments: [],
-    upvotes: [
-      {
-        id: 7,
-        voteType: "upvote",
-        createdAt: "2024-08-15T14:00:00Z",
-        userId: 1,
-        postId: 4,
-        user: users[0],
-      },
-    ],
+    totalUpvotes: 12,
+    voted: true,
   },
 ];
 

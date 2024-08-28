@@ -1,6 +1,5 @@
 import { Post } from "./Post";
 import { User } from "./User";
-import { Vote } from "./Vote";
 
 export type Comment = {
   id: number;
@@ -11,8 +10,10 @@ export type Comment = {
   userId: number;
   parentCommentId?: number;
 
+  voted: boolean;
+  totalUpvotes: number;
+
   parentComment?: Comment;
   post?: Post;
   user?: User;
-  upvotes?: Vote[];
 };
