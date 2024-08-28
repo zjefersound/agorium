@@ -11,12 +11,17 @@ import { Layout } from "../components/layout/Layout";
 import { Login } from "../pages/Login";
 import { Home } from "../pages/Home";
 import { Signup } from "../pages/Signup";
+import { Post } from "../pages/Post";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/post/:id",
+      element: <Post />,
     },
   ],
   publicOnly: [
