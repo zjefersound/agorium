@@ -1,13 +1,15 @@
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { getInitials } from "../../utils/getInitials";
 import clsx from "clsx";
+import { getAvatarURL } from "../../utils/getAvatarURL";
+import { memo } from "react";
 
 interface Props extends AvatarPrimitive.AvatarProps {
   name: string;
   url?: string;
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
 }
-export function Avatar({ name, url, size = "sm", ...rest }: Props) {
+function Avatar({ name, url, size = "sm", ...rest }: Props) {
   return (
     <AvatarPrimitive.Root
       {...rest}
@@ -26,7 +28,7 @@ export function Avatar({ name, url, size = "sm", ...rest }: Props) {
     >
       <AvatarPrimitive.Image
         className="h-full w-full rounded-[inherit] object-cover"
-        src={url}
+        src={url ? getAvatarURL(url) : undefined}
         alt={name}
       />
       <AvatarPrimitive.Fallback
@@ -44,3 +46,5 @@ export function Avatar({ name, url, size = "sm", ...rest }: Props) {
     </AvatarPrimitive.Root>
   );
 }
+const MemoizedAvatar = memo(Avatar);
+export { MemoizedAvatar as Avatar };

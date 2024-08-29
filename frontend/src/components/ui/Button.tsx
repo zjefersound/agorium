@@ -45,7 +45,7 @@ export const Button = forwardRef(
       behavior,
       ...props
     }: ButtonProps,
-    forwardedRef
+    forwardedRef,
   ) => {
     return (
       <button
@@ -61,11 +61,11 @@ export const Button = forwardRef(
               color === "primary",
             "bg-agorium-700 hover:bg-agorium-600 active:bg-agorium-500 text-amber-100 ring-agorium-600 ring-1":
               color === "secondary",
-            "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-agorium-900":
+            "bg-emerald-400 hover:bg-emerald-500 active:bg-emerald-600 text-agorium-900":
               color === "success",
             "bg-red-600 hover:bg-red-700 active:bg-red-800 text-agorium-900":
               color === "danger",
-          }
+          },
         )}
         type={behavior}
         onClick={onClick}
@@ -74,5 +74,5 @@ export const Button = forwardRef(
         {children}
       </button>
     );
-  }
+  },
 );

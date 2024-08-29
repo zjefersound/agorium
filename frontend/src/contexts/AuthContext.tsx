@@ -95,12 +95,25 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
             setAuthenticated(true);
           }
         })
-        .catch(() => {
-          launchToast({
-            title: TOAST_MESSAGES.common.unexpectedErrorTitle,
-            description: TOAST_MESSAGES.common.unexpectedErrorDescription,
-            color: "danger",
-          });
+        .catch((error: AxiosError<IApiErrorResponse>) => {
+          if (error.status === 401) {
+            launchToast({
+              title: TOAST_MESSAGES.common.sessionExpiredTitle,
+              description: TOAST_MESSAGES.common.sessionExpiredDescription,
+              color: "info",
+            });
+          } else {
+            launchToast({
+              title: error.response?.data.error
+                ? TOAST_MESSAGES.common.sessionUnauthorizedTitle
+                : TOAST_MESSAGES.common.unexpectedErrorTitle,
+              description:
+                typeof error.response?.data.error === "string"
+                  ? error.response.data.error
+                  : TOAST_MESSAGES.common.unexpectedErrorDescription,
+              color: "danger",
+            });
+          }
           handleLogout();
         })
         .finally(() => setLoading(false));
