@@ -2,13 +2,11 @@ import {
   headingsPlugin,
   listsPlugin,
   quotePlugin,
-  thematicBreakPlugin,
   markdownShortcutPlugin,
   MDXEditor,
   type MDXEditorProps,
   tablePlugin,
   imagePlugin,
-  frontmatterPlugin,
   codeBlockPlugin,
   linkPlugin,
   linkDialogPlugin,
@@ -22,23 +20,22 @@ import {
   codeMirrorPlugin,
   CreateLink,
   InsertTable,
+  InsertImage,
 } from "@mdxeditor/editor";
 
 export function TextEditor({ ...props }: MDXEditorProps) {
   return (
-    <div className="min-h-[400px] max-h-[700px] overflow-auto bg-agorium-800 rounded-md">
+    <div className="min-h-[400px] max-h-[700px] overflow-auto bg-agorium-800 ring-1 ring-agorium-700 rounded-md">
       <MDXEditor
-        className="dark-theme dark-editor md h-full "
+        className="dark-theme dark-editor md h-full cm-s-dracula"
         plugins={[
           headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
           listsPlugin(),
           linkPlugin(),
           quotePlugin(),
           linkDialogPlugin(),
-          // imagePlugin(),
+          imagePlugin(),
           tablePlugin(),
-          // thematicBreakPlugin(),
-          // frontmatterPlugin(),
           codeBlockPlugin({ defaultCodeBlockLanguage: "js" }),
           codeMirrorPlugin({
             codeBlockLanguages: {
@@ -46,6 +43,8 @@ export function TextEditor({ ...props }: MDXEditorProps) {
               css: "CSS",
               python: "Python",
               java: "Java",
+              c: "C",
+              csharp: "C#",
               ts: "Typescript",
             },
           }),
@@ -60,6 +59,7 @@ export function TextEditor({ ...props }: MDXEditorProps) {
                 <InsertCodeBlock />
                 <CreateLink />
                 <InsertTable />
+                <InsertImage />
               </>
             ),
           }),

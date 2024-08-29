@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import "./index.css";
 import "@mdxeditor/editor/style.css";
 import "./MDXEditor.css";
+import "./CodeMirror.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
