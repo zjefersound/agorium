@@ -37,7 +37,8 @@ export function NewPost() {
       </Content.Sidebar>
       <Content.Main>
         <TextEditor
-          markdown="# Hello world"
+          markdown={`# Your title\nYour content`}
+          className="min-h-[400px] max-sm:max-h-[760px] sm:max-h-[560px] 3xl:max-h-[700px]"
           onChange={(text) => {
             contentRef.current = text;
           }}
@@ -45,7 +46,9 @@ export function NewPost() {
       </Content.Main>
       <Content.Sidebar>
         <Card>Anything</Card>
-        <Button onClick={() => console.log(contentRef.current)}>Show MD</Button>
+        <Button onClick={() => console.log(contentRef.current)}>
+          Log content
+        </Button>
       </Content.Sidebar>
     </Content.Root>
   );

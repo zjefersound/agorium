@@ -21,10 +21,16 @@ import {
   CreateLink,
   InsertTable,
 } from "@mdxeditor/editor";
+import clsx from "clsx";
 
-export function TextEditor({ ...props }: MDXEditorProps) {
+export function TextEditor({ className, ...props }: MDXEditorProps) {
   return (
-    <div className="min-h-[400px] max-h-[700px] overflow-auto bg-agorium-800 ring-1 ring-agorium-700 rounded-md">
+    <div
+      className={clsx(
+        "overflow-auto bg-agorium-800 ring-1 ring-agorium-700 rounded-md",
+        className,
+      )}
+    >
       <MDXEditor
         className="dark-theme dark-editor md h-full cm-s-dracula"
         plugins={[
