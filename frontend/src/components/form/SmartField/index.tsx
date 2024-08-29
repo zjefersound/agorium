@@ -105,35 +105,35 @@ export function SmartField({
         return (
           <div className="space-y-2">
             {(options || config.options)?.map((option, index) => (
-                <div key={index}>
-                  <Checkbox
-                    id={option.value}
-                    name={config.id}
-                    value={option.value}
-                    checked={(value as string[]).includes(option.value)}
-                    borderColor={error ? "danger" : undefined}
-                    required={config.required}
-                    onChange={() => {
-                      const currentValues = value as string[];
-                      const newValues = !(value as string[]).includes(
-                        option.value
-                      )
-                        ? [...currentValues, option.value]
-                        : currentValues.filter((v) => v !== option.value);
-                      onChangeValue(newValues, config.id);
-                    }}
-                    disabled={disabled}
-                  />
-                  <CheckLabel
-                    htmlFor={option.value}
-                    className={clsx({
-                      "opacity-50 cursor-not-allowed": disabled,
-                    })}
-                  >
-                    {option.label}
-                  </CheckLabel>
-                </div>
-              ))}
+              <div key={index}>
+                <Checkbox
+                  id={option.value}
+                  name={config.id}
+                  value={option.value}
+                  checked={(value as string[]).includes(option.value)}
+                  borderColor={error ? "danger" : undefined}
+                  required={config.required}
+                  onChange={() => {
+                    const currentValues = value as string[];
+                    const newValues = !(value as string[]).includes(
+                      option.value,
+                    )
+                      ? [...currentValues, option.value]
+                      : currentValues.filter((v) => v !== option.value);
+                    onChangeValue(newValues, config.id);
+                  }}
+                  disabled={disabled}
+                />
+                <CheckLabel
+                  htmlFor={option.value}
+                  className={clsx({
+                    "opacity-50 cursor-not-allowed": disabled,
+                  })}
+                >
+                  {option.label}
+                </CheckLabel>
+              </div>
+            ))}
           </div>
         );
       case "radio":
@@ -148,10 +148,10 @@ export function SmartField({
             borderColor={error ? "danger" : undefined}
           >
             {(options || config.options)?.map((option) => (
-                <RadioGroup.Item key={option.value} value={option.value}>
-                  {option.label}
-                </RadioGroup.Item>
-              ))}
+              <RadioGroup.Item key={option.value} value={option.value}>
+                {option.label}
+              </RadioGroup.Item>
+            ))}
           </RadioGroup.Root>
         );
       case "checkbox":
@@ -186,22 +186,6 @@ export function SmartField({
               width={"width" in config ? config.width : undefined}
               borderColor={error ? "danger" : undefined}
             >
-              <FileInput.Input
-                name={config.id}
-                placeholder={config.placeholder}
-                required={config.required}
-                disabled={disabled}
-                files={value ? ([value] as UploadedFile[]) : []}
-                onFilesChange={(files) => onChangeValue(files[0], config.id)}
-                allowedFileTypes={
-                  "allowedFileTypes" in config
-                    ? config.allowedFileTypes
-                    : undefined
-                }
-                maxFileSize={
-                  "maxFileSize" in config ? config.maxFileSize : undefined
-                }
-              />
               <FileInput.Preview
                 disabled={disabled}
                 visible={Boolean(value)}
@@ -209,6 +193,24 @@ export function SmartField({
               >
                 <FileInput.FilePreview file={value as UploadedFile} />
               </FileInput.Preview>
+              {!value && (
+                <FileInput.Input
+                  name={config.id}
+                  placeholder={config.placeholder}
+                  required={config.required}
+                  disabled={disabled}
+                  files={value ? ([value] as UploadedFile[]) : []}
+                  onFilesChange={(files) => onChangeValue(files[0], config.id)}
+                  allowedFileTypes={
+                    "allowedFileTypes" in config
+                      ? config.allowedFileTypes
+                      : undefined
+                  }
+                  maxFileSize={
+                    "maxFileSize" in config ? config.maxFileSize : undefined
+                  }
+                />
+              )}
             </FileInput.Dropzone>
           </FileInput.Root>
         );
