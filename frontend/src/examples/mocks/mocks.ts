@@ -87,7 +87,7 @@ export const mockedPosts: Post[] = [
     ],
     totalUpvotes: 4,
     voted: false,
-    acceptedCommentId: 1,
+    favoriteCommentId: 1,
     comments: [
       {
         id: 1,

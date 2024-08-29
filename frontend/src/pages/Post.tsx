@@ -143,7 +143,7 @@ export function Post() {
         {post.comments?.map((comment) => (
           <CommentCard
             key={comment.id}
-            accepted={comment.id === post.acceptedCommentId}
+            favorite={comment.id === post.favoriteCommentId}
             comment={comment}
             isPostAuthor={isAuthor}
           />

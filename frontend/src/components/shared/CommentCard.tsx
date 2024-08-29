@@ -14,12 +14,12 @@ import { useAuth } from "../../hooks/useAuth";
 
 interface CommentCardProps {
   comment: Comment;
-  accepted?: boolean;
+  favorite?: boolean;
   isPostAuthor?: boolean;
 }
 export function CommentCard({
   comment,
-  accepted,
+  favorite,
   isPostAuthor,
 }: CommentCardProps) {
   const { user } = useAuth();
@@ -53,18 +53,18 @@ export function CommentCard({
         <Button size="sm" color="secondary">
           <MdOutlineReply className="mr-2 size-5" /> Reply
         </Button>
-        {!isPostAuthor && accepted && (
+        {!isPostAuthor && favorite && (
           <span className="text-xs leading-3 text-emerald-400 flex items-center">
             <MdCheckCircleOutline className="size-6 mr-2 shrink-0" />
             <span className="hidden min-[360px]:inline">
-              Accepted by the author
+              Favorite from the author
             </span>
           </span>
         )}
         {!isAuthor && isPostAuthor && (
           <Button
             size="sm"
-            color={accepted ? "success" : "secondary"}
+            color={favorite ? "success" : "secondary"}
             className="ml-auto"
           >
             <MdCheckCircleOutline className="mr-2 size-5" /> Accept answer

@@ -15,7 +15,7 @@ export type Post = {
   voted: boolean;
   totalUpvotes: number;
 
-  acceptedCommentId?: number;
+  favoriteCommentId?: number;
 
   tags?: Tag[];
   category: Category;
