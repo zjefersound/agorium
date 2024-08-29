@@ -20,7 +20,6 @@ import {
   codeMirrorPlugin,
   CreateLink,
   InsertTable,
-  InsertImage,
 } from "@mdxeditor/editor";
 
 export function TextEditor({ ...props }: MDXEditorProps) {
@@ -59,7 +58,6 @@ export function TextEditor({ ...props }: MDXEditorProps) {
                 <InsertCodeBlock />
                 <CreateLink />
                 <InsertTable />
-                <InsertImage />
               </>
             ),
           }),
