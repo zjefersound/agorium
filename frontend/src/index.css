@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 :root {
+  --amber-50: #fffbeb;
+  --amber-100: #fef3c7;
+  --amber-200: #fde68a;
+
   --agorium-50: #f8fbfc;
   --agorium-100: #f1f6f9;
   --agorium-200: #e2ebf0;
@@ -104,10 +108,33 @@
 }
 
 .md ul {
-  padding-left: 24px;
+  padding-left: 20px;
   list-style: circle;
 }
+.md ul li::after {
+  top: 7px;
+}
+.md ul li::before {
+  top: 4px;
+}
 .md ol {
-  padding-left: 24px;
+  padding-left: 20px;
   list-style: decimal;
+}
+
+.md blockquote {
+  border-left: 0.25rem solid var(--agorium-600);
+  margin-left: 0.5rem;
+  padding-left: 0.75rem;
+}
+
+.md a {
+  color: var(--amber-100);
+  text-decoration: underline;
+}
+
+code,
+code * {
+  background: var(--agorium-700) !important;
+  border-radius: 4px;
 }

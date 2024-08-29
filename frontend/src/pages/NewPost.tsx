@@ -1,10 +1,13 @@
+import { useRef } from "react";
 import { TextEditor } from "../components/form/TextEditor";
 import { Content } from "../components/layout/Content";
 import { NavigationCard } from "../components/shared/NavigationCard";
 import { PopularItemCard } from "../components/shared/PopularItemCard";
 import { Card } from "../components/ui/Card";
+import { Button } from "../components/ui/Button";
 
 export function NewPost() {
+  const contentRef = useRef("");
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -33,12 +36,16 @@ export function NewPost() {
         />
       </Content.Sidebar>
       <Content.Main>
-        <div className="min-h-[500px] bg-agorium-800 rounded-md overflow-hidden">
-          <TextEditor markdown="# Hello bitches" />
-        </div>
+        <TextEditor
+          markdown="# Hello world"
+          onChange={(text) => {
+            contentRef.current = text;
+          }}
+        />
       </Content.Main>
       <Content.Sidebar>
         <Card>Anything</Card>
+        <Button onClick={() => console.log(contentRef.current)}>Show MD</Button>
       </Content.Sidebar>
     </Content.Root>
   );

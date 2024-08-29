@@ -17,36 +17,56 @@ import {
   BoldItalicUnderlineToggles,
   BlockTypeSelect,
   ListsToggle,
+  InsertCodeBlock,
+  CodeToggle,
+  codeMirrorPlugin,
+  CreateLink,
+  InsertTable,
 } from "@mdxeditor/editor";
 
 export function TextEditor({ ...props }: MDXEditorProps) {
   return (
-    <MDXEditor
-      className="dark-theme dark-editor md"
-      plugins={[
-        headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
-        markdownShortcutPlugin(),
-        listsPlugin(),
-        // quotePlugin(),
-        // linkPlugin(),
-        // linkDialogPlugin(),
-        // imagePlugin(),
-        // tablePlugin(),
-        // thematicBreakPlugin(),
-        // frontmatterPlugin(),
-        // codeBlockPlugin({ defaultCodeBlockLanguage: "txt" }),
-        toolbarPlugin({
-          toolbarContents: () => (
-            <>
-              <UndoRedo />
-              <BlockTypeSelect />
-              <BoldItalicUnderlineToggles />
-              <ListsToggle />
-            </>
-          ),
-        }),
-      ]}
-      {...props}
-    />
+    <div className="min-h-[400px] max-h-[700px] overflow-auto bg-agorium-800 rounded-md">
+      <MDXEditor
+        className="dark-theme dark-editor md h-full "
+        plugins={[
+          headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
+          listsPlugin(),
+          linkPlugin(),
+          quotePlugin(),
+          linkDialogPlugin(),
+          // imagePlugin(),
+          tablePlugin(),
+          // thematicBreakPlugin(),
+          // frontmatterPlugin(),
+          codeBlockPlugin({ defaultCodeBlockLanguage: "js" }),
+          codeMirrorPlugin({
+            codeBlockLanguages: {
+              js: "JavaScript",
+              css: "CSS",
+              python: "Python",
+              java: "Java",
+              ts: "Typescript",
+            },
+          }),
+          toolbarPlugin({
+            toolbarContents: () => (
+              <>
+                <UndoRedo />
+                <BlockTypeSelect />
+                <BoldItalicUnderlineToggles />
+                <ListsToggle />
+                <CodeToggle />
+                <InsertCodeBlock />
+                <CreateLink />
+                <InsertTable />
+              </>
+            ),
+          }),
+          markdownShortcutPlugin(),
+        ]}
+        {...props}
+      />
+    </div>
   );
 }
