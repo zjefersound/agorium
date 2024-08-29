@@ -13,6 +13,7 @@ import { Home } from "../pages/Home";
 import { Signup } from "../pages/Signup";
 import { Categories } from "../pages/Categories";
 import { Tags } from "../pages/Tags";
+import { Search } from "../pages/Search";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
@@ -35,6 +36,10 @@ const routes: { [key: string]: RouteObject[] } = {
     {
       path: "/tags/:id",
       element: <Tags />,
+    },
+    {
+      path: "/search",
+      element: <Search />,
     },
   ],
   publicOnly: [
