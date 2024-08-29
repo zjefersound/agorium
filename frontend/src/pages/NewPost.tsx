@@ -1,48 +1,8 @@
-import { TextInput } from "../components/form/TextInput";
+import { TextEditor } from "../components/form/TextEditor";
 import { Content } from "../components/layout/Content";
 import { NavigationCard } from "../components/shared/NavigationCard";
 import { PopularItemCard } from "../components/shared/PopularItemCard";
 import { Card } from "../components/ui/Card";
-import {
-  MDXEditor,
-  ChangeCodeMirrorLanguage,
-  ConditionalContents,
-  InsertCodeBlock,
-  InsertSandpack,
-  SandpackConfig,
-  ShowSandpackInfo,
-  codeBlockPlugin,
-  codeMirrorPlugin,
-  sandpackPlugin,
-  toolbarPlugin,
-} from "@mdxeditor/editor";
-
-const defaultSnippetContent = `
-export default function App() {
-return (
-<div className="App">
-<h1>Hello CodeSandbox</h1>
-<h2>Start editing to see some magic happen!</h2>
-</div>
-);
-}
-`.trim();
-
-const simpleSandpackConfig: SandpackConfig = {
-  defaultPreset: "react",
-  presets: [
-    {
-      label: "React",
-      name: "react",
-      meta: "live react",
-      sandpackTemplate: "react",
-      sandpackTheme: "light",
-      snippetFileName: "/App.js",
-      snippetLanguage: "jsx",
-      initialSnippetContent: defaultSnippetContent,
-    },
-  ],
-};
 
 export function NewPost() {
   return (
@@ -73,43 +33,9 @@ export function NewPost() {
         />
       </Content.Sidebar>
       <Content.Main>
-        <TextInput.Root className="h-[500px] ">
-          <MDXEditor
-            className="dark-theme dark-editor"
-            markdown="hello world"
-            plugins={[
-              codeBlockPlugin({ defaultCodeBlockLanguage: "js" }),
-              sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),
-              codeMirrorPlugin({
-                codeBlockLanguages: { js: "JavaScript", css: "CSS" },
-              }),
-              toolbarPlugin({
-                toolbarContents: () => (
-                  <ConditionalContents
-                    options={[
-                      {
-                        when: (editor) => editor?.editorType === "codeblock",
-                        contents: () => <ChangeCodeMirrorLanguage />,
-                      },
-                      {
-                        when: (editor) => editor?.editorType === "sandpack",
-                        contents: () => <ShowSandpackInfo />,
-                      },
-                      {
-                        fallback: () => (
-                          <>
-                            <InsertCodeBlock />
-                            <InsertSandpack />
-                          </>
-                        ),
-                      },
-                    ]}
-                  />
-                ),
-              }),
-            ]}
-          />
-        </TextInput.Root>
+        <div className="min-h-[500px] bg-agorium-800 rounded-md overflow-hidden">
+          <TextEditor markdown="# Hello bitches" />
+        </div>
       </Content.Main>
       <Content.Sidebar>
         <Card>Anything</Card>

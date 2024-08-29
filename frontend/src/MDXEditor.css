@@ -1,0 +1,48 @@
+.dark-editor {
+  /* --accentBase: red;
+  --accentBgSubtle: yellow;
+  --accentBg: red;
+  --accentBgHover: yellow;
+  --accentBgActive: var(--tomato-5);
+  --accentLine: var(--tomato-6);
+  --accentBorder: var(--tomato-7);
+  --accentBorderHover: var(--tomato-8);
+  --accentSolid: var(--tomato-9);
+  --accentSolidHover: var(--tomato-10);
+  --accentText: var(--agorium-50);
+  --accentTextContrast: var(--tomato-12);
+
+  --baseBase: var(--mauve-1);
+  --baseBgSubtle: var(--mauve-2); */
+  --baseBg: var(--agorium-800);
+  /* --baseBgHover: var(--agorium-700); 
+  --baseBgActive: var(--agorium-700);
+  --baseLine: var(--mauve-6);
+  --baseBorder: var(--mauve-7);
+  --baseBorderHover: var(--mauve-8);
+  --baseSolid: var(--mauve-9);
+  --baseSolidHover: var(--mauve-10);
+  --baseText: var(--agorium-50);
+  --baseTextContrast: var(--agorium-50);
+
+  --admonitionTipBg: var(--cyan4);
+  --admonitionTipBorder: var(--cyan8);
+
+  --admonitionInfoBg: var(--grass4);
+  --admonitionInfoBorder: var(--grass8);
+
+  --admonitionCautionBg: var(--amber4);
+  --admonitionCautionBorder: var(--amber8);
+
+  --admonitionDangerBg: var(--red4);
+  --admonitionDangerBorder: var(--red8);
+
+  --admonitionNoteBg: var(--mauve-4);
+  --admonitionNoteBorder: var(--mauve-8); */
+
+  font-family: "Inter", -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "Courier New", monospace;
+  --basePageBg: var(--agorium-900);
+  color: var(--agorium-50);
+  background: var(--agorium-800);
+}
