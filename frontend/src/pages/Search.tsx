@@ -11,8 +11,6 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
-/* <div>Incluir mensagem da pesquisa</div> */
-
 export function Search() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
