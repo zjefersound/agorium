@@ -45,12 +45,16 @@ export function TextEditor({ className, ...props }: MDXEditorProps) {
           codeMirrorPlugin({
             codeBlockLanguages: {
               js: "JavaScript",
+              ts: "Typescript",
               css: "CSS",
+              html: "HTML",
+              php: "PHP",
               python: "Python",
               java: "Java",
               c: "C",
               csharp: "C#",
-              ts: "Typescript",
+              bash: "Bash",
+              shell: "Shell",
             },
           }),
           toolbarPlugin({
