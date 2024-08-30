@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\DI;
 
-use App\Repository\UserRepository;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
@@ -27,7 +26,6 @@ final readonly class Doctrine implements ServiceProvider
             $connection = DriverManager::getConnection($settings['doctrine']['connection']);
 
             $em = new EntityManager($connection, $config);
-            $em->getConfiguration()->setDefaultRepositoryClassName(UserRepository::class);
 
             return $em;
         });

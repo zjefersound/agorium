@@ -1,6 +1,6 @@
 <?php
 
-use App\Controller\UserController;
+use App\Controller\{UserController, CategoryController, PostController};
 use App\Middleware\AuthMiddleware;
 use Nyholm\Psr7\Response;
 use Nyholm\Psr7\Stream;
@@ -12,9 +12,18 @@ return function (App $app) {
     $app->post('/signup', UserController::class . ':signup');
     $app->post('/login', UserController::class . ':login');
     $app->get('/user/avatar/{id}', UserController::class . ':getUserAvatar');
-    
+
     $app->group('user', function () use ($app) {
         $app->get('/user/me', UserController::class . ':getUser');
+    })->add(AuthMiddleware::class);
+
+    $app->group('posts', function () use ($app) {
+        $app->post('/posts', PostController::class . ':createPost');
+    })->add(AuthMiddleware::class);
+
+    $app->group('categories', function () use ($app) {
+        $app->post('/category', CategoryController::class . ':saveCategory');
+        $app->put('/category/{id}', CategoryController::class . ':saveCategory');
     })->add(AuthMiddleware::class);
 
     $app->get('/swagger', function ($req, $res) {

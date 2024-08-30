@@ -101,6 +101,123 @@ paths:
       tags:
         - user
 
+  /posts:
+    post:
+      summary: "Create a new post"
+      description: "Creates a new post with the provided details. If the category or tags do not exist, they will be created."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "My New Post"
+                content:
+                  type: string
+                  example: "This is the content of the post."
+                categoryId:
+                  type: int
+                  example: 1
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Tech", "Innovation"]
+      responses:
+        "200":
+          description: User post saved
+        "401":
+          description: Unauthorized
+      tags:
+        - posts
+
+  /posts/{postId}:
+    put:
+      summary: "Update an existing post"
+      description: "Updates the details of an existing post. If the category or tags do not exist, they will be created."
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Updated Post Title"
+                content:
+                  type: string
+                  example: "Updated content of the post."
+                category:
+                  type: string
+                  example: "Science"
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Science", "Discovery"]
+      tags:
+        - posts
+
+  /category:
+    post:
+      summary: "Add a category"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoryName:
+                  type: string
+                  example: "Science"
+      responses:
+        "200":
+          description: User category saved
+        "401":
+          description: Unauthorized
+      tags:
+        - category
+
+  /category/{categoryId}:
+    put:
+      summary: "Update a category"
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoryName:
+                  type: string
+                  example: "Science"
+      responses:
+        "200":
+          description: User category saved
+        "401":
+          description: Unauthorized
+      tags:
+        - category
+
 components:
   securitySchemes:
     BearerAuth:
