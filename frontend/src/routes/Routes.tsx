@@ -11,6 +11,7 @@ import { Layout } from "../components/layout/Layout";
 import { Login } from "../pages/Login";
 import { Home } from "../pages/Home";
 import { Signup } from "../pages/Signup";
+import { Post } from "../pages/Post";
 import { Categories } from "../pages/Categories";
 import { Tags } from "../pages/Tags";
 import { NewPost } from "../pages/NewPost";
@@ -32,6 +33,10 @@ const routes: { [key: string]: RouteObject[] } = {
     {
       path: "/new-post",
       element: <NewPost />,
+    },
+    {
+      path: "/post/:id",
+      element: <Post />,
     },
     {
       path: "/tags",
