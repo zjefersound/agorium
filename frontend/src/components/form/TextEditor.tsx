@@ -32,7 +32,7 @@ export function TextEditor({ className, ...props }: MDXEditorProps) {
       )}
     >
       <MDXEditor
-        className="dark-theme dark-editor md h-full cm-s-dracula"
+        className="markdown dark-theme dark-editor h-full cm-s-dracula"
         plugins={[
           headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
           listsPlugin(),

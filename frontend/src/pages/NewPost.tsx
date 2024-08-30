@@ -1,13 +1,15 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { TextEditor } from "../components/form/TextEditor";
 import { Content } from "../components/layout/Content";
 import { NavigationCard } from "../components/shared/NavigationCard";
 import { PopularItemCard } from "../components/shared/PopularItemCard";
 import { Card } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
+import { MarkdownPreview } from "../components/ui/MarkdownPreview";
 
 export function NewPost() {
   const contentRef = useRef("");
+  const [content, setContent] = useState("");
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -43,10 +45,18 @@ export function NewPost() {
             contentRef.current = text;
           }}
         />
+        <Card>
+          <MarkdownPreview>{content}</MarkdownPreview>
+        </Card>
       </Content.Main>
       <Content.Sidebar>
         <Card>Anything</Card>
-        <Button onClick={() => console.log(contentRef.current)}>
+        <Button
+          onClick={() => {
+            console.log({ markdown: contentRef.current });
+            setContent(contentRef.current);
+          }}
+        >
           Log content
         </Button>
       </Content.Sidebar>

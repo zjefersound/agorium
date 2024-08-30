@@ -7,10 +7,10 @@ import { Comment } from "../../models/Comment";
 import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
 import { AuthorOverview } from "./AuthorOverview";
-import Markdown from "react-markdown";
 import { Text } from "../ui/Text";
 import { useMemo } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { MarkdownPreview } from "../ui/MarkdownPreview";
 
 interface CommentCardProps {
   comment: Comment;
@@ -45,7 +45,7 @@ export function CommentCard({
           </Text>
         </div>
       )}
-      <Markdown className="text-sm">{comment.content}</Markdown>
+      <MarkdownPreview>{comment.content}</MarkdownPreview>
       <footer className="flex space-x-3">
         <Button size="sm" color={comment.voted ? "primary" : "secondary"}>
           <MdArrowUpward className="mr-2 size-5" /> {comment.totalUpvotes}
