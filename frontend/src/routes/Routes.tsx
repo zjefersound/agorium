@@ -14,6 +14,7 @@ import { Signup } from "../pages/Signup";
 import { Post } from "../pages/Post";
 import { Categories } from "../pages/Categories";
 import { Tags } from "../pages/Tags";
+import { NewPost } from "../pages/NewPost";
 import { Search } from "../pages/Search";
 
 const routes: { [key: string]: RouteObject[] } = {
@@ -29,6 +30,10 @@ const routes: { [key: string]: RouteObject[] } = {
     {
       path: "/categories/:id",
       element: <Categories />,
+    },
+    {
+      path: "/new-post",
+      element: <NewPost />,
     },
     {
       path: "/post/:id",

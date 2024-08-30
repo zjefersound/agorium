@@ -11,7 +11,6 @@ import { formatDistance } from "date-fns";
 import { Text } from "../components/ui/Text";
 import { Tag } from "../components/ui/Tag";
 import { Heading } from "../components/ui/Heading";
-import Markdown from "react-markdown";
 import { Button } from "../components/ui/Button";
 import {
   MdArrowUpward,
@@ -25,6 +24,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useCallback, useMemo } from "react";
 import { useToast } from "../hooks/useToast";
 import { Empty } from "../components/ui/Empty";
+import { MarkdownPreview } from "../components/ui/MarkdownPreview";
 
 export function Post() {
   const { launchToast } = useToast();
@@ -109,7 +109,7 @@ export function Post() {
               ))}
             </ul>
           </div>
-          <Markdown className="leading-7 text-sm">{post.content}</Markdown>
+          <MarkdownPreview>{post.content}</MarkdownPreview>
           <div className="flex space-x-3">
             <Button color={post.voted ? "primary" : "secondary"} size="sm">
               <MdArrowUpward className="size-5 mr-2" />
