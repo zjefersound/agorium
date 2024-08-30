@@ -28,22 +28,6 @@
   --baseTextContrast: var(--agorium-50);
   --baseText: var(--agorium-400);
 
-  /*
-  --admonitionTipBg: yellow;
-  --admonitionTipBorder: yellow;
-
-  --admonitionInfoBg: var(--grass4);
-  --admonitionInfoBorder: var(--grass8);
-
-  --admonitionCautionBg: var(--amber4);
-  --admonitionCautionBorder: var(--amber8);
-
-  --admonitionDangerBg: var(--red4);
-  --admonitionDangerBorder: var(--red8);
-
-  --admonitionNoteBg: var(--mauve-4);
-  --admonitionNoteBorder: var(--mauve-8); */
-
   font-family: "Inter", -apple-system, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "Courier New", monospace;
   --basePageBg: var(--agorium-900);
@@ -105,4 +89,8 @@
 
 .dark-editor form button[type="reset"]:active {
   background: var(--agorium-500);
+}
+
+.mdxeditor-popup-container {
+  z-index: 30;
 }
