@@ -59,7 +59,7 @@ function FileInputDropzone({
           "[&>*>*]:border-red-600": borderColor === "danger",
           "[&>*>*]:border-emerald-600": borderColor === "success",
         },
-        className
+        className,
       )}
     >
       {children}
@@ -124,7 +124,7 @@ function FileInputInput({
     const validatedFiles = fileArray.filter((file) => {
       if (maxFileSize && file.size > maxFileSize) {
         console.error(
-          `File ${file.name} exceeds the maximum size of ${maxFileSize} bytes`
+          `File ${file.name} exceeds the maximum size of ${maxFileSize} bytes`,
         );
         return false;
       }
@@ -151,7 +151,7 @@ function FileInputInput({
             "cursor-not-allowed": disabled,
             "border-agorium-400 bg-agorium-600": isDragActive,
             "border-agorium-700 bg-agorium-700": !isDragActive,
-          }
+          },
         )}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
@@ -165,7 +165,7 @@ function FileInputInput({
           multiple
           className={clsx(
             "w-full h-full left-0 top-0 absolute flex -z-10 outline-0",
-            { "opacity-0": disabled }
+            { "opacity-0": disabled },
           )}
           onChange={handleInputChange}
           aria-describedby="selected-files"
@@ -221,7 +221,7 @@ function FileInputList({
             type="button"
             className={clsx(
               "size-6 rounded-full flex items-center justify-center",
-              "text-red-600 hover:bg-red-100 active:text-red-700"
+              "text-red-600 hover:bg-red-100 active:text-red-700",
             )}
             aria-label="Remove file"
             onClick={() => handleFileRemove(file)}
@@ -255,11 +255,12 @@ function FileInputPreview({
         {children}
       </Slot>
       <button
+        type="button"
         disabled={disabled}
         onClick={onRemove}
         className={clsx(
           "h-full w-full absolute left-0 top-0 flex items-center justify-center opacity-0 hover:opacity-100 z-10",
-          "bg-[#0006] text-agorium-900"
+          "bg-[#0006] text-agorium-900",
         )}
       >
         <MdOutlineDeleteOutline className="size-6" />
@@ -314,7 +315,7 @@ const FileInputFilePreview = forwardRef(
         <span className="text-sm">{file.name}</span>
       </div>
     );
-  }
+  },
 );
 FileInputFilePreview.displayName = "FileInput.FilePreview";
 
