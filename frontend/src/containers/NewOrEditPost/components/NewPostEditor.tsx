@@ -14,13 +14,14 @@ export function NewPostEditor() {
           <h2 className="text-amber-100 ml-3">New post</h2>
         </Heading>
       </div>
+      <FieldError message={errors["content"]} />
+
       <TextEditor
         markdown={initialContent}
         placeholder="Ask a question, share your thoughts, bring interesting discussions..."
         className="flex flex-col flex-1"
         onChange={handleChangeContent}
       />
-      <FieldError message={errors["content"]} />
     </div>
   );
 }

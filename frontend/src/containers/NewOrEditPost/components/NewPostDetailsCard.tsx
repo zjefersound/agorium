@@ -7,6 +7,7 @@ import { useNewPost } from "../hooks/useNewPost";
 import { Button } from "../../../components/ui/Button";
 import { MdOutlineSend } from "react-icons/md";
 import { format } from "date-fns";
+import { Loading } from "../../../components/ui/Loading";
 const MemoizedSmartField = memo(SmartField);
 
 export function NewPostDetailsCard() {
@@ -14,6 +15,7 @@ export function NewPostDetailsCard() {
     data,
     errors,
     disabled,
+    loading,
     visibleFields,
     handleSubmit,
     handleChangeValue,
@@ -38,7 +40,8 @@ export function NewPostDetailsCard() {
             error={errors[field.id]}
           />
         ))}
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" disabled={disabled}>
+          {loading && <Loading className="mr-2" size="sm" />}
           <MdOutlineSend className="size-6 mr-2" /> Publish post
         </Button>
         <Text>Draft saved at {format(draftSavedAt, "hh:mm")}</Text>
