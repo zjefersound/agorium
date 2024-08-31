@@ -6,52 +6,36 @@ import { Card } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
 import { MdOutlineSend } from "react-icons/md";
 import { SmartField } from "../components/form/SmartField";
-import { FieldConfig } from "../components/form/SmartField/types";
 import { useSmartForm } from "../components/form/SmartForm/hooks/useSmartForm";
-
-const postFields: FieldConfig[] = [
-  {
-    id: "content",
-    type: "text",
-    label: "Content",
-    placeholder: "Enter the content",
-    required: true,
-  },
-  {
-    id: "title",
-    type: "text",
-    label: "Add a title",
-    placeholder: "Your creative title",
-    required: true,
-  },
-  {
-    id: "categoryId",
-    type: "select",
-    label: "Add a category",
-    placeholder: "Select the category",
-    required: true,
-    options: [
-      { value: "2", label: "Issue" },
-      { value: "3", label: "Discussion" },
-      { value: "4", label: "Feedback" },
-      { value: "5", label: "Debate" },
-      { value: "6", label: "Tutorials" },
-    ],
-  },
-  {
-    id: "tagIds",
-    type: "text",
-    label: "Add tags",
-    placeholder: "Write your tags here. #math #something",
-    required: false,
-  },
-];
+import { Heading } from "../components/ui/Heading";
+import { Text } from "../components/ui/Text";
+import { memo, useCallback, useMemo } from "react";
+import { FieldError } from "../components/form/FieldError";
+import { postFields } from "../containers/NewOrEditPost/constants/postFields";
+import { GoBack } from "../components/ui/GoBack";
+const MemoizedSmartField = memo(SmartField);
 
 export function NewPost() {
-  const formState = useSmartForm({
+  const {
+    data,
+    handleChangeValue,
+    disabled,
+    errors,
+    serializedFields,
+    handleSubmit,
+  } = useSmartForm({
     fields: postFields,
-    onSubmit: async () => {},
+    onSubmit: async (data) => {
+      console.log(data);
+    },
   });
+  const handleChangeContent = useCallback((text: string) => {
+    handleChangeValue(text, "content");
+  }, []);
+  const visibleFields = useMemo(
+    () => serializedFields.filter((field) => field.id !== "content"),
+    [],
+  );
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -80,31 +64,46 @@ export function NewPost() {
         />
       </Content.Sidebar>
       <Content.Main>
-        <TextEditor
-          markdown={`# Your title\nYour content`}
-          className="min-h-[400px] max-sm:max-h-[760px] sm:max-h-[560px] 3xl:max-h-[700px]"
-          onChange={(text: string) => {
-            formState.handleChangeValue(text, "content");
-          }}
-        />
+        <div className="flex flex-col space-y-6 h-[calc(var(--content-height)-var(--main-content-padding-x)-var(--main-content-padding-x))]">
+          <div className="flex items-center">
+            <GoBack to="/" hideText />
+            <Heading size="lg" asChild>
+              <h2 className="text-amber-100 ml-3">New post</h2>
+            </Heading>
+          </div>
+          <TextEditor
+            markdown={``}
+            placeholder="Ask a question, share your thoughts, bring interesting discussions..."
+            className="flex flex-col flex-1"
+            onChange={handleChangeContent}
+          />
+          <FieldError message={errors["content"]} />
+        </div>
       </Content.Main>
       <Content.Sidebar>
-        <Card>
-          <form className="space-y-6">
-            {postFields.map((field) => (
-              <SmartField
+        <Card className="flex flex-col">
+          <Heading size="xs">Post details</Heading>
+          <Text asChild>
+            <span className="mt-2">
+              This information helps others understand the context of your
+              content.
+            </span>
+          </Text>
+          <form className="space-y-6 mt-6" onSubmit={handleSubmit}>
+            {visibleFields.map((field) => (
+              <MemoizedSmartField
                 key={field.id}
                 config={field}
-                value={formState.data[field.id]}
-                onChangeValue={formState.handleChangeValue}
+                value={data[field.id]}
+                onChangeValue={handleChangeValue}
+                disabled={disabled}
+                error={errors[field.id]}
               />
             ))}
-            <Button className="w-full">
-              <MdOutlineSend className="size-6 mr-2" /> Publish
+            <Button className="w-full" type="submit">
+              <MdOutlineSend className="size-6 mr-2" /> Publish post
             </Button>
-            <Button className="w-full" color="secondary">
-              Save as draft
-            </Button>
+            <Text>Draft saved at 12:55 am</Text>
           </form>
         </Card>
       </Content.Sidebar>
