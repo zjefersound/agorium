@@ -66,9 +66,7 @@ export const NewPostProvider = ({ children }: NewPostProviderProps) => {
 
   const handleChangeContent = useCallback(
     debounce((text: string) => {
-      if (text) {
-        handleChangeValue(text, "content");
-      }
+      handleChangeValue(text, "content");
     }, 1000),
     [],
   );
