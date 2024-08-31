@@ -23,7 +23,7 @@ export const postFields: FieldConfig[] = [
     ],
   },
   {
-    id: "tagIds",
+    id: "tags",
     type: "text",
     label: "Add tags",
     placeholder: "Write your tags here. #math #something",

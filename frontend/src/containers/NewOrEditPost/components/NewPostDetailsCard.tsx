@@ -6,6 +6,7 @@ import { Text } from "../../../components/ui/Text";
 import { useNewPost } from "../hooks/useNewPost";
 import { Button } from "../../../components/ui/Button";
 import { MdOutlineSend } from "react-icons/md";
+import { format } from "date-fns";
 const MemoizedSmartField = memo(SmartField);
 
 export function NewPostDetailsCard() {
@@ -16,6 +17,7 @@ export function NewPostDetailsCard() {
     visibleFields,
     handleSubmit,
     handleChangeValue,
+    draftSavedAt,
   } = useNewPost();
   return (
     <Card className="flex flex-col">
@@ -39,7 +41,7 @@ export function NewPostDetailsCard() {
         <Button className="w-full" type="submit">
           <MdOutlineSend className="size-6 mr-2" /> Publish post
         </Button>
-        <Text>Draft saved at 12:55 am</Text>
+        <Text>Draft saved at {format(draftSavedAt, "hh:mm")}</Text>
       </form>
     </Card>
   );

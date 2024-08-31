@@ -1,4 +1,11 @@
-import { createContext, FormEvent, useCallback, useMemo } from "react";
+import {
+  createContext,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useSmartForm } from "../../../components/form/SmartForm/hooks/useSmartForm";
 import { postFields } from "../constants/postFields";
 import {
@@ -7,6 +14,8 @@ import {
 } from "../../../components/form/SmartForm/types";
 import { FormErrors } from "../../../models/IValidationReturn";
 import { FieldConfig } from "../../../components/form/SmartField/types";
+import { debounce } from "lodash";
+import { useNavigate } from "react-router-dom";
 
 interface NewPostProviderProps {
   children: React.ReactNode;
@@ -21,6 +30,8 @@ export interface NewPostContextType {
   loading: boolean;
   visibleFields: FieldConfig[];
   handleChangeContent: (value: string) => void;
+  initialContent: string;
+  draftSavedAt: Date;
 }
 
 export const NewPostContext = createContext<NewPostContextType>(
@@ -28,6 +39,17 @@ export const NewPostContext = createContext<NewPostContextType>(
 );
 
 export const NewPostProvider = ({ children }: NewPostProviderProps) => {
+  const storedPostDraft = localStorage.getItem("postDraft");
+  const draft = storedPostDraft ? JSON.parse(storedPostDraft) : undefined;
+  const navigate = useNavigate();
+
+  const [draftSavedAt, setDraftSavedAt] = useState(new Date());
+  const handleCreatePost = async (data: FormFields) => {
+    console.log(data);
+    localStorage.removeItem("postDraft");
+    navigate("/");
+  };
+
   const {
     data,
     handleChangeValue,
@@ -37,20 +59,31 @@ export const NewPostProvider = ({ children }: NewPostProviderProps) => {
     handleSubmit,
     loading,
   } = useSmartForm({
+    dataValue: draft,
     fields: postFields,
-    onSubmit: async (data) => {
-      console.log(data);
-    },
+    onSubmit: handleCreatePost,
   });
 
-  const handleChangeContent = useCallback((text: string) => {
-    handleChangeValue(text, "content");
-  }, []);
+  const handleChangeContent = useCallback(
+    debounce((text: string) => {
+      if (text) {
+        handleChangeValue(text, "content");
+      }
+    }, 1000),
+    [],
+  );
 
   const visibleFields = useMemo(
     () => serializedFields.filter((field) => field.id !== "content"),
     [],
   );
+
+  const initialContent = draft?.content || "";
+
+  useEffect(() => {
+    localStorage.setItem("postDraft", JSON.stringify(data));
+    setDraftSavedAt(new Date());
+  }, [data]);
 
   const values = useMemo(
     () => ({
@@ -62,8 +95,19 @@ export const NewPostProvider = ({ children }: NewPostProviderProps) => {
       loading,
       visibleFields,
       handleChangeContent,
+      initialContent,
+      draftSavedAt,
     }),
-    [data, visibleFields],
+    [
+      data,
+      disabled,
+      errors,
+      handleSubmit,
+      loading,
+      visibleFields,
+      initialContent,
+      draftSavedAt,
+    ],
   );
 
   return (
