@@ -44,7 +44,7 @@ export function NewPostDetailsCard() {
           {loading && <Loading className="mr-2" size="sm" />}
           <MdOutlineSend className="size-6 mr-2" /> Publish post
         </Button>
-        <Text>Draft saved at {format(draftSavedAt, "hh:mm")}</Text>
+        <Text>Draft saved at {format(draftSavedAt, "hh:mm aaaaa'm'")}</Text>
       </form>
     </Card>
   );
