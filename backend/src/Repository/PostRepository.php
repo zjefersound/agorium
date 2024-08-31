@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Domain\Post;
 use App\Domain\Tag;
+use App\DTO\SearchDTO;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PostRepository
@@ -15,7 +16,13 @@ class PostRepository
         $this->em = $em;
     }
 
-    public function createOrUpdatePost(Post $post, array $tagNames): void
+    public function find(int $id)
+    {
+        return $this->em->getRepository(Post::class)
+            ->find($id);
+    }
+
+    public function save(Post $post, array $tagNames): void
     {
         $this->handleTags($tagNames, $post);
 
@@ -26,10 +33,59 @@ class PostRepository
         $this->cleanUpTags();
     }
 
+    public function search(SearchDTO $search): array
+    {
+        $qb = $this->em->getRepository(Post::class)->createQueryBuilder('c');
+
+        // Optional term search
+        if (!empty($search->term)) {
+            $qb->where('c.title LIKE :search')
+                ->setParameter('search', '%' . $search->term . '%');
+        }
+
+        // Sorting
+        if (!empty($search->sortBy)) {
+            $qb->orderBy('c.' . $search->sortBy, $search->sortOrder);
+        }
+
+        // Apply pagination
+        $qb->setFirstResult(($search->page - 1) * $search->limit)
+            ->setMaxResults($search->limit);
+
+        // Get paginated results
+        $query = $qb->getQuery();
+        $posts = $query->getResult();
+
+        $total = count($posts);
+
+        return [
+            'data' =>  array_map(fn($post) => $post->jsonSerialize(), $posts),
+            'pagination' => [
+                'currentPage' => $search->page,
+                'perPage' => $search->limit,
+                'total' => $total,
+                'totalPages' => ceil($total / $search->limit),
+            ],
+        ];
+    }
+
+    public function delete(Post $post)
+    {
+        $this->em->remove($post);
+        $this->em->flush();
+    }
+
     private function cleanUpTags(): void
     {
-        $this->em->createQuery('DELETE FROM Tag t WHERE t.posts IS EMPTY')
-            ->execute();
+        $deleteQuery = <<<SQL
+            DELETE FROM tags 
+            WHERE id NOT IN (
+                SELECT DISTINCT tag_id 
+                FROM post_tags
+            )
+        SQL;
+
+        $this->em->getConnection()->executeQuery($deleteQuery);
     }
 
     private function handleTags(array $tagNames, Post $post)

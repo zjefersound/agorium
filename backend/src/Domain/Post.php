@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
-use App\DTO\CreatePostDTO;
+use App\DTO\PostDTO;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity, ORM\Table(name: 'posts')]
 class Post
 {
-    public function __construct(CreatePostDTO $createPostDTO)
+    public function __construct(PostDTO $postDTO)
     {
-        $this->title = $createPostDTO->title;
-        $this->content = $createPostDTO->content;
-        $this->user = $createPostDTO->user;
-        $this->category = $createPostDTO->category;
-        $this->tags = $createPostDTO->tags;
+        $this->title = $postDTO->title;
+        $this->content = $postDTO->content;
+        $this->user = $postDTO->user;
+        $this->tags = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
     }
 

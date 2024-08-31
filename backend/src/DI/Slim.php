@@ -15,8 +15,10 @@ use App\Repository\PostRepository;
 use App\Repository\UserRepository;
 use App\Service\{AuthService, CategoryService, MailerService, PostService, UserService};
 use Doctrine\ORM\EntityManager;
+use Nyholm\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Slim\App;
+use Slim\Exception\HttpNotFoundException;
 use Slim\Factory\AppFactory;
 use Slim\Middleware\ContentLengthMiddleware;
 use Symfony\Component\Validator\Validation;
@@ -45,7 +47,12 @@ final class Slim implements ServiceProvider
 
         $c->set(App::class, static function (ContainerInterface $c): App {
             $app = AppFactory::create(null, $c);
-            $app->addErrorMiddleware(true, true, true);
+            $errorMiddleware = $app->addErrorMiddleware(true, true, true);
+
+            $errorMiddleware->setErrorHandler(HttpNotFoundException::class, function () {
+                return new Response(404, ['Content-Type' => 'application/json'], json_encode(["error" => "API Endpoint not found!"]));
+            });
+
             $app->add(new ContentLengthMiddleware());
             return $app;
         });

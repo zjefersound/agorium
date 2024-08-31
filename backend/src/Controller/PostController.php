@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\DTO\CreatePostDTO;
+use App\DTO\PostDTO;
+use App\DTO\SearchDTO;
 use App\Helper\ErrorMapper;
 use App\Service\PostService;
 use App\Service\UserService;
@@ -26,26 +27,66 @@ class PostController
         $this->validator = $validator;
     }
 
-    public function createPost(ServerRequest $req, Response $res): Response
+    public function savePost(ServerRequest $req, Response $res, $args): Response
     {
         $data = (array) json_decode($req->getBody()->getContents(), true);
 
-        $createPostDTO = new CreatePostDTO($data);
-        $errors = $this->validator->validate($createPostDTO);
+        $postDTO = new PostDTO($data);
+        $errors = $this->validator->validate($postDTO);
 
         if (count($errors) > 0) {
             return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
         }
 
-        $jwt = (array) $req->getAttribute("jwt");
-        $createPostDTO->user = $this->userService->getUserById($jwt["sub"]);
+        $postId = isset($args['id']) ? (int)$args['id'] : 0;
+
+        if ($postId > 0) {
+            $postDTO->id = $postId;
+        } else {
+            $jwt = (array) $req->getAttribute("jwt");
+            $postDTO->user = $this->userService->getUserById($jwt["sub"]);
+        }
 
         try {
-            $this->postService->createPost($createPostDTO);
+            $this->postService->savePost($postDTO);
         } catch (\Throwable $th) {
             return $this->unprocessable(["error" => $th->getMessage()]);
         }
 
-        return $this->created("Post created successfully.");
+        return $this->created("Post saved successfully.");
+    }
+
+    public function getPost($req, $res, $args): Response
+    {
+        $postId = (int)$args['id'];
+
+        try {
+            $post = $this->postService->getPost($postId);
+            return $this->ok($post->jsonSerialize());
+        } catch (\Throwable $th) {
+            return $this->notFound(["error" => $th->getMessage()]);
+        }
+    }
+
+    public function searchPosts(ServerRequest $req): Response
+    {
+        $queryParams = $req->getQueryParams();
+        $search = new SearchDTO($queryParams);
+
+        $result = $this->postService->searchPosts($search);
+
+        return $this->ok($result);
+    }
+
+    public function deletePost($req, $res, $args): Response
+    {
+        $postId = (int)$args['id'];
+
+        try {
+            $this->postService->deletePost($postId);
+            return $this->ok("Post deleted successfully.");
+        } catch (\Throwable $th) {
+            return $this->unprocessable(["error" => $th->getMessage()]);
+        }
     }
 }
