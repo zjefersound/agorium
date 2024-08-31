@@ -11,7 +11,7 @@ export function GoBack({ to, hideText }: GoBackProps) {
     <Link
       to={to}
       className={clsx(
-        "flex items-center hover:bg-agorium-800 w-min -mx-2 px-2 -my-1 py-1 rounded-full",
+        "flex items-center hover:bg-agorium-800 w-min -my-1 py-1 rounded-full",
         {
           "-mx-1 px-1": hideText,
           "-mx-2 px-2": !hideText,
