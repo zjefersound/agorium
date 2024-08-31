@@ -3,8 +3,19 @@
 @tailwind utilities;
 
 :root {
+  --amber-50: #fffbeb;
+  --amber-100: #fef3c7;
+  --amber-200: #fde68a;
+
   --agorium-50: #f8fbfc;
+  --agorium-100: #f1f6f9;
+  --agorium-200: #e2ebf0;
+  --agorium-300: #cbd9e1;
+  --agorium-400: #94abb8;
+  --agorium-500: #647d8b;
+  --agorium-600: #475d69;
   --agorium-700: #334955;
+  --agorium-800: #1e313b;
   --agorium-900: #142127;
 
   --header-height: 5rem;

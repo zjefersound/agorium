@@ -1,0 +1,96 @@
+.dark-editor {
+  --accentBase: var(--amber-100);
+  --accentBgSubtle: var(--amber-200);
+  --accentBg: var(--amber-200);
+  --accentBgHover: var(--amber-50);
+  --accentBgActive: #fffbeb66;
+  --accentLine: var(--amber-200);
+
+  --accentBorder: var(--amber-200);
+  --accentBorderHover: var(--amber-100);
+  --accentSolid: var(--amber-100);
+  --accentSolidHover: var(--amber-100);
+  --accentText: var(--agorium-50);
+  --accentTextContrast: var(--amber-100);
+
+  --baseBase: var(--agorium-800);
+  --baseBgSubtle: var(--agorium-700);
+  --baseBg: var(--agorium-800);
+  --baseBgHover: var(--agorium-700);
+  --baseBgActive: var(--agorium-700);
+
+  --baseLine: var(--agorium-600);
+  --baseBorder: var(--agorium-600);
+  --baseBorderHover: var(--agorium-500);
+  --baseSolid: var(--agorium-400);
+  --baseSolidHover: var(--agorium-600);
+
+  --baseTextContrast: var(--agorium-50);
+  --baseText: var(--agorium-400);
+
+  font-family: "Inter", -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "Courier New", monospace;
+  --basePageBg: var(--agorium-900);
+  color: var(--agorium-50);
+  background: var(--agorium-800);
+}
+
+.mdxeditor .cm-editor {
+  margin: -0.8rem;
+  min-height: 2.75rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.dark-editor form {
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.dark-editor form > div {
+  gap: 0.25rem;
+}
+
+.dark-editor form label {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--agorium-50);
+}
+
+.dark-editor form button {
+  font-weight: 700;
+  font-size: 14px;
+  border: 0;
+  cursor: pointer;
+}
+
+.dark-editor form button[type="submit"] {
+  color: var(--agorium-900);
+  background: var(--amber-100);
+}
+
+.dark-editor form button[type="submit"]:hover {
+  opacity: 90%;
+}
+
+.dark-editor form button[type="submit"]:active {
+  background: var(--amber-50);
+}
+
+.dark-editor form button[type="reset"] {
+  color: var(--amber-100);
+  background: var(--agorium-700);
+  border: 1px solid var(--agorium-600);
+}
+
+.dark-editor form button[type="reset"]:hover {
+  background: var(--agorium-600);
+}
+
+.dark-editor form button[type="reset"]:active {
+  background: var(--agorium-500);
+}
+
+.mdxeditor-popup-container {
+  z-index: 30;
+}

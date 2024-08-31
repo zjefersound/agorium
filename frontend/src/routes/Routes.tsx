@@ -14,6 +14,8 @@ import { Signup } from "../pages/Signup";
 import { Post } from "../pages/Post";
 import { Categories } from "../pages/Categories";
 import { Tags } from "../pages/Tags";
+import { NewPost } from "../pages/NewPost";
+import { Search } from "../pages/Search";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
@@ -30,6 +32,10 @@ const routes: { [key: string]: RouteObject[] } = {
       element: <Categories />,
     },
     {
+      path: "/new-post",
+      element: <NewPost />,
+    },
+    {
       path: "/post/:id",
       element: <Post />,
     },
@@ -40,6 +46,10 @@ const routes: { [key: string]: RouteObject[] } = {
     {
       path: "/tags/:id",
       element: <Tags />,
+    },
+    {
+      path: "/search",
+      element: <Search />,
     },
   ],
   publicOnly: [
