@@ -1,15 +1,57 @@
-import { useRef, useState } from "react";
 import { TextEditor } from "../components/form/TextEditor";
 import { Content } from "../components/layout/Content";
 import { NavigationCard } from "../components/shared/NavigationCard";
 import { PopularItemCard } from "../components/shared/PopularItemCard";
 import { Card } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
-import { MarkdownPreview } from "../components/ui/MarkdownPreview";
+import { MdOutlineSend } from "react-icons/md";
+import { SmartField } from "../components/form/SmartField";
+import { FieldConfig } from "../components/form/SmartField/types";
+import { useSmartForm } from "../components/form/SmartForm/hooks/useSmartForm";
+
+const postFields: FieldConfig[] = [
+  {
+    id: "content",
+    type: "text",
+    label: "Content",
+    placeholder: "Enter the content",
+    required: true,
+  },
+  {
+    id: "title",
+    type: "text",
+    label: "Add a title",
+    placeholder: "Your creative title",
+    required: true,
+  },
+  {
+    id: "categoryId",
+    type: "select",
+    label: "Add a category",
+    placeholder: "Select the category",
+    required: true,
+    options: [
+      { value: "2", label: "Issue" },
+      { value: "3", label: "Discussion" },
+      { value: "4", label: "Feedback" },
+      { value: "5", label: "Debate" },
+      { value: "6", label: "Tutorials" },
+    ],
+  },
+  {
+    id: "tagIds",
+    type: "text",
+    label: "Add tags",
+    placeholder: "Write your tags here. #math #something",
+    required: false,
+  },
+];
 
 export function NewPost() {
-  const contentRef = useRef("");
-  const [content, setContent] = useState("");
+  const formState = useSmartForm({
+    fields: postFields,
+    onSubmit: async () => {},
+  });
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -41,24 +83,30 @@ export function NewPost() {
         <TextEditor
           markdown={`# Your title\nYour content`}
           className="min-h-[400px] max-sm:max-h-[760px] sm:max-h-[560px] 3xl:max-h-[700px]"
-          onChange={(text) => {
-            contentRef.current = text;
+          onChange={(text: string) => {
+            formState.handleChangeValue(text, "content");
           }}
         />
-        <Card>
-          <MarkdownPreview>{content}</MarkdownPreview>
-        </Card>
       </Content.Main>
       <Content.Sidebar>
-        <Card>Anything</Card>
-        <Button
-          onClick={() => {
-            console.log({ markdown: contentRef.current });
-            setContent(contentRef.current);
-          }}
-        >
-          Log content
-        </Button>
+        <Card>
+          <form className="space-y-6">
+            {postFields.map((field) => (
+              <SmartField
+                key={field.id}
+                config={field}
+                value={formState.data[field.id]}
+                onChangeValue={formState.handleChangeValue}
+              />
+            ))}
+            <Button className="w-full">
+              <MdOutlineSend className="size-6 mr-2" /> Publish
+            </Button>
+            <Button className="w-full" color="secondary">
+              Save as draft
+            </Button>
+          </form>
+        </Card>
       </Content.Sidebar>
     </Content.Root>
   );
