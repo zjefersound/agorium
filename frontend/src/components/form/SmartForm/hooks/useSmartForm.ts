@@ -29,7 +29,7 @@ export function useSmartForm<T = FormFields>({
   loading: formLoading,
 }: UseSmartFormProps) {
   const initialState = getInitialFormState(fields);
-  const { data, errors, loading, handleChangeValue, handleSubmit } =
+  const { data, setData, errors, loading, handleChangeValue, handleSubmit } =
     useForm<FormFields>({
       dataValue,
       initialState,
@@ -48,6 +48,7 @@ export function useSmartForm<T = FormFields>({
 
   return {
     data: data as T,
+    setData: setData as (newData: T) => void,
     errors,
     loading,
     handleChangeValue,

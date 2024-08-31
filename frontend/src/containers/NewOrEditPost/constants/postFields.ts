@@ -31,6 +31,7 @@ export const postFields: FieldConfig[] = [
       },
     ],
     options: [
+      { value: "1", label: "Question" },
       { value: "2", label: "Issue" },
       { value: "3", label: "Discussion" },
       { value: "4", label: "Feedback" },
