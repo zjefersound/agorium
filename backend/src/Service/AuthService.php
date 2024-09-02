@@ -4,8 +4,11 @@ namespace App\Service;
 
 use App\Repository\UserRepository;
 use App\Domain\User;
+use Exception;
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Throwable;
 
 class AuthService
 {
@@ -30,9 +33,19 @@ class AuthService
         return JWT::encode($payload, $this->jwtSecret, 'HS256');
     }
 
-    public function validateJwt(string $token): array
+    public function validateJwt(?string $token): array
     {
-        return (array) JWT::decode($token, new Key($this->jwtSecret, 'HS256'));
+        if (!$token) {
+            throw new Exception('Auth token not provided.');
+        }
+
+        try {
+            return (array) JWT::decode($token, new Key($this->jwtSecret, 'HS256'));
+        } catch (ExpiredException $e) {
+            throw new Exception('Token has expired. Please log in again.');
+        } catch (Throwable $e) {
+            throw new Exception('Invalid token.');
+        }
     }
 
     public function authenticate(string $login, string $password): ?string

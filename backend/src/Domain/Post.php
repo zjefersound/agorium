@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
+use App\DTO\PostDTO;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity, ORM\Table(name: 'posts')]
 class Post
 {
-    public function __construct(string $title, string $content, User $user, Category $category)
+    public function __construct(PostDTO $postDTO)
     {
-        $this->title = $title;
-        $this->content = $content;
-        $this->user = $user;
-        $this->category = $category;
+        $this->title = $postDTO->title;
+        $this->content = $postDTO->content;
+        $this->user = $postDTO->user;
         $this->tags = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
     }
@@ -49,11 +50,12 @@ class Post
     private ?Comment $favoriteComment = null;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, cascade: ['persist'])]
-    #[ORM\JoinTable(name: 'post_tags',
+    #[ORM\JoinTable(
+        name: 'post_tags',
         joinColumns: [new ORM\JoinColumn(name: 'post_id', referencedColumnName: 'id')],
         inverseJoinColumns: [new ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id')]
     )]
-    private array $tags;
+    private Collection $tags;
 
     public function getId(): int
     {
@@ -129,6 +131,11 @@ class Post
     {
         $this->favoriteComment = $favoriteComment;
         return $this;
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
     }
 
     public function jsonSerialize(): array

@@ -13,6 +13,8 @@ paths:
         "200":
           description: Pong
 
+  #region Users
+
   /signup:
     post:
       summary: Register a new user
@@ -78,16 +80,16 @@ paths:
           description: User details retrieved
         "401":
           description: Unauthorized
-      security:
-        - BearerAuth: []
       tags:
         - user
+
   /user/avatar/{id}:
     get:
       summary: Get user avatar
       parameters:
         - in: path
           name: id
+          required: true
           schema:
             type: integer
           description: User Id
@@ -96,10 +98,316 @@ paths:
           description: User avatar retrieved
         "401":
           description: Unauthorized
-      security:
-        - BearerAuth: []
       tags:
         - user
+
+  #endregion
+
+  #region Posts
+
+  /post:
+    post:
+      summary: "Create a new post"
+      description: "Creates a new post with the provided details. If the category or tags do not exist, they will be created."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "My New Post"
+                content:
+                  type: string
+                  example: "This is the content of the post."
+                categoryId:
+                  type: integer
+                  example: 1
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Tech", "Innovation"]
+      responses:
+        "200":
+          description: Post saved
+        "401":
+          description: Unauthorized
+      tags:
+        - posts
+
+  /post/{postId}:
+    get:
+      summary: "Get a post by ID"
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Post retrieved successfully
+        "404":
+          description: Post not found
+        "401":
+          description: Unauthorized
+      tags:
+        - posts
+    put:
+      summary: "Update an existing post"
+      description: "Updates the details of an existing post. If the category or tags do not exist, they will be created."
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: "Updated Post Title"
+                content:
+                  type: string
+                  example: "Updated content of the post."
+                categoryId:
+                  type: integer
+                  example: 2
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example: ["Science", "Discovery"]
+      responses:
+        "200":
+          description: Post saved
+        "401":
+          description: Unauthorized
+      tags:
+        - posts
+    delete:
+      summary: "Delete a post"
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Post deleted successfully
+        "404":
+          description: Post not found
+        "401":
+          description: Unauthorized
+      tags:
+        - posts
+
+  /posts:
+    get:
+      summary: "Search posts with pagination and sorting"
+      parameters:
+        - in: query
+          name: search
+          required: false
+          schema:
+            type: string
+            example: "post"
+          description: "Optional search term for post title."
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            example: 1
+          description: "Page number for pagination, default is 1."
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            example: 10
+          description: "Number of items per page, default is 10."
+        - in: query
+          name: sortBy
+          required: false
+          schema:
+            type: string
+            example: "title"
+          description: "Field to sort by, e.g., id or title."
+        - in: query
+          name: sortOrder
+          required: false
+          schema:
+            type: string
+            example: "asc"
+          description: "Sort order, either asc or desc."
+      responses:
+        "200":
+          description: Categories retrieved successfully
+        "401":
+          description: Unauthorized
+      tags:
+        - posts
+
+  #endregion
+
+  #region Categories
+
+  /category:
+    post:
+      summary: "Add a category"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoryName:
+                  type: string
+                  example: "Science"
+                description:
+                  type: string
+                  example: "A category about scientific topics."
+      responses:
+        "201":
+          description: Category created successfully
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      tags:
+        - category
+
+  /category/{categoryId}:
+    get:
+      summary: "Get a category by ID"
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Category retrieved successfully
+        "404":
+          description: Category not found
+        "401":
+          description: Unauthorized
+      tags:
+        - category
+    put:
+      summary: "Update a category"
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categoryName:
+                  type: string
+                  example: "Science"
+                description:
+                  type: string
+                  example: "Updated category description."
+      responses:
+        "200":
+          description: Category updated successfully
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      tags:
+        - category
+    delete:
+      summary: "Delete a category"
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Category deleted successfully
+        "404":
+          description: Category not found
+        "401":
+          description: Unauthorized
+      tags:
+        - category
+
+  /categories:
+    get:
+      summary: "Search categories with pagination and sorting"
+      parameters:
+        - in: query
+          name: search
+          required: false
+          schema:
+            type: string
+            example: "science"
+          description: "Optional search term for category name."
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            example: 1
+          description: "Page number for pagination, default is 1."
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            example: 10
+          description: "Number of items per page, default is 10."
+        - in: query
+          name: sortBy
+          required: false
+          schema:
+            type: string
+            example: "name"
+          description: "Field to sort by, e.g., name or description."
+        - in: query
+          name: sortOrder
+          required: false
+          schema:
+            type: string
+            example: "asc"
+          description: "Sort order, either asc or desc."
+      responses:
+        "200":
+          description: Categories retrieved successfully
+        "401":
+          description: Unauthorized
+      tags:
+        - category
+
+  #endregion
 
 components:
   securitySchemes:

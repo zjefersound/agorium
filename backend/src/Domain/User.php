@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
 
 #[ORM\Entity, ORM\Table(name: 'users')]
-final class User
+class User
 {
     public function __construct(UserSignupDTO $userSignupDTO)
     {

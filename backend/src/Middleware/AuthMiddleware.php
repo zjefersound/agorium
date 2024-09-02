@@ -27,17 +27,17 @@ class AuthMiddleware implements MiddlewareInterface
 
         list($jwt) = sscanf($authHeader, 'Bearer %s');
 
-        if (!$jwt) {
-            return $this->unauthorized(["error" => "Auth token not provided."]);
+        try {
+            $decoded = $this->authService->validateJwt($jwt);
+        } catch (\Throwable $th) {
+            return $this->unauthorized(["error" => $th->getMessage()]);
         }
 
         try {
-            $decoded = $this->authService->validateJwt($jwt);
             $request = $request->withAttribute('jwt', $decoded);
             return $handler->handle($request);
-
         } catch (Throwable $th) {
-            return $this->unauthorized(["error" => "Token is invalid."]);
+            return $this->internal(["error" => $th->getMessage()]);
         }
     }
 }
