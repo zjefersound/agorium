@@ -63,7 +63,7 @@ export const Button = forwardRef(
               color === "secondary",
             "bg-emerald-400 hover:bg-emerald-500 active:bg-emerald-600 text-agorium-900":
               color === "success",
-            "bg-red-600 hover:bg-red-700 active:bg-red-800 text-agorium-900":
+            "bg-agorium-700 hover:bg-agorium-600 active:bg-agorium-500 text-red-400 ring-agorium-600 ring-1":
               color === "danger",
           },
         )}

@@ -4,6 +4,7 @@ import { PopularItemCard } from "../components/shared/PopularItemCard";
 import { EditPostProvider } from "../containers/NewOrEditPost/contexts/EditPostContext";
 import { EditPostDetailsCard } from "../containers/NewOrEditPost/components/EditPostDetailsCard";
 import { EditPostEditor } from "../containers/NewOrEditPost/components/EditPostEditor";
+import { DeletePostCard } from "../containers/NewOrEditPost/components/DeletePostCard";
 
 export function EditPost() {
   return (
@@ -39,6 +40,7 @@ export function EditPost() {
         </Content.Main>
         <Content.Sidebar>
           <EditPostDetailsCard />
+          <DeletePostCard />
         </Content.Sidebar>
       </Content.Root>
     </EditPostProvider>
