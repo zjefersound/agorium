@@ -22,8 +22,9 @@ import {
   InsertTable,
 } from "@mdxeditor/editor";
 import clsx from "clsx";
+import { memo } from "react";
 
-export function TextEditor({ className, ...props }: MDXEditorProps) {
+function TextEditor({ className, ...props }: MDXEditorProps) {
   return (
     <div
       className={clsx(
@@ -32,7 +33,7 @@ export function TextEditor({ className, ...props }: MDXEditorProps) {
       )}
     >
       <MDXEditor
-        className="markdown dark-theme dark-editor h-full cm-s-dracula"
+        className="markdown dark-theme dark-editor h-full w-full cm-s-dracula"
         plugins={[
           headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
           listsPlugin(),
@@ -78,3 +79,6 @@ export function TextEditor({ className, ...props }: MDXEditorProps) {
     </div>
   );
 }
+
+const MemoizedTextEditor = memo(TextEditor);
+export { MemoizedTextEditor as TextEditor };

@@ -10,10 +10,10 @@ export interface HeadingProps {
 
 export function Heading({ size = "md", children, asChild }: HeadingProps) {
   const Comp = asChild ? Slot : "h2";
-  
+
   return (
     <Comp
-      className={clsx("text-agorium-50 font-bold", {
+      className={clsx("font-bold", {
         "text-md": size === "xs",
         "text-lg": size === "sm",
         "text-xl": size === "md",

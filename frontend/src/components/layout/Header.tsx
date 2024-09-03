@@ -1,11 +1,12 @@
-import { MdOutlineSearch } from "react-icons/md";
+import { MdAdd, MdOutlineSearch } from "react-icons/md";
 import { useAuth } from "../../hooks/useAuth";
 import { printFirstAndLastName } from "../../utils/printFirstAndLastName";
 import { LogoHorizontal } from "../assets/LogoHorizontal";
 import { TextInput } from "../form/TextInput";
 import { Avatar } from "../ui/Avatar";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
+import { Button } from "../ui/Button";
 
 export function Header() {
   const { user } = useAuth();
@@ -36,14 +37,21 @@ export function Header() {
           onKeyDown={handleSearchSubmit}
         />
       </TextInput.Root>
-      <div className="flex items-center space-x-4">
-        <Avatar name={user!.fullName} url={user!.avatar} />
-        <p
-          title={user!.fullName}
-          className="hidden md:flex flex-1 font-serif text-amber-100 max-w-52 truncate"
-        >
-          {printFirstAndLastName(user!.fullName)}
-        </p>
+      <div className="flex">
+        <Link to="/new-post" className="mr-6">
+          <Button>
+            <MdAdd className="size-6 mr-2" /> Create
+          </Button>
+        </Link>
+        <div className="flex items-center space-x-4">
+          <Avatar name={user!.fullName} url={user!.avatar} />
+          <p
+            title={user!.fullName}
+            className="hidden md:flex flex-1 font-serif text-amber-100 max-w-52 truncate"
+          >
+            {printFirstAndLastName(user!.fullName)}
+          </p>
+        </div>
       </div>
     </header>
   );
