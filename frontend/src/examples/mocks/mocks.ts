@@ -172,10 +172,10 @@ export const mockedPosts: Post[] = [
     title: "Getting Started with Node.js",
     content: [
       "# Getting Started with Node.js",
-      "test code",
+      "`test code`",
       "test code",
       "# Getting Started with Node.js",
-      "```",
+      "```js",
       "const abc = 123;",
       "```",
       "test code",

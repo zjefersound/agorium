@@ -6,6 +6,10 @@ export const TOAST_MESSAGES = {
     createdTitle: "Account created sucessfuly",
     createdDescription: "Log in using your credentials",
   },
+  Post: {
+    notFoundTitle: "Post was not found",
+    notFoundDescription: "Verify if your URL is correct and try again.",
+  },
   common: {
     unexpectedErrorTitle: "Unexpected error",
     unexpectedErrorDescription:
