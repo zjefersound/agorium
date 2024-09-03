@@ -25,7 +25,9 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
 
   useEffect(() => {
     if (!authenticated) return;
+
     categoriesResource.fetchCategories();
+    // eslint-disable-next-line
   }, [authenticated]);
   return (
     <ResourceContext.Provider value={values}>

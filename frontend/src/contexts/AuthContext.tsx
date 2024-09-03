@@ -51,11 +51,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const handleLogin = async (data: UserLoginPayload) => {
     return await userService
       .login(data)
-      .then((res) => {
-        if (res.data.token) {
-          setToken(res.data.token);
-        }
-      })
+      .then((res) => setToken(res.data.token))
       .catch((err: AxiosError<IApiErrorResponse>) => {
         if (axios.isAxiosError(err) && err.response) {
           launchToast({
@@ -86,7 +82,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (token) {
       api.defaults.headers.Authorization = "Bearer " + token;
-
       userService
         .me()
         .then((response) => {

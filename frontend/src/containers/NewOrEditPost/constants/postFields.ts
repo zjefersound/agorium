@@ -1,5 +1,11 @@
 import { FieldConfig } from "../../../components/form/SmartField/types";
 
+export type PostFields = {
+  title: string;
+  categoryId: string;
+  content: string;
+  tags: string;
+};
 export const postFields: FieldConfig[] = [
   {
     id: "title",
@@ -24,19 +30,12 @@ export const postFields: FieldConfig[] = [
     label: "Add a category",
     placeholder: "Select the category",
     required: true,
+    fetchOptionsFromApi: true,
     validations: [
       {
         rule: (value) => value.trim() !== "",
         message: "Category is required",
       },
-    ],
-    options: [
-      { value: "1", label: "Question" },
-      { value: "2", label: "Issue" },
-      { value: "3", label: "Discussion" },
-      { value: "4", label: "Feedback" },
-      { value: "5", label: "Debate" },
-      { value: "6", label: "Tutorials" },
     ],
   },
   {
