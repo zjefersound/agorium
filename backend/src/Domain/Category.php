@@ -9,12 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity, ORM\Table(name: 'categories')]
 class Category
 {
-    public function __construct(string $name, ?string $description = null)
-    {
-        $this->name = $name;
-        $this->description = $description;
-    }
-
     #[ORM\Id, ORM\Column(type: 'integer'), ORM\GeneratedValue(strategy: 'AUTO')]
     private int $id;
 

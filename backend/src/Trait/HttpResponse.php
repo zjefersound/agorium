@@ -46,4 +46,9 @@ trait HttpResponse
     {
         return $this->jsonResponse(422, $body, $headers);
     }
+
+    protected function internal($body = '', array $headers = []): Response
+    {
+        return $this->jsonResponse(500, $body, $headers);
+    }
 }
