@@ -1,4 +1,4 @@
-import { MdAdd, MdOutlineSearch } from "react-icons/md";
+import { MdAdd, MdLogout, MdOutlineSearch } from "react-icons/md";
 import { useAuth } from "../../hooks/useAuth";
 import { printFirstAndLastName } from "../../utils/printFirstAndLastName";
 import { LogoHorizontal } from "../assets/LogoHorizontal";
@@ -7,9 +7,10 @@ import { Avatar } from "../ui/Avatar";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "../ui/Button";
+import { AlertDialog } from "../ui/AlertDialog";
 
 export function Header() {
-  const { user } = useAuth();
+  const { user, handleLogout } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchText, setSearchText] = useState(searchParams.get("text") ?? "");
@@ -25,7 +26,9 @@ export function Header() {
   };
   return (
     <header className="h-[var(--header-height)] shrink-0 bg-agorium-800 sticky top-0 z-10 flex items-center justify-between px-[var(--page-padding-x)]">
-      <LogoHorizontal />
+      <Link to={"/"}>
+        <LogoHorizontal />
+      </Link>
       <TextInput.Root className=" w-min min-w-[500px] max-w-full">
         <TextInput.Icon>
           <MdOutlineSearch />
@@ -51,6 +54,16 @@ export function Header() {
           >
             {printFirstAndLastName(user!.fullName)}
           </p>
+          <AlertDialog
+            confirmText="Log Out"
+            title="Are you sure you want to log out?"
+            description="Any unsaved changes will be lost permanently."
+            onConfirm={handleLogout}
+          >
+            <Button color="secondary">
+              <MdLogout className="size-6 mr-2" /> Log Out
+            </Button>
+          </AlertDialog>
         </div>
       </div>
     </header>
