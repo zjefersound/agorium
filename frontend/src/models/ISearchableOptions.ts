@@ -1,5 +1,5 @@
 export interface ISearchableOptions {
-  search?: string;
+  term?: string;
   page?: number;
   limit?: number;
   sortBy?: string;

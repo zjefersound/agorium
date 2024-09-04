@@ -9,13 +9,15 @@ import { PostCard } from "../components/shared/PostCard";
 import { MdOutlineCheckCircleOutline, MdOutlineWhatshot } from "react-icons/md";
 import { RxArrowTopRight, RxClock } from "react-icons/rx";
 import { SmallTabs } from "../components/ui/SmallTabs";
-import { usePosts } from "../hooks/resources/usePosts";
+import { useResource } from "../hooks/useResource";
 import { useEffect } from "react";
+import { Empty } from "../components/ui/Empty";
+import { Text } from "../components/ui/Text";
 
 export function Home() {
-  const { posts, fetchPosts } = usePosts();
+  const { postsResource } = useResource();
   useEffect(() => {
-    fetchPosts();
+    postsResource.fetchData();
   }, []);
   return (
     <Content.Root>
@@ -60,9 +62,19 @@ export function Home() {
               },
             ]}
           />
-          {posts.map((post) => (
+          {postsResource.data.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
+          {!postsResource.loading && !postsResource.data.length && (
+            <Empty>
+              <p className="to-amber-100 font-bold mb-3 text-center">
+                No posts were found
+              </p>
+              <Text asChild>
+                <span className="text-center">Start by creating yours!</span>
+              </Text>
+            </Empty>
+          )}
         </div>
       </Content.Main>
       <Content.Sidebar>
