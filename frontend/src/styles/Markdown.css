@@ -118,7 +118,7 @@
   overflow: hidden;
 }
 
-.markdown:not(.mdxeditor) table th {
+.markdown:not(.mdxeditor) table td {
   background-color: var(--agorium-800);
   color: var(--agorium-200);
   padding: 8px;
@@ -126,7 +126,7 @@
   text-align: left;
 }
 
-.markdown:not(.mdxeditor) table td {
+.markdown:not(.mdxeditor) table th {
   background-color: var(--agorium-700);
   color: var(--agorium-50);
   padding: 8px;
