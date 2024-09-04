@@ -23,9 +23,11 @@ export const ResourceContext = createContext<ResourceContextType>(
 export const ResourceProvider = ({ children }: ResourceProviderProps) => {
   const { authenticated } = useAuth();
   const categoriesResource = usePaginatedResource<Category>({
+    alias: "categories",
     fetch: categoryService.getAll,
   });
   const postsResource = usePaginatedResource<Post>({
+    alias: "posts",
     fetch: postService.getAll,
     expiresIn: 1000 * 10, // 10 seconds
   });

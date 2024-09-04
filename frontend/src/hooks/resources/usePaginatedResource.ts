@@ -16,9 +16,11 @@ interface DataCache<T> {
   };
 }
 export function usePaginatedResource<T>({
+  alias,
   fetch,
   expiresIn = Infinity,
 }: {
+  alias: string;
   fetch: (
     options?: ISearchableOptions,
   ) => Promise<AxiosResponse<IPaginatedResponse<T>>>;
@@ -63,7 +65,7 @@ export function usePaginatedResource<T>({
             .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
         }
       })
-      .catch((error) => console.error("Failed to fetch", error))
+      .catch((error) => console.error("Failed to fetch " + alias, error))
       .finally(() => setLoading(false));
   }, []);
 
