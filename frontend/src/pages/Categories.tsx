@@ -12,11 +12,23 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
+import { useResource } from "../hooks/useResource";
+import { useMemo } from "react";
+import { ISelectOption } from "../models/ISelectOption";
 
 export function Categories() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { categoriesResource } = useResource();
   const [searchParams] = useSearchParams();
+  const categoriesOptions: ISelectOption[] = useMemo(
+    () =>
+      categoriesResource.categories.map((c) => ({
+        label: c.name,
+        value: String(c.id),
+      })),
+    [categoriesResource.categories],
+  );
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -49,16 +61,7 @@ export function Categories() {
           <SmallTabs
             value={id ?? ""}
             onChange={(value) => navigate("/categories/" + value)}
-            options={[
-              { label: "Issue", value: "issue" },
-              { label: "Discussion", value: "discussion" },
-              { label: "Research", value: "research" },
-              { label: "Question", value: "question" },
-              { label: "Debate", value: "debate" },
-              { label: "Collaboration", value: "collaboration" },
-              { label: "Feedback", value: "feedback" },
-              { label: "Tutoriais", value: "tutoriais" },
-            ]}
+            options={categoriesOptions}
           />
           <div className="flex justify-between items-center">
             <span>34 Posts</span>

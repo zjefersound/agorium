@@ -1,4 +1,5 @@
 import { mockedPosts } from "../examples/mocks/mocks";
+import { api } from "./api";
 
 async function getById(id: number | string) {
   await new Promise((resolve) => setTimeout(resolve, 300));
@@ -12,6 +13,17 @@ async function getById(id: number | string) {
   });
 }
 
+export type CreatePostPayload = {
+  title: string;
+  content: string;
+  categoryId: number;
+  tags: string[];
+};
+function create(data: CreatePostPayload) {
+  return api.post("/post", data);
+}
+
 export const postService = {
   getById,
+  create,
 };

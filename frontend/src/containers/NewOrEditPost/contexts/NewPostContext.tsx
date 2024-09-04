@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { useSmartForm } from "../../../components/form/SmartForm/hooks/useSmartForm";
-import { postFields } from "../constants/postFields";
+import { PostFields, postFields } from "../constants/postFields";
 import {
   FormFields,
   FormValue,
@@ -16,6 +16,11 @@ import { FormErrors } from "../../../models/IValidationReturn";
 import { FieldConfig } from "../../../components/form/SmartField/types";
 import { debounce } from "lodash";
 import { useNavigate } from "react-router-dom";
+import { CreatePostPayload, postService } from "../../../services/postService";
+import { useToast } from "../../../hooks/useToast";
+import { TOAST_MESSAGES } from "../../../constants/toastMessages";
+import { AxiosError } from "axios";
+import { IApiErrorResponse } from "../../../models/IApiErrorResponse";
 
 interface NewPostProviderProps {
   children: React.ReactNode;
@@ -39,15 +44,38 @@ export const NewPostContext = createContext<NewPostContextType>(
 );
 
 export const NewPostProvider = ({ children }: NewPostProviderProps) => {
+  const { launchToast } = useToast();
   const storedPostDraft = localStorage.getItem("postDraft");
   const draft = storedPostDraft ? JSON.parse(storedPostDraft) : undefined;
   const navigate = useNavigate();
 
   const [draftSavedAt, setDraftSavedAt] = useState(new Date());
-  const handleCreatePost = async (data: FormFields) => {
-    console.log(data);
-    localStorage.removeItem("postDraft");
-    navigate("/");
+  const handleCreatePost = async (data: PostFields) => {
+    const payload: CreatePostPayload = {
+      title: data.title,
+      content: data.content,
+      categoryId: Number(data.categoryId),
+      tags: data.tags.split(" "),
+    };
+    return postService
+      .create(payload)
+      .then(() => {
+        launchToast({
+          title: TOAST_MESSAGES.Post.createdTitle,
+          description: TOAST_MESSAGES.Post.createdDescription,
+        });
+        localStorage.removeItem("postDraft");
+        navigate("/");
+      })
+      .catch((err: AxiosError<IApiErrorResponse>) => {
+        launchToast({
+          title: TOAST_MESSAGES.Post.createErrorTitle,
+          description:
+            typeof err.response?.data.error === "string"
+              ? err.response?.data.error
+              : TOAST_MESSAGES.Post.createErrorDescription,
+        });
+      });
   };
 
   const {
@@ -64,6 +92,7 @@ export const NewPostProvider = ({ children }: NewPostProviderProps) => {
     onSubmit: handleCreatePost,
   });
 
+  // eslint-disable-next-line
   const handleChangeContent = useCallback(
     debounce((text: string) => {
       handleChangeValue(text, "content");
@@ -73,6 +102,7 @@ export const NewPostProvider = ({ children }: NewPostProviderProps) => {
 
   const visibleFields = useMemo(
     () => serializedFields.filter((field) => field.id !== "content"),
+    // eslint-disable-next-line
     [],
   );
 

@@ -76,6 +76,7 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
     onSubmit: handleSavePost,
   });
 
+  // eslint-disable-next-line
   const handleChangeContent = useCallback(
     debounce((text: string) => {
       handleChangeValue(text, "content");
@@ -85,6 +86,7 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
 
   const visibleFields = useMemo(
     () => serializedFields.filter((field) => field.id !== "content"),
+    // eslint-disable-next-line
     [],
   );
 
