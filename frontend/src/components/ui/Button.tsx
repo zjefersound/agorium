@@ -5,7 +5,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * What background color to use
    */
-  color?: "primary" | "secondary" | "success" | "danger";
+  color?: "primary" | "secondary" | "success" | "danger" | "danger-secondary";
   /**
    * Button size
    */
@@ -64,6 +64,8 @@ export const Button = forwardRef(
             "bg-emerald-400 hover:bg-emerald-500 active:bg-emerald-600 text-agorium-900":
               color === "success",
             "bg-agorium-700 hover:bg-agorium-600 active:bg-agorium-500 text-red-400 ring-agorium-600 ring-1":
+              color === "danger-secondary",
+            "bg-red-500 hover:bg-red-600 active:bg-red-700 text-agorium-50":
               color === "danger",
           },
         )}
