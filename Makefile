@@ -20,6 +20,10 @@ migrate:
 	@echo "Migrating database..."
 	@(cd backend && composer migrate)
 
+seed:
+	@echo "Seeding database..."
+	@(cd backend && composer seed)
+
 lazy:
 	@echo "Starting backend server in screen session..."
 	@(cd backend && composer install)

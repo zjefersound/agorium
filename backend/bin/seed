@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use App\Command\DatabaseSeeder;
+use Doctrine\ORM\EntityManager;
+use App\DI;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$container = require_once __DIR__ . '/../src/bootstrap.php';
+
+$container->register(new DI\Doctrine());
+
+$entityManager = $container->get(EntityManager::class);
+
+$seeder = new DatabaseSeeder($entityManager);
+$seeder->run();
+
+echo "\nSeeding completed successfully.\n";
