@@ -1,4 +1,7 @@
 import { mockedPosts } from "../examples/mocks/mocks";
+import { IPaginatedResponse } from "../models/IPaginatedResponse";
+import { ISearchableOptions } from "../models/ISearchableOptions";
+import { Post } from "../models/Post";
 import { api } from "./api";
 
 async function getById(id: number | string) {
@@ -23,7 +26,16 @@ function create(data: CreatePostPayload) {
   return api.post("/post", data);
 }
 
+function getAll(options?: ISearchableOptions) {
+  return api.get<IPaginatedResponse<Post>>("/posts", {
+    params: {
+      ...options,
+    },
+  });
+}
+
 export const postService = {
-  getById,
   create,
+  getAll,
+  getById,
 };

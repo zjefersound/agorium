@@ -146,8 +146,23 @@ class Post
             'content' => $this->getContent(),
             'createdAt' => $this->getCreatedAt()->format(DateTimeImmutable::ATOM),
             'updatedAt' => $this->getUpdatedAt()?->format(DateTimeImmutable::ATOM),
-            'user' => $this->getUser()->getId(),
-            'category' => $this->getCategory()->getId(),
+            'user' => [
+                'id' => $this->getUser()->getId(),
+                'username' => $this->getUser()->getUsername(),
+                'fullName' => $this->getUser()->getFullName(),
+                'avatar' => $this->getUser()->getAvatar(),
+            ],
+            'userId' => $this->getUser()->getId(),
+            'category' =>  [
+                'id' => $this->getCategory()->getId(),
+                'name' => $this->getCategory()->getName(),
+                'description' => $this->getCategory()->getDescription(),
+            ],
+            'categoryId' => $this->getCategory()->getId(),
+            'tags' => array_map(fn($tag) => [
+                'id' => $tag->getId(),
+                'name' => $tag->getName(),
+            ], $this->getTags()->toArray()),
             'favoriteComment' => $this->getFavoriteComment()?->getId(),
         ];
     }

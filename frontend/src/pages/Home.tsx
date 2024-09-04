@@ -9,8 +9,14 @@ import { PostCard } from "../components/shared/PostCard";
 import { MdOutlineCheckCircleOutline, MdOutlineWhatshot } from "react-icons/md";
 import { RxArrowTopRight, RxClock } from "react-icons/rx";
 import { SmallTabs } from "../components/ui/SmallTabs";
+import { usePosts } from "../hooks/resources/usePosts";
+import { useEffect } from "react";
 
 export function Home() {
+  const { posts, fetchPosts } = usePosts();
+  useEffect(() => {
+    fetchPosts();
+  }, []);
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -54,7 +60,7 @@ export function Home() {
               },
             ]}
           />
-          {mockedPosts.map((post) => (
+          {posts.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
         </div>
