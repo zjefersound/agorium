@@ -21,18 +21,24 @@ import {
 import { CommentCard } from "../components/shared/CommentCard";
 import { GoBack } from "../components/ui/GoBack";
 import { useAuth } from "../hooks/useAuth";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useToast } from "../hooks/useToast";
 import { Empty } from "../components/ui/Empty";
 import { MarkdownPreview } from "../components/ui/MarkdownPreview";
+import { Post } from "../models/Post";
+import { postService } from "../services/postService";
+import { AxiosError } from "axios";
+import { TOAST_MESSAGES } from "../constants/toastMessages";
+import { ContentSkeleton } from "../components/ui/ContentSkeleton";
 
-export function Post() {
+export function PostPage() {
   const { launchToast } = useToast();
   const { user } = useAuth();
   const { id } = useParams();
-  const post = mockedPosts.find((p) => String(p.id) === id) || mockedPosts[0];
+  const [loadingPost, setLoadingPost] = useState(true);
+  const [post, setPost] = useState<Post | null>(null);
 
-  const isAuthor = useMemo(() => user!.id === post.user.id, [user, post]);
+  const isAuthor = useMemo(() => user!.id === post?.user.id, [user, post]);
   const handleShare = useCallback(() => {
     navigator.clipboard.writeText(window.location.href);
     launchToast({
@@ -43,6 +49,38 @@ export function Post() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (!id) return;
+    setLoadingPost(true);
+    postService
+      .getById(id)
+      .then((res) => {
+        setPost(res.data);
+      })
+      .catch((error: AxiosError) => {
+        if (error.status !== 404) {
+          launchToast({
+            color: "danger",
+            title: TOAST_MESSAGES.common.unexpectedErrorTitle,
+            description: TOAST_MESSAGES.common.unexpectedErrorDescription,
+          });
+        }
+      })
+      .finally(() => setLoadingPost(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+  if (loadingPost) return <ContentSkeleton />
+  if (!post) return <Empty>
+    <p className="to-amber-100 font-bold mb-3 text-center">
+      Post not found
+    </p>
+    <Text asChild>
+      <span className="text-center mb-6">
+        Get a coffe, check the URL then try again 😉
+      </span>
+    </Text>
+    <GoBack to="/" />
+  </Empty>
   return (
     <Content.Root>
       <Content.Sidebar>

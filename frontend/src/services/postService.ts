@@ -1,19 +1,10 @@
-import { mockedPosts } from "../examples/mocks/mocks";
 import { IPaginatedResponse } from "../models/IPaginatedResponse";
 import { ISearchableOptions } from "../models/ISearchableOptions";
 import { Post } from "../models/Post";
 import { api } from "./api";
 
 async function getById(id: number | string) {
-  await new Promise((resolve) => setTimeout(resolve, 300));
-  const post = mockedPosts.find((p) => String(p.id) === id);
-  if (!post)
-    return Promise.reject({
-      status: 404,
-    });
-  return Promise.resolve({
-    data: post,
-  });
+  return api.get<Post>(`/post/${id}`);
 }
 
 export type CreatePostPayload = {

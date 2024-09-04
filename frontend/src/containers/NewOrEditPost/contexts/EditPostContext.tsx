@@ -107,8 +107,6 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
         });
       })
       .catch((error: AxiosError) => {
-        console.log(error);
-
         if (error.status === 404) {
           launchToast({
             color: "danger",
@@ -124,6 +122,7 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
         }
       })
       .finally(() => setLoadingPost(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const values = useMemo(
@@ -138,6 +137,7 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
       handleChangeContent,
       initialContent,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       data,
       disabled,

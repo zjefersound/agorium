@@ -67,6 +67,7 @@ export function usePaginatedResource<T>({
       })
       .catch((error) => console.error("Failed to fetch " + alias, error))
       .finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { data, pagination, fetchData, loading };
