@@ -6,6 +6,8 @@ import { useResource } from "../hooks/useResource";
 import { useEffect } from "react";
 import { Empty } from "../components/ui/Empty";
 import { Text } from "../components/ui/Text";
+import { Skeleton } from "../components/ui/Skeleton";
+import { PostCardSkeleton } from "../components/shared/skeletons/PostCardSkeleton";
 
 export function HomeContent() {
   const { postsResource } = useResource();
@@ -13,6 +15,14 @@ export function HomeContent() {
     postsResource.fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  if (postsResource.loading) {
+    return <div className="flex flex-col space-y-6">
+      <Skeleton className="h-8 w-[200px]" />
+      <PostCardSkeleton />
+      <PostCardSkeleton />
+      <PostCardSkeleton />
+    </div>
+  }
   return (
     <div className="flex flex-col space-y-6">
       <SmallTabs
