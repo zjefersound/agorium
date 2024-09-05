@@ -146,23 +146,11 @@ class Post
             'content' => $this->getContent(),
             'createdAt' => $this->getCreatedAt()->format(DateTimeImmutable::ATOM),
             'updatedAt' => $this->getUpdatedAt()?->format(DateTimeImmutable::ATOM),
-            'user' => [
-                'id' => $this->getUser()->getId(),
-                'username' => $this->getUser()->getUsername(),
-                'fullName' => $this->getUser()->getFullName(),
-                'avatar' => $this->getUser()->getAvatar(),
-            ],
+            'user' => $this->getUser()->jsonSerializePublic(),
             'userId' => $this->getUser()->getId(),
-            'category' =>  [
-                'id' => $this->getCategory()->getId(),
-                'name' => $this->getCategory()->getName(),
-                'description' => $this->getCategory()->getDescription(),
-            ],
+            'category' => $this->getCategory()->jsonSerialize(),
             'categoryId' => $this->getCategory()->getId(),
-            'tags' => array_map(fn($tag) => [
-                'id' => $tag->getId(),
-                'name' => $tag->getName(),
-            ], $this->getTags()->toArray()),
+            'tags' => array_map(fn($tag) => $tag->jsonSerialize(), $this->getTags()->toArray()),
             'favoriteComment' => $this->getFavoriteComment()?->getId(),
         ];
     }
