@@ -29,7 +29,8 @@ import { Post } from "../models/Post";
 import { postService } from "../services/postService";
 import { AxiosError } from "axios";
 import { TOAST_MESSAGES } from "../constants/toastMessages";
-import { ContentSkeleton } from "../components/ui/ContentSkeleton";
+import { ContentSkeleton } from "../components/shared/skeletons/ContentSkeleton";
+import { PostNotFound } from "../components/shared/fallbacks/PostNotFound";
 
 export function PostPage() {
   const { launchToast } = useToast();
@@ -69,18 +70,8 @@ export function PostPage() {
       .finally(() => setLoadingPost(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-  if (loadingPost) return <ContentSkeleton />
-  if (!post) return <Empty>
-    <p className="to-amber-100 font-bold mb-3 text-center">
-      Post not found
-    </p>
-    <Text asChild>
-      <span className="text-center mb-6">
-        Get a coffe, check the URL then try again 😉
-      </span>
-    </Text>
-    <GoBack to="/" />
-  </Empty>
+  if (loadingPost) return <ContentSkeleton />;
+  if (!post) return <PostNotFound />;
   return (
     <Content.Root>
       <Content.Sidebar>

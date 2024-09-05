@@ -1,8 +1,8 @@
-import { Content } from "../layout/Content";
-import { NavigationCard } from "../shared/NavigationCard";
-import { PostCardSkeleton } from "../shared/skeletons/PostCardSkeleton";
-import { Card } from "./Card";
-import { Skeleton } from "./Skeleton";
+import { Content } from "../../layout/Content";
+import { Card } from "../../ui/Card";
+import { Skeleton } from "../../ui/Skeleton";
+import { NavigationCard } from "../NavigationCard";
+import { PostCardSkeleton } from "./PostCardSkeleton";
 
 export function ContentSkeleton() {
   return (

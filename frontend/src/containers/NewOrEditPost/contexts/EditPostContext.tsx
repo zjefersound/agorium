@@ -20,13 +20,11 @@ import { useAuth } from "../../../hooks/useAuth";
 import { Alert } from "../../../components/ui/Alert";
 import { Post } from "../../../models/Post";
 import { postService } from "../../../services/postService";
-import { ContentSkeleton } from "../../../components/ui/ContentSkeleton";
+import { ContentSkeleton } from "../../../components/shared/skeletons/ContentSkeleton";
 import { useToast } from "../../../hooks/useToast";
 import { AxiosError } from "axios";
 import { TOAST_MESSAGES } from "../../../constants/toastMessages";
-import { Empty } from "../../../components/ui/Empty";
-import { Text } from "../../../components/ui/Text";
-import { GoBack } from "../../../components/ui/GoBack";
+import { PostNotFound } from "../../../components/shared/fallbacks/PostNotFound";
 
 interface EditPostProviderProps {
   children: React.ReactNode;
@@ -107,13 +105,7 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
         });
       })
       .catch((error: AxiosError) => {
-        if (error.status === 404) {
-          launchToast({
-            color: "danger",
-            title: TOAST_MESSAGES.Post.notFoundTitle,
-            description: TOAST_MESSAGES.Post.notFoundDescription,
-          });
-        } else {
+        if (error.status !== 404) {
           launchToast({
             color: "danger",
             title: TOAST_MESSAGES.common.unexpectedErrorTitle,
@@ -149,33 +141,24 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
     ],
   );
 
+  if (loadingPost) return <ContentSkeleton />;
+  if (!post) return <PostNotFound />;
+
+  if (post && post.user.id !== user?.id)
+    return (
+      <div className="p-8">
+        <Alert color="warning">
+          You're not the owner of this post.{" "}
+          <Link to={`/post/${id}`} className="underline">
+            Go back to the post.
+          </Link>
+        </Alert>
+      </div>
+    );
+
   return (
     <EditPostContext.Provider value={values}>
-      {loadingPost && <ContentSkeleton />}
-      {!loadingPost && post && post.user.id !== user?.id && (
-        <div className="p-8">
-          <Alert color="warning">
-            You're not the owner of this post.{" "}
-            <Link to={`/post/${id}`} className="underline">
-              Go back to the post.
-            </Link>
-          </Alert>
-        </div>
-      )}
-      {!loadingPost && !post && (
-        <Empty>
-          <p className="to-amber-100 font-bold mb-3 text-center">
-            Post not found
-          </p>
-          <Text asChild>
-            <span className="text-center mb-6">
-              Get a coffe, check the URL then try again 😉
-            </span>
-          </Text>
-          <GoBack to={`/post/${id}`} />
-        </Empty>
-      )}
-      {post?.user.id === user?.id && children}
+      {children}
     </EditPostContext.Provider>
   );
 };
