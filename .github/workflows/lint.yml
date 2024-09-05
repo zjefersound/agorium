@@ -1,0 +1,28 @@
+name: Run Lint on Pull Request
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.15.1"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Linter
+        run: npm run lint
