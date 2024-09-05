@@ -11,12 +11,13 @@ export function HomeContent() {
   const { postsResource } = useResource();
   useEffect(() => {
     postsResource.fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="flex flex-col space-y-6">
       <SmallTabs
         value="new"
-        onChange={() => {}}
+        onChange={() => { }}
         options={[
           { Icon: RxClock, label: "New", value: "new" },
           { Icon: RxArrowTopRight, label: "Top", value: "top" },

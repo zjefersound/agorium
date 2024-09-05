@@ -23,6 +23,7 @@ export function Search() {
   useEffect(() => {
     if (!term) return;
     postsResource.fetchData({ term });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [term]);
   return (
     <Content.Root>
