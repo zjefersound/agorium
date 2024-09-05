@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { useSmartForm } from "../../../components/form/SmartForm/hooks/useSmartForm";
-import { postFields } from "../constants/postFields";
+import { PostFields, postFields } from "../constants/postFields";
 import {
   FormFields,
   FormValue,
@@ -19,12 +19,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { Alert } from "../../../components/ui/Alert";
 import { Post } from "../../../models/Post";
-import { postService } from "../../../services/postService";
+import { PostPayload, postService } from "../../../services/postService";
 import { ContentSkeleton } from "../../../components/shared/skeletons/ContentSkeleton";
 import { useToast } from "../../../hooks/useToast";
 import { AxiosError } from "axios";
 import { TOAST_MESSAGES } from "../../../constants/toastMessages";
 import { PostNotFound } from "../../../components/shared/fallbacks/PostNotFound";
+import { IApiErrorResponse } from "../../../models/IApiErrorResponse";
 
 interface EditPostProviderProps {
   children: React.ReactNode;
@@ -55,9 +56,32 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
 
   const navigate = useNavigate();
 
-  const handleSavePost = async (data: FormFields) => {
-    console.log(data);
-    navigate("/");
+  const handleSavePost = async (data: PostFields) => {
+    if (!id) return;
+    const payload: PostPayload = {
+      title: data.title,
+      content: data.content,
+      categoryId: Number(data.categoryId),
+      tags: data.tags.split(" "),
+    };
+    postService
+      .update(id, payload)
+      .then(() => {
+        launchToast({
+          title: TOAST_MESSAGES.Post.createdTitle,
+          description: TOAST_MESSAGES.Post.createdDescription,
+        });
+        navigate(`/post/${id}`);
+      })
+      .catch((err: AxiosError<IApiErrorResponse>) => {
+        launchToast({
+          title: TOAST_MESSAGES.Post.createErrorTitle,
+          description:
+            typeof err.response?.data.error === "string"
+              ? err.response?.data.error
+              : TOAST_MESSAGES.Post.createErrorDescription,
+        });
+      });
   };
 
   const {
