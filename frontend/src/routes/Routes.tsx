@@ -11,7 +11,7 @@ import { Layout } from "../components/layout/Layout";
 import { Login } from "../pages/Login";
 import { Home } from "../pages/Home";
 import { Signup } from "../pages/Signup";
-import { PostPage } from "../pages/Post";
+import { PostPage } from "../pages/PostPage";
 import { Categories } from "../pages/Categories";
 import { Tags } from "../pages/Tags";
 import { NewPost } from "../pages/NewPost";
