@@ -10,11 +10,21 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import { useResource } from "../hooks/useResource";
+import { useEffect } from "react";
+import { Empty } from "../components/ui/Empty";
+import { Text } from "../components/ui/Text";
 
 export function Search() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const query = searchParams.get("text");
+  const { postsResource } = useResource();
+  const term = searchParams.get("text");
+  useEffect(() => {
+    if (!term) return;
+    postsResource.fetchData({ term });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [term]);
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -44,20 +54,20 @@ export function Search() {
       </Content.Sidebar>
       <Content.Main>
         <div className="flex flex-col space-y-6">
-          {query && (
+          {term && (
             <div>
-              Showing results for "<strong>{query}</strong>"
+              Showing results for "<strong>{term}</strong>"
             </div>
           )}
           <div className="flex justify-between items-center">
-            <span>34 Posts</span>
+            <span>{postsResource.pagination.total} Posts</span>
             <ButtonGroup
               value={searchParams.get("order") ?? "relevance"}
               onChange={(value) =>
                 navigate({
                   search: createSearchParams({
                     order: value,
-                    text: query ?? "",
+                    text: term ?? "",
                   }).toString(),
                 })
               }
@@ -67,9 +77,21 @@ export function Search() {
               ]}
             />
           </div>
-          {mockedPosts.map((post) => (
+          {postsResource.data.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
+          {!postsResource.loading && !postsResource.data.length && (
+            <Empty>
+              <p className="to-amber-100 font-bold mb-3 text-center">
+                No posts were found
+              </p>
+              <Text asChild>
+                <span className="text-center">
+                  Try searching something different :)
+                </span>
+              </Text>
+            </Empty>
+          )}
         </div>
       </Content.Main>
       <Content.Sidebar>

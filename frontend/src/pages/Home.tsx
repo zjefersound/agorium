@@ -5,10 +5,7 @@ import { PopularItemCard } from "../components/shared/PopularItemCard";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts, rankingCardItems } from "../examples/mocks/mocks";
 import { RankingCard } from "../components/shared/RankingCard";
-import { PostCard } from "../components/shared/PostCard";
-import { MdOutlineCheckCircleOutline, MdOutlineWhatshot } from "react-icons/md";
-import { RxArrowTopRight, RxClock } from "react-icons/rx";
-import { SmallTabs } from "../components/ui/SmallTabs";
+import { HomeContent } from "../containers/HomeContent";
 
 export function Home() {
   return (
@@ -39,25 +36,7 @@ export function Home() {
         />
       </Content.Sidebar>
       <Content.Main>
-        <div className="flex flex-col space-y-6">
-          <SmallTabs
-            value="new"
-            onChange={() => {}}
-            options={[
-              { Icon: RxClock, label: "New", value: "new" },
-              { Icon: RxArrowTopRight, label: "Top", value: "top" },
-              { Icon: MdOutlineWhatshot, label: "Hot", value: "hot" },
-              {
-                Icon: MdOutlineCheckCircleOutline,
-                label: "Closed",
-                value: "closed",
-              },
-            ]}
-          />
-          {mockedPosts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
+        <HomeContent />
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard

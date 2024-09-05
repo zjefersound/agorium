@@ -52,6 +52,11 @@ export const postFields: FieldConfig[] = [
       },
       {
         rule: (value) =>
+          value.split(" ").every((tag: string) => tag.length > 3),
+        message: "Each tag must have at least 3 characters",
+      },
+      {
+        rule: (value) =>
           value.split(" ").every((tag: string) => tag.length <= 30),
         message: "Each tag must be 30 characters or less",
       },

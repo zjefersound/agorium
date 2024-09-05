@@ -23,11 +23,11 @@ export function Categories() {
   const [searchParams] = useSearchParams();
   const categoriesOptions: ISelectOption[] = useMemo(
     () =>
-      categoriesResource.categories.map((c) => ({
+      categoriesResource.data.map((c) => ({
         label: c.name,
         value: String(c.id),
       })),
-    [categoriesResource.categories],
+    [categoriesResource.data],
   );
   return (
     <Content.Root>

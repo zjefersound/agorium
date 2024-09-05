@@ -26,12 +26,12 @@ export function NewPostDetailsCard() {
   const { categoriesResource } = useResource();
   const options: { [key: string]: ISelectOption[] } = useMemo(
     () => ({
-      categoryId: categoriesResource.categories.map((c) => ({
+      categoryId: categoriesResource.data.map((c) => ({
         label: c.name,
         value: String(c.id),
       })),
     }),
-    [categoriesResource.categories],
+    [categoriesResource.data],
   );
   return (
     <Card className="flex flex-col">

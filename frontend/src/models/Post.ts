@@ -19,6 +19,6 @@ export type Post = {
 
   tags?: Tag[];
   category: Category;
-  user: User;
+  user: Pick<User, "id" | "avatar" | "fullName" | "username">;
   comments?: Comment[];
 };

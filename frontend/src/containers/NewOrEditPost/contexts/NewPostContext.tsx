@@ -126,6 +126,7 @@ export const NewPostProvider = ({ children }: NewPostProviderProps) => {
       initialContent,
       draftSavedAt,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       data,
       disabled,

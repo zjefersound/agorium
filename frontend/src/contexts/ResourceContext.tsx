@@ -1,17 +1,19 @@
 import { createContext, useEffect, useMemo } from "react";
-import { useCategories } from "../hooks/resources/useCategories";
 import { useAuth } from "../hooks/useAuth";
 import { Category } from "../models/Category";
+import { Post } from "../models/Post";
+import { IPaginatedResource } from "../models/IPaginatedResource";
+import { usePaginatedResource } from "../hooks/resources/usePaginatedResource";
+import { categoryService } from "../services/categoryService";
+import { postService } from "../services/postService";
 
 interface ResourceProviderProps {
   children: React.ReactNode;
 }
 
 export interface ResourceContextType {
-  categoriesResource: {
-    categories: Category[];
-    fetchCategories: () => Promise<unknown>;
-  };
+  categoriesResource: IPaginatedResource<Category>;
+  postsResource: IPaginatedResource<Post>;
 }
 
 export const ResourceContext = createContext<ResourceContextType>(
@@ -20,13 +22,25 @@ export const ResourceContext = createContext<ResourceContextType>(
 
 export const ResourceProvider = ({ children }: ResourceProviderProps) => {
   const { authenticated } = useAuth();
-  const categoriesResource = useCategories();
-  const values = useMemo(() => ({ categoriesResource }), [categoriesResource]);
+  const categoriesResource = usePaginatedResource<Category>({
+    alias: "categories",
+    fetch: categoryService.getAll,
+  });
+  const postsResource = usePaginatedResource<Post>({
+    alias: "posts",
+    fetch: postService.getAll,
+    expiresIn: 1000 * 10, // 10 seconds
+  });
+
+  const values = useMemo(
+    () => ({ categoriesResource, postsResource }),
+    [categoriesResource, postsResource],
+  );
 
   useEffect(() => {
     if (!authenticated) return;
 
-    categoriesResource.fetchCategories();
+    categoriesResource.fetchData();
     // eslint-disable-next-line
   }, [authenticated]);
   return (

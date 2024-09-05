@@ -139,4 +139,18 @@ class User
             'avatar' => "/user/avatar/" . $this->getId()
         ];
     }
+    public function jsonSerializePublic(): array
+    {
+        $response = [
+            'id' => $this->getId(),
+            'fullName' => $this->fullName,
+            'username' => $this->username,
+        ];
+
+        if ($this->getAvatar()) {
+            $response["avatar"] = "/user/avatar/" . $this->getId();
+        }
+
+        return $response;
+    }
 }
