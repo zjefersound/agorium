@@ -3,18 +3,27 @@ import { ISearchableOptions } from "../models/ISearchableOptions";
 import { Post } from "../models/Post";
 import { api } from "./api";
 
-async function getById(id: number | string) {
-  return api.get<Post>(`/post/${id}`);
-}
-
-export type CreatePostPayload = {
+export type PostPayload = {
   title: string;
   content: string;
   categoryId: number;
   tags: string[];
 };
-function create(data: CreatePostPayload) {
+
+async function getById(id: number | string) {
+  return api.get<Post>(`/post/${id}`);
+}
+
+function create(data: PostPayload) {
   return api.post("/post", data);
+}
+
+function update(id: number | string, data: PostPayload) {
+  return api.put(`/post/${id}`, data);
+}
+
+function deletePost(id: number | string) {
+  return api.delete(`/post/${id}`);
 }
 
 function getAll(options?: ISearchableOptions) {
@@ -27,6 +36,8 @@ function getAll(options?: ISearchableOptions) {
 
 export const postService = {
   create,
+  delete: deletePost,
   getAll,
   getById,
+  update,
 };

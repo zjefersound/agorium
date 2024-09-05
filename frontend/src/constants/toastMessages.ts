@@ -12,6 +12,16 @@ export const TOAST_MESSAGES = {
     createErrorTitle: "Error creating post",
     createErrorDescription:
       "There was an issue publishing your post. Please try again.",
+    updatedTitle: "Post saved successfully",
+    updatedDescription: "Your post has been updated.",
+    updateErrorTitle: "Error updating post",
+    updateErrorDescription:
+      "There was an issue updating your post. Please try again.",
+    deletedTitle: "Post deleted successfully",
+    deletedDescription: "You post has been deleted",
+    deleteErrorTitle: "Error deleting post",
+    deleteErrorDescription:
+      "There was an issue deleting your post. Please try again.",
     notFoundTitle: "Post was not found",
     notFoundDescription: "Verify if your URL is correct and try again.",
   },

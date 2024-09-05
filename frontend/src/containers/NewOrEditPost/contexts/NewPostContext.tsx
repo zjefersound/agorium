@@ -16,7 +16,7 @@ import { FormErrors } from "../../../models/IValidationReturn";
 import { FieldConfig } from "../../../components/form/SmartField/types";
 import { debounce } from "lodash";
 import { useNavigate } from "react-router-dom";
-import { CreatePostPayload, postService } from "../../../services/postService";
+import { PostPayload, postService } from "../../../services/postService";
 import { useToast } from "../../../hooks/useToast";
 import { TOAST_MESSAGES } from "../../../constants/toastMessages";
 import { AxiosError } from "axios";
@@ -51,7 +51,7 @@ export const NewPostProvider = ({ children }: NewPostProviderProps) => {
 
   const [draftSavedAt, setDraftSavedAt] = useState(new Date());
   const handleCreatePost = async (data: PostFields) => {
-    const payload: CreatePostPayload = {
+    const payload: PostPayload = {
       title: data.title,
       content: data.content,
       categoryId: Number(data.categoryId),

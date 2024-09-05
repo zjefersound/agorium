@@ -35,7 +35,7 @@ export function AlertDialog({
           </AlertDialogPrimitive.Description>
           <div className="flex justify-end space-x-3">
             <AlertDialogPrimitive.Cancel asChild>
-              <Button color="secondary">Cancelar</Button>
+              <Button color="secondary">Cancel</Button>
             </AlertDialogPrimitive.Cancel>
             <AlertDialogPrimitive.Action asChild>
               <Button color={confirmColor} onClick={onConfirm}>
