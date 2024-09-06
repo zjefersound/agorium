@@ -82,6 +82,18 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (token) {
       api.defaults.headers.Authorization = "Bearer " + token;
+      api.interceptors.response.use(
+        (response) => response,
+        (error) => {
+          if (error.status === 401) {
+            console.warn("Unauthorized: Needs to log in again");
+            // this would be the moment to refresh the token.
+            // If there's a permission or role based auth, this shouldn't always log out.
+            handleLogout();
+          }
+          return Promise.reject(error);
+        },
+      );
       userService
         .me()
         .then((response) => {
