@@ -43,13 +43,14 @@ export function usePaginatedResource<T>({
   const fetchData = useCallback(
     async (options?: ISearchableOptions) => {
       const cacheKey = JSON.stringify(options);
-      const cachedValue = cache.data[cacheKey];
+      const cachedValue = cache.get(cacheKey);
       if (cachedValue) {
         setData(cachedValue.data);
         setPagination(cachedValue.pagination);
       }
 
-      const isNotExpired = !isDateExpired(cachedValue?.updatedAt, expiresIn);
+      const isNotExpired =
+        cachedValue && !isDateExpired(cachedValue.updatedAt, expiresIn);
 
       // if it's valid and not expired skip fetch
       if (valid && isNotExpired) return;
