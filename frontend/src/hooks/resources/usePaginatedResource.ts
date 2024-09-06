@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { ISearchableOptions } from "../../models/ISearchableOptions";
 import {
   IPaginatedResponse,
@@ -6,27 +6,13 @@ import {
 } from "../../models/IPaginatedResponse";
 import { IPaginatedResource } from "../../models/IPaginatedResource";
 import { AxiosResponse } from "axios";
-import { Dictionary } from "lodash";
+import { useCache } from "../useCache";
+import { isDateExpired } from "../../utils/isDateExpired";
 
 interface PaginatedCache<T> {
   data: T[];
   updatedAt: Date;
   pagination: PaginationResponse;
-}
-
-function useCache<T>() {
-  const CACHE_LIMIT = 10;
-  const dataCacheRef = useRef<Dictionary<T>>({});
-
-  const add = useCallback((key: string, value: T) => {
-    dataCacheRef.current[key] = value;
-    if (Object.values(dataCacheRef.current).length > CACHE_LIMIT) {
-      dataCacheRef.current = Object.entries(dataCacheRef.current)
-        .filter((_, index) => index != 1)
-        .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
-    }
-  }, []);
-  return { data: dataCacheRef.current, add };
 }
 
 export function usePaginatedResource<T>({
@@ -63,9 +49,7 @@ export function usePaginatedResource<T>({
         setPagination(cachedValue.pagination);
       }
 
-      const isNotExpired =
-        Math.abs(Number(new Date()) - Number(cachedValue?.updatedAt)) <
-        expiresIn;
+      const isNotExpired = !isDateExpired(cachedValue?.updatedAt, expiresIn);
 
       // if it's valid and not expired skip fetch
       if (valid && isNotExpired) return;
