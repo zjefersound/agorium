@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ISearchableOptions } from "../../models/ISearchableOptions";
 import {
   IPaginatedResponse,
@@ -28,11 +28,11 @@ export function usePaginatedResource<T>({
 }): IPaginatedResource<T> {
   const cache = useCache<PaginatedCache<T>>();
   const [data, setData] = useState<T[]>([]);
-  const [pagination, setPagination] = useState<PaginationResponse>({
-    currentPage: 0,
+  const pagination = useRef<PaginationResponse>({
+    currentPage: 1,
     total: 0,
     perPage: 0,
-    totalPages: 0,
+    totalPages: 1,
   });
   const [loading, setLoading] = useState(false);
   const [valid, setValid] = useState(true);
@@ -42,11 +42,19 @@ export function usePaginatedResource<T>({
   }, []);
   const fetchData = useCallback(
     async (options?: ISearchableOptions) => {
-      const cacheKey = JSON.stringify(options);
+      const cacheKey = !options
+        ? "default"
+        : JSON.stringify({
+            term: options.term,
+            sortBy: options.sortBy,
+            sortOrder: options.sortOrder,
+            limit: options.limit,
+            page: options.page,
+          });
       const cachedValue = cache.get(cacheKey);
       if (cachedValue) {
         setData(cachedValue.data);
-        setPagination(cachedValue.pagination);
+        pagination.current = cachedValue.pagination;
       }
 
       const isNotExpired =
@@ -58,8 +66,17 @@ export function usePaginatedResource<T>({
       setLoading(true);
       return fetch(options)
         .then((res) => {
-          setData(res.data.data);
-          setPagination(res.data.pagination);
+          const isLoadingNextPage =
+            res.data.pagination.currentPage ===
+            pagination.current.currentPage + 1;
+
+          if (isLoadingNextPage) {
+            setData((prev) => [...prev, ...res.data.data]);
+          } else {
+            setData(res.data.data);
+          }
+
+          pagination.current = res.data.pagination;
           cache.add(cacheKey, {
             data: res.data.data,
             pagination: res.data.pagination,
@@ -74,5 +91,11 @@ export function usePaginatedResource<T>({
     [valid],
   );
 
-  return { data, pagination, fetchData, loading, revalidate };
+  return {
+    data,
+    pagination: pagination.current,
+    fetchData,
+    loading,
+    revalidate,
+  };
 }
