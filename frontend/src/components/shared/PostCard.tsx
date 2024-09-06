@@ -22,8 +22,8 @@ export function PostCard({ post }: PostCardProps) {
         />
         <div className="space-y-2">
           <p className="font-bold tracking-wider">{post.title}</p>
-          <Markdown className="font-light text-sm line-clamp-2 [&>p>img]:mt-2 [&>p>img]:rounded-md [&>p>img]:max-h-16">
-            {post.content}
+          <Markdown className="font-light text-sm text-agorium-400 line-clamp-2 [&>p>img]:mt-2 [&>p>img]:rounded-md [&>p>img]:max-h-16">
+            {post.content.substring(0, 100)}
           </Markdown>
         </div>
         <footer className="flex items-center flex-1">
