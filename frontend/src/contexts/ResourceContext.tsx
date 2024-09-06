@@ -29,7 +29,7 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
   const postsResource = usePaginatedResource<Post>({
     alias: "posts",
     fetch: postService.getAll,
-    expiresIn: 1000 * 10, // 10 seconds
+    expiresIn: 1000 * 60 * 2, // 2 min
   });
 
   const values = useMemo(

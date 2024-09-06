@@ -21,6 +21,7 @@ import { useToast } from "../../../hooks/useToast";
 import { TOAST_MESSAGES } from "../../../constants/toastMessages";
 import { AxiosError } from "axios";
 import { IApiErrorResponse } from "../../../models/IApiErrorResponse";
+import { useResource } from "../../../hooks/useResource";
 
 interface NewPostProviderProps {
   children: React.ReactNode;
@@ -45,6 +46,7 @@ export const NewPostContext = createContext<NewPostContextType>(
 
 export const NewPostProvider = ({ children }: NewPostProviderProps) => {
   const { launchToast } = useToast();
+  const { postsResource } = useResource();
   const storedPostDraft = localStorage.getItem("postDraft");
   const draft = storedPostDraft ? JSON.parse(storedPostDraft) : undefined;
   const navigate = useNavigate();
@@ -64,6 +66,7 @@ export const NewPostProvider = ({ children }: NewPostProviderProps) => {
           title: TOAST_MESSAGES.Post.createdTitle,
           description: TOAST_MESSAGES.Post.createdDescription,
         });
+        postsResource.revalidate();
         localStorage.removeItem("postDraft");
         navigate("/");
       })

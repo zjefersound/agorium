@@ -26,6 +26,7 @@ import { AxiosError } from "axios";
 import { TOAST_MESSAGES } from "../../../constants/toastMessages";
 import { PostNotFound } from "../../../components/shared/fallbacks/PostNotFound";
 import { IApiErrorResponse } from "../../../models/IApiErrorResponse";
+import { useResource } from "../../../hooks/useResource";
 
 interface EditPostProviderProps {
   children: React.ReactNode;
@@ -51,6 +52,7 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
   const { user } = useAuth();
   const { id } = useParams();
   const { launchToast } = useToast();
+  const { postsResource } = useResource();
   const [loadingPost, setLoadingPost] = useState(true);
   const [post, setPost] = useState<Post | null>(null);
 
@@ -71,6 +73,7 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
           title: TOAST_MESSAGES.Post.createdTitle,
           description: TOAST_MESSAGES.Post.createdDescription,
         });
+        postsResource.revalidate();
         navigate(`/post/${id}`);
       })
       .catch((err: AxiosError<IApiErrorResponse>) => {
