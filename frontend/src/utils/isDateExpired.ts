@@ -5,5 +5,5 @@
  * @returns boolean
  */
 export function isDateExpired(date: Date, expiresIn: number) {
-  return !(Math.abs(Number(new Date()) - Number(date)) < expiresIn);
+  return Math.abs(Number(new Date()) - Number(date)) >= expiresIn;
 }
