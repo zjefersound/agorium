@@ -6,9 +6,11 @@ import { AlertDialog } from "../../../components/ui/AlertDialog";
 import { postService } from "../../../services/postService";
 import { useToast } from "../../../hooks/useToast";
 import { TOAST_MESSAGES } from "../../../constants/toastMessages";
+import { useResource } from "../../../hooks/useResource";
 
 export function DeletePostCard() {
   const { id } = useParams();
+  const { postsResource } = useResource();
   const navigate = useNavigate();
   const { launchToast } = useToast();
   const handleDeletePost = () => {
@@ -16,6 +18,7 @@ export function DeletePostCard() {
     postService
       .delete(id)
       .then(() => {
+        postsResource.revalidate();
         navigate("/");
         launchToast({
           title: TOAST_MESSAGES.Post.deletedTitle,

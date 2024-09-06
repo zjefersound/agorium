@@ -6,4 +6,5 @@ export interface IPaginatedResource<T> {
   fetchData: (options?: ISearchableOptions) => Promise<unknown>;
   pagination: PaginationResponse;
   loading: boolean;
+  revalidate: () => void;
 }
