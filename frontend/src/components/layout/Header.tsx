@@ -4,21 +4,35 @@ import { printFirstAndLastName } from "../../utils/printFirstAndLastName";
 import { LogoHorizontal } from "../assets/LogoHorizontal";
 import { TextInput } from "../form/TextInput";
 import { Avatar } from "../ui/Avatar";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  createSearchParams,
+  Link,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { useState } from "react";
 import { Button } from "../ui/Button";
 import { AlertDialog } from "../ui/AlertDialog";
+import { Dictionary } from "lodash";
 
 export function Header() {
   const { user, handleLogout } = useAuth();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [searchText, setSearchText] = useState(searchParams.get("text") ?? "");
   const handleSearchSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
     if (searchText) {
-      navigate("/search");
-      setSearchParams({ text: searchText });
+      const searchObject: Dictionary<string> = {
+        text: searchText,
+      };
+      if (searchParams.get("order")) {
+        searchObject.order = searchParams.get("order")!;
+      }
+      navigate({
+        pathname: "/search",
+        search: createSearchParams(searchObject).toString(),
+      });
     }
   };
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
