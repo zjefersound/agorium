@@ -43,6 +43,9 @@ class PostRepository
                 ->setParameter('search', '%' . $search->term . '%');
         }
 
+        $totalQb = clone $qb;
+        $total = (int) $totalQb->select('COUNT(c.id)')->getQuery()->getSingleScalarResult();
+
         // Sorting
         if (!empty($search->sortBy)) {
             $qb->orderBy('c.' . $search->sortBy, $search->sortOrder);
@@ -55,8 +58,6 @@ class PostRepository
         // Get paginated results
         $query = $qb->getQuery();
         $posts = $query->getResult();
-
-        $total = count($posts);
 
         return [
             'data' =>  array_map(fn($post) => $post->jsonSerialize(), $posts),
