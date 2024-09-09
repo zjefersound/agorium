@@ -31,6 +31,7 @@ import { AxiosError } from "axios";
 import { TOAST_MESSAGES } from "../constants/toastMessages";
 import { ContentSkeleton } from "../components/shared/skeletons/ContentSkeleton";
 import { PostNotFound } from "../components/shared/fallbacks/PostNotFound";
+import { CommentEditor } from "../components/shared/CommentEditor";
 
 export function PostPage() {
   const { launchToast } = useToast();
@@ -157,6 +158,7 @@ export function PostPage() {
         <span id="comments-count" className="block">
           {post.comments?.length || 0} comment(s)
         </span>
+        <CommentEditor value="" onChange={() => { }} />
         {!post.comments?.length && (
           <Empty>
             <p className="to-amber-100 font-bold mb-3 text-center">
