@@ -16,11 +16,13 @@ interface CommentCardProps {
   comment: Comment;
   favorite?: boolean;
   isPostAuthor?: boolean;
+  onReply: (comment: Comment) => void;
 }
 export function CommentCard({
   comment,
   favorite,
   isPostAuthor,
+  onReply,
 }: CommentCardProps) {
   const { user } = useAuth();
   const isAuthor = useMemo(
@@ -50,7 +52,7 @@ export function CommentCard({
         <Button size="sm" color={comment.voted ? "primary" : "secondary"}>
           <MdArrowUpward className="mr-2 size-5" /> {comment.totalUpvotes}
         </Button>
-        <Button size="sm" color="secondary">
+        <Button size="sm" color="secondary" onClick={() => onReply(comment)}>
           <MdOutlineReply className="mr-2 size-5" /> Reply
         </Button>
         {!isPostAuthor && favorite && (

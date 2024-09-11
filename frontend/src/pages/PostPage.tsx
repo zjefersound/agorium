@@ -32,6 +32,8 @@ import { TOAST_MESSAGES } from "../constants/toastMessages";
 import { ContentSkeleton } from "../components/shared/skeletons/ContentSkeleton";
 import { PostNotFound } from "../components/shared/fallbacks/PostNotFound";
 import { CommentEditor } from "../components/shared/CommentEditor";
+import { Comment } from "../models/Comment";
+import { CommentPayload, commentService } from "../services/commentService";
 
 export function PostPage() {
   const { launchToast } = useToast();
@@ -71,6 +73,20 @@ export function PostPage() {
       .finally(() => setLoadingPost(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  const [commentToReply, setCommentToReply] = useState<null | Comment>(null);
+  const handleCreateComment = async (content: string) => {
+    if (!post) return;
+    const payload: CommentPayload = {
+      content,
+    };
+    if (commentToReply) {
+      payload.parentCommentId = commentToReply.id;
+    }
+
+    return commentService.create(post.id, payload);
+  };
+
   if (loadingPost) return <ContentSkeleton />;
   if (!post) return <PostNotFound />;
   return (
@@ -158,7 +174,11 @@ export function PostPage() {
         <span id="comments-count" className="block">
           {post.comments?.length || 0} comment(s)
         </span>
-        <CommentEditor value="" onChange={() => { }} />
+        <CommentEditor
+          comment={commentToReply}
+          onRemoveComment={() => setCommentToReply(null)}
+          onSubmit={handleCreateComment}
+        />
         {!post.comments?.length && (
           <Empty>
             <p className="to-amber-100 font-bold mb-3 text-center">
@@ -171,12 +191,13 @@ export function PostPage() {
             </Text>
           </Empty>
         )}
-        {post.comments?.map((comment) => (
+        {mockedPosts[0].comments?.map((comment) => (
           <CommentCard
             key={comment.id}
             favorite={comment.id === post.favoriteCommentId}
             comment={comment}
             isPostAuthor={isAuthor}
+            onReply={setCommentToReply}
           />
         ))}
       </Content.Main>
