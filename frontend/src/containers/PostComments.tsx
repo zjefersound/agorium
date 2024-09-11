@@ -22,6 +22,7 @@ function PostComments({
     useCommentManager(postId);
   const handleRemoveCommentToReply = useCallback(
     () => setCommentToReply(null),
+    // eslint-disable-next-line
     [],
   );
   return (
