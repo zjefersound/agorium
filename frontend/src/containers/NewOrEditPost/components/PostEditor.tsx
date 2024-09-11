@@ -28,12 +28,15 @@ function PostEditor({
       </div>
       <FieldError message={error} />
 
-      <TextEditor
-        markdown={value}
-        placeholder="Ask a question, share your thoughts, bring interesting discussions..."
-        className="flex flex-col flex-1"
-        onChange={onChange}
-      />
+      <div
+        className="flex flex-col flex-1 overflow-auto bg-agorium-800 ring-1 ring-agorium-700 rounded-md"
+      >
+        <TextEditor
+          markdown={value}
+          placeholder="Ask a question, share your thoughts, bring interesting discussions..."
+          onChange={onChange}
+        />
+      </div>
     </div>
   );
 }

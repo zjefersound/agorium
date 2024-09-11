@@ -6,11 +6,12 @@ import { Text } from "../ui/Text";
 import { MdArrowUpward, MdOutlineModeComment } from "react-icons/md";
 import Markdown from "react-markdown";
 import { AuthorOverview } from "./AuthorOverview";
+import { memo } from "react";
 
 interface PostCardProps {
   post: Post;
 }
-export function PostCard({ post }: PostCardProps) {
+function PostCard({ post }: PostCardProps) {
   return (
     <Link to={`/post/${post.id}`}>
       <Card className="space-y-4">
@@ -53,3 +54,6 @@ export function PostCard({ post }: PostCardProps) {
     </Link>
   );
 }
+
+const MemoizedPostCard = memo(PostCard);
+export { MemoizedPostCard as PostCard };
