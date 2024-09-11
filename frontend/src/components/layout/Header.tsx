@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Button } from "../ui/Button";
 import { AlertDialog } from "../ui/AlertDialog";
 import { Dictionary } from "lodash";
+import { DrawerMenu } from "../shared/DrawerMenu";
 
 export function Header() {
   const { user, handleLogout } = useAuth();
@@ -43,7 +44,7 @@ export function Header() {
       <Link to={"/"}>
         <LogoHorizontal />
       </Link>
-      <TextInput.Root className=" w-min min-w-[500px] max-w-full">
+      <TextInput.Root className="hidden md:flex w-min min-w-[500px] max-w-full">
         <TextInput.Icon>
           <MdOutlineSearch />
         </TextInput.Icon>
@@ -55,12 +56,12 @@ export function Header() {
         />
       </TextInput.Root>
       <div className="flex">
-        <Link to="/new-post" className="mr-6">
+        <Link to="/new-post" className="mr-6 max-md:hidden">
           <Button>
             <MdAdd className="size-6 mr-2" /> Create
           </Button>
         </Link>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 max-md:hidden">
           <Avatar name={user!.fullName} url={user!.avatar} />
           <p
             title={user!.fullName}
@@ -79,6 +80,12 @@ export function Header() {
             </Button>
           </AlertDialog>
         </div>
+        <Link to="/new-post" className="mr-3 flex md:hidden">
+          <Button size="sm">
+            <MdAdd className="size-6" />
+          </Button>
+        </Link>
+        <DrawerMenu />
       </div>
     </header>
   );
