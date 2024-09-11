@@ -8,7 +8,7 @@ import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
 import { AuthorOverview } from "./AuthorOverview";
 import { Text } from "../ui/Text";
-import { useMemo } from "react";
+import { memo, useMemo } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { MarkdownPreview } from "../ui/MarkdownPreview";
 
@@ -18,7 +18,7 @@ interface CommentCardProps {
   isPostAuthor?: boolean;
   onReply: (comment: Comment) => void;
 }
-export function CommentCard({
+function CommentCard({
   comment,
   favorite,
   isPostAuthor,
@@ -76,3 +76,5 @@ export function CommentCard({
     </Card>
   );
 }
+const MemoizedCommentCard = memo(CommentCard);
+export { MemoizedCommentCard as CommentCard };
