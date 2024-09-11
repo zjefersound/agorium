@@ -82,10 +82,7 @@ function CommentEditor({
               </button>
             </div>
           )}
-          <div
-            className="flex flex-col bg-agorium-800 border-[1px] border-agorium-700 rounded-md"
-            tabIndex={0}
-          >
+          <div className="flex flex-col bg-agorium-800 border-[1px] border-agorium-700 rounded-md">
             <div className="transition-[.3s] max-h-[280px] overflow-auto">
               <TextEditor
                 markdown=""
