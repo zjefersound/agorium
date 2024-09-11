@@ -6,7 +6,7 @@ export type CommentPayload = {
 function create(postId: number, payload: CommentPayload) {
   console.log([`/post/${postId}/comment`, payload]);
 
-  return Promise.resolve([`/post/${postId}/comment`, payload]);
+  return Promise.resolve();
 }
 
 export const commentService = {

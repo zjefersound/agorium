@@ -75,17 +75,20 @@ export function PostPage() {
   }, [id]);
 
   const [commentToReply, setCommentToReply] = useState<null | Comment>(null);
-  const handleCreateComment = async (content: string) => {
-    if (!post) return;
-    const payload: CommentPayload = {
-      content,
-    };
-    if (commentToReply) {
-      payload.parentCommentId = commentToReply.id;
-    }
+  const handleCreateComment = useCallback(
+    async (content: string) => {
+      if (!post) return;
+      const payload: CommentPayload = {
+        content,
+      };
+      if (commentToReply) {
+        payload.parentCommentId = commentToReply.id;
+      }
 
-    return commentService.create(post.id, payload);
-  };
+      return commentService.create(post.id, payload);
+    },
+    [commentToReply, post],
+  );
 
   if (loadingPost) return <ContentSkeleton />;
   if (!post) return <PostNotFound />;
