@@ -6,25 +6,20 @@ import { SimpleUserCard } from "../components/shared/SimpleUserCard";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts } from "../examples/mocks/mocks";
 import { Card } from "../components/ui/Card";
-import { Text } from "../components/ui/Text";
 import { Tag } from "../components/ui/Tag";
 import { Heading } from "../components/ui/Heading";
-import { CommentCard } from "../components/shared/CommentCard";
 import { GoBack } from "../components/ui/GoBack";
 import { useAuth } from "../hooks/useAuth";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useToast } from "../hooks/useToast";
-import { Empty } from "../components/ui/Empty";
 import { Post } from "../models/Post";
 import { postService } from "../services/postService";
 import { AxiosError } from "axios";
 import { TOAST_MESSAGES } from "../constants/toastMessages";
 import { ContentSkeleton } from "../components/shared/skeletons/ContentSkeleton";
 import { PostNotFound } from "../components/shared/fallbacks/PostNotFound";
-import { CommentEditor } from "../components/shared/CommentEditor";
-import { Comment } from "../models/Comment";
-import { CommentPayload, commentService } from "../services/commentService";
 import { PostContent } from "../containers/PostContent";
+import { PostComments } from "../containers/PostComments";
 
 export function PostPage() {
   const { launchToast } = useToast();
@@ -32,7 +27,6 @@ export function PostPage() {
   const { id } = useParams();
   const [loadingPost, setLoadingPost] = useState(true);
   const [post, setPost] = useState<Post | null>(null);
-
   const isAuthor = useMemo(() => user!.id === post?.user.id, [user, post]);
 
   useEffect(() => {
@@ -55,22 +49,6 @@ export function PostPage() {
       .finally(() => setLoadingPost(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-
-  const [commentToReply, setCommentToReply] = useState<null | Comment>(null);
-  const handleCreateComment = useCallback(
-    async (content: string) => {
-      if (!post) return;
-      const payload: CommentPayload = {
-        content,
-      };
-      if (commentToReply) {
-        payload.parentCommentId = commentToReply.id;
-      }
-
-      return commentService.create(post.id, payload);
-    },
-    [commentToReply, post],
-  );
 
   if (loadingPost) return <ContentSkeleton />;
   if (!post) return <PostNotFound />;
@@ -104,35 +82,12 @@ export function PostPage() {
       <Content.Main>
         <GoBack to="/" />
         <PostContent post={post} />
-        <span id="comments-count" className="block">
-          {post.comments?.length || 0} comment(s)
-        </span>
-        <CommentEditor
-          comment={commentToReply}
-          onRemoveComment={() => setCommentToReply(null)}
-          onSubmit={handleCreateComment}
+        <PostComments
+          isAuthor={isAuthor}
+          postId={post.id}
+          comments={mockedPosts[0].comments!}
+          favoriteCommentId={post.favoriteCommentId}
         />
-        {!post.comments?.length && (
-          <Empty>
-            <p className="to-amber-100 font-bold mb-3 text-center">
-              No comments were found
-            </p>
-            <Text asChild>
-              <span className="text-center">
-                Be the first to share your thoughts
-              </span>
-            </Text>
-          </Empty>
-        )}
-        {mockedPosts[0].comments?.map((comment) => (
-          <CommentCard
-            key={comment.id}
-            favorite={comment.id === post.favoriteCommentId}
-            comment={comment}
-            isPostAuthor={isAuthor}
-            onReply={setCommentToReply}
-          />
-        ))}
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard
