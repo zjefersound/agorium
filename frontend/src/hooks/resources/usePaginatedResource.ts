@@ -71,17 +71,23 @@ export function usePaginatedResource<T>({
             pagination.current.currentPage + 1;
 
           if (isLoadingNextPage) {
-            setData((prev) => [...prev, ...res.data.data]);
+            setData((prev) => {
+              cache.add(cacheKey, {
+                data: [...prev, ...res.data.data],
+                pagination: res.data.pagination,
+                updatedAt: new Date(),
+              });
+              return [...prev, ...res.data.data];
+            });
           } else {
             setData(res.data.data);
+            cache.add(cacheKey, {
+              data: res.data.data,
+              pagination: res.data.pagination,
+              updatedAt: new Date(),
+            });
           }
-
           pagination.current = res.data.pagination;
-          cache.add(cacheKey, {
-            data: res.data.data,
-            pagination: res.data.pagination,
-            updatedAt: new Date(),
-          });
           setValid(true);
         })
         .catch((error) => console.error("Failed to fetch " + alias, error))
