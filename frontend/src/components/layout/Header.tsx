@@ -44,7 +44,7 @@ export function Header() {
       <Link to={"/"}>
         <LogoHorizontal />
       </Link>
-      <TextInput.Root className="hidden md:flex w-min min-w-[500px] max-w-full">
+      <TextInput.Root className="hidden lg:flex w-min min-w-[500px] max-w-full">
         <TextInput.Icon>
           <MdOutlineSearch />
         </TextInput.Icon>

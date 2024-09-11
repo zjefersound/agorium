@@ -12,6 +12,7 @@ export function DrawerMenu() {
 
   useEffect(() => {
     setOpen(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   return (

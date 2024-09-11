@@ -59,15 +59,15 @@
 /* md */
 @media (min-width: 768px) {
   :root {
-    --left-bar-width: 260px;
     --main-content-padding-x: 1.5rem;
+    --right-bar-width: 300px;
   }
 }
 
 /* lg */
 @media (min-width: 1024px) {
   :root {
-    --right-bar-width: 300px;
+    --left-bar-width: 260px;
   }
 }
 
