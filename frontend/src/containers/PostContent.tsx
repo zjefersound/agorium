@@ -80,7 +80,7 @@ function PostContent({ post }: PostContentProps) {
         </Button>
         <Button color="secondary" size="sm">
           <MdOutlineModeComment className="size-5 mr-2" />
-          {post.comments?.length || 0}
+          {post.comments?.length ?? 0}
         </Button>
         <Button color="secondary" size="sm" onClick={handleShare}>
           <MdOutlineShare className="size-5 mr-2" />
