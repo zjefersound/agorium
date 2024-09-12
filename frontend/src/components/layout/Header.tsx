@@ -1,7 +1,6 @@
 import { MdAdd, MdLogout, MdOutlineSearch } from "react-icons/md";
 import { useAuth } from "../../hooks/useAuth";
 import { printFirstAndLastName } from "../../utils/printFirstAndLastName";
-import { LogoHorizontal } from "../assets/LogoHorizontal";
 import { TextInput } from "../form/TextInput";
 import { Avatar } from "../ui/Avatar";
 import {
@@ -15,6 +14,8 @@ import { Button } from "../ui/Button";
 import { AlertDialog } from "../ui/AlertDialog";
 import { Dictionary } from "lodash";
 import { DrawerMenu } from "../shared/DrawerMenu";
+import clsx from "clsx";
+import { Logo } from "../assets/Logo";
 
 export function Header() {
   const { user, handleLogout } = useAuth();
@@ -40,19 +41,45 @@ export function Header() {
     setSearchText(e.target.value);
   };
   return (
-    <header className="h-[var(--header-height)] shrink-0 bg-agorium-800 sticky top-0 z-10 flex items-center justify-between px-[var(--page-padding-x)]">
+    <header className="h-[var(--header-height)] shrink-0 bg-agorium-800 sticky top-0 z-10 flex items-center justify-between gap-x-3 px-[var(--page-padding-x)]">
       <Link to={"/"}>
-        <LogoHorizontal />
+        <Logo />
       </Link>
-      <TextInput.Root className="hidden lg:flex w-min min-w-[500px] max-w-full">
-        <TextInput.Icon>
-          <MdOutlineSearch />
-        </TextInput.Icon>
-        <TextInput.Input
+      <p
+        className={clsx(
+          "font-serif font-bold text-amber-100", // always
+          "hidden", // sm
+          "md:block md:text-2xl",
+          "lg:ml-6 lg:text-[2rem]",
+        )}
+      >
+        Agorium
+      </p>
+      <TextInput.Root
+        className={clsx(
+          "ml-auto w-[44px] focus-within:w-full transition-[1s] overflow-hidden", //mobile
+          "flex lg:w-min xl:min-w-[500px] lg:max-w-full",
+        )}
+      >
+        <label
+          htmlFor="search"
+          className="flex -mx-2 px-2 -my-3 py-3 cursor-pointer"
+        >
+          <TextInput.Icon>
+            <MdOutlineSearch
+              className={clsx("size-5 shrink-0", {
+                "text-amber-100": searchText.length,
+              })}
+            />
+          </TextInput.Icon>
+        </label>
+        <input
+          id="search"
           placeholder="Search Agorium..."
           value={searchText}
           onChange={handleSearchChange}
           onKeyDown={handleSearchSubmit}
+          className="pointer-events-none focus:pointer-events-auto max-w-0 focus:max-w-full w-full outline-0 bg-transparent flex-1 text-agorium-50 text-sm placeholder:text-agorium-400"
         />
       </TextInput.Root>
       <div className="flex">
@@ -61,27 +88,31 @@ export function Header() {
             <MdAdd className="size-6 mr-2" /> Create
           </Button>
         </Link>
-        <div className="flex items-center space-x-4 max-md:hidden">
-          <Avatar name={user!.fullName} url={user!.avatar} />
-          <p
-            title={user!.fullName}
-            className="hidden md:flex flex-1 font-serif text-amber-100 max-w-52 truncate"
-          >
-            {printFirstAndLastName(user!.fullName)}
-          </p>
-          <AlertDialog
-            confirmText="Log Out"
-            title="Are you sure you want to log out?"
-            description="Any unsaved changes will be lost permanently."
-            onConfirm={handleLogout}
-          >
-            <Button color="secondary">
-              <MdLogout className="size-6 mr-2" /> Log Out
-            </Button>
-          </AlertDialog>
+        <div className="relative group">
+          <div className="flex items-center space-x-4 max-md:hidden">
+            <Avatar name={user!.fullName} url={user!.avatar} />
+            <p
+              title={user!.fullName}
+              className="hidden md:flex flex-1 font-serif text-amber-100 max-w-52 truncate"
+            >
+              {printFirstAndLastName(user!.fullName)}
+            </p>
+          </div>
+          <div className="absolute transition-[.3s] opacity-0 group-hover:opacity-100 group-hover:pointer-events-auto pointer-events-none bg-agorium-800 ring-1 ring-agorium-700 rounded-md p-3 shadow-lg">
+            <AlertDialog
+              confirmText="Log Out"
+              title="Are you sure you want to log out?"
+              description="Any unsaved changes will be lost permanently."
+              onConfirm={handleLogout}
+            >
+              <Button color="secondary">
+                <MdLogout className="size-6 mr-2" /> Log Out
+              </Button>
+            </AlertDialog>
+          </div>
         </div>
         <Link to="/new-post" className="mr-3 flex md:hidden">
-          <Button size="sm">
+          <Button>
             <MdAdd className="size-6" />
           </Button>
         </Link>
