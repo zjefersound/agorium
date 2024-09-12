@@ -1,9 +1,6 @@
 name: SonarQube Analysis for Frontend
 
 on:
-  push:
-    paths:
-      - "frontend/**"
   pull_request:
     paths:
       - "frontend/**"
