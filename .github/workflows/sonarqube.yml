@@ -30,7 +30,7 @@ jobs:
         working-directory: frontend
         run: npm run build
 
-        # Install SonarScanner
+      # Install SonarScanner
       - name: Install SonarScanner
         run: |
           curl -sSLo sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
