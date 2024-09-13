@@ -42,23 +42,23 @@ export function Header() {
   };
   return (
     <header className="h-[var(--header-height)] shrink-0 bg-agorium-800 sticky top-0 z-10 flex items-center justify-between gap-x-3 px-[var(--page-padding-x)]">
-      <Link to={"/"}>
+      <Link to={"/"} className="flex items-center">
         <Logo />
+        <p
+          className={clsx(
+            "font-serif font-bold text-amber-100", // always
+            "hidden", // sm
+            "md:block md:text-2xl md:ml-3",
+            "lg:ml-6 lg:text-[2rem]",
+          )}
+        >
+          Agorium
+        </p>
       </Link>
-      <p
-        className={clsx(
-          "font-serif font-bold text-amber-100", // always
-          "hidden", // sm
-          "md:block md:text-2xl",
-          "lg:ml-6 lg:text-[2rem]",
-        )}
-      >
-        Agorium
-      </p>
       <TextInput.Root
         className={clsx(
-          "ml-auto w-[44px] focus-within:w-full transition-[1s] overflow-hidden", //mobile
-          "flex lg:w-min xl:min-w-[500px] lg:max-w-full",
+          "max-md:max-w-[44px] max-md:ml-auto",
+          "md:max-w-[500px] focus-within:max-w-[500px] transition-[1s]",
         )}
       >
         <label
@@ -79,7 +79,11 @@ export function Header() {
           value={searchText}
           onChange={handleSearchChange}
           onKeyDown={handleSearchSubmit}
-          className="pointer-events-none focus:pointer-events-auto max-w-0 focus:max-w-full w-full outline-0 bg-transparent flex-1 text-agorium-50 text-sm placeholder:text-agorium-400"
+          className={clsx(
+            "outline-0 bg-transparent text-agorium-50 placeholder:text-agorium-400",
+            "flex-1 text-sm disabled:opacity-50 disabled:cursor-not-allowed",
+            "max-md:max-w-0 max-md:focus:max-w-full",
+          )}
         />
       </TextInput.Root>
       <div className="flex">
