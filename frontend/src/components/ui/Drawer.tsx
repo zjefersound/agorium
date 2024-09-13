@@ -8,6 +8,7 @@ interface DrawerRootProps {
   open: boolean;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 function DrawerRoot({ children, open }: DrawerRootProps) {
   return (
     <div
@@ -27,7 +28,7 @@ DrawerRoot.displayName = "Drawer.Root";
 interface DrawerHeaderProps {
   setOpen: (open: boolean) => void;
 }
-
+// eslint-disable-next-line react-refresh/only-export-components
 function DrawerHeader({ setOpen }: DrawerHeaderProps) {
   return (
     <div className="px-3 py-4 h-[var(--header-height)] flex items-center border-b-2 border-agorium-700 z-10">
@@ -45,7 +46,7 @@ interface DrawerHamburgerProps {
   setOpen: (open: boolean) => void;
   className?: string;
 }
-
+// eslint-disable-next-line react-refresh/only-export-components
 function DrawerHamburger({ setOpen, className }: DrawerHamburgerProps) {
   return (
     <div className={clsx("ml-auto", className)}>

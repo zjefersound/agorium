@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { printFirstAndLastName } from "../../utils/printFirstAndLastName";
 import { Avatar } from "../ui/Avatar";
-import { NAVIGATION_ITEMS } from "./NavigationCard";
+import { NAVIGATION_ITEMS } from "../../constants/navigationItems";
 
 export function DrawerMenu() {
   const { user } = useAuth();

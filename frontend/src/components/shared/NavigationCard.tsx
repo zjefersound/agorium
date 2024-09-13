@@ -1,34 +1,6 @@
-import {
-  MdOutlineHome,
-  MdOutlineLibraryBooks,
-  MdOutlineLocalOffer,
-  MdOutlineMilitaryTech,
-} from "react-icons/md";
+import { NAVIGATION_ITEMS } from "../../constants/navigationItems";
 import { Card } from "../ui/Card";
 import { Link } from "react-router-dom";
-
-export const NAVIGATION_ITEMS = [
-  {
-    path: "/",
-    Icon: MdOutlineHome,
-    label: "Home",
-  },
-  {
-    path: "/tags",
-    Icon: MdOutlineLocalOffer,
-    label: "Tags",
-  },
-  {
-    path: "/categories",
-    Icon: MdOutlineLibraryBooks,
-    label: "Categories",
-  },
-  {
-    path: "/rankings",
-    Icon: MdOutlineMilitaryTech,
-    label: "Rankings",
-  },
-];
 
 export function NavigationCard() {
   return (
