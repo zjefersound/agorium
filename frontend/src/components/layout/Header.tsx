@@ -50,7 +50,9 @@ export function Header() {
               >
                 {printFirstAndLastName(user!.fullName)}
               </p>
-              <span className="text-agorium-400 text-xs">{user!.username}</span>
+              <span className="text-agorium-400 text-xs">
+                @{user!.username}
+              </span>
             </div>
             <MdOutlineExpandMore className="size-5" />
           </div>

@@ -6,6 +6,7 @@ import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts, rankingCardItems } from "../examples/mocks/mocks";
 import { RankingCard } from "../components/shared/RankingCard";
 import { Card } from "../components/ui/Card";
+import { ProfileCard } from "../containers/profile/ProfileCard";
 
 export function Profile() {
   return (
@@ -36,6 +37,7 @@ export function Profile() {
         />
       </Content.Sidebar>
       <Content.Main>
+        <ProfileCard />
         <Card>User info placeholder</Card>
       </Content.Main>
       <Content.Sidebar>
