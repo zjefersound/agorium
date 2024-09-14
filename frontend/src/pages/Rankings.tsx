@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Crown } from "../components/assets/Crown";
 import { Content } from "../components/layout/Content";
 import { NavigationCard } from "../components/shared/NavigationCard";
@@ -7,7 +8,84 @@ import { Avatar } from "../components/ui/Avatar";
 import { Card } from "../components/ui/Card";
 import { GoBack } from "../components/ui/GoBack";
 import { Heading } from "../components/ui/Heading";
-
+import { users } from "../examples/mocks/mocks";
+import { MdArrowUpward } from "react-icons/md";
+function randomIntFromInterval(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+const rankingData = [
+  {
+    id: Math.random(),
+    user: users[0],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[1],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[2],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[3],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[4],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[5],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[1],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[2],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[3],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[4],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[5],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+].map((item, index) => {
+  return {
+    ...item,
+    position: index + 1,
+  };
+});
 export function Rankings() {
   return (
     <Content.Root>
@@ -43,10 +121,10 @@ export function Rankings() {
             <h2 className="text-amber-100 ml-3">{"Rankings"}</h2>
           </Heading>
         </div>
-        <Card className="flex justify-center">
+        <Card className="flex flex-col items-center">
           <div className="flex justify-center items-end w-[342px] h-[294px]">
             <div className="flex items-center flex-col">
-              <div className="w-[68px] h-[68px] top-[86px] left-[246] bg-agorium-200 p-1 rounded-full ">
+              <div className="w-[68px] h-[68px] top-[86px] left-[246] bg-agorium-200 p-1 rounded-full">
                 <Avatar
                   size="full"
                   name={"teste"}
@@ -131,8 +209,66 @@ export function Rankings() {
               </div>
             </div>
           </div>
+          <table className="w-full border-separate border-spacing-x-3 mt-6">
+            <colgroup>
+              <col span={1} className="w-6" />
+              <col span={1} className="w-[36px]" />
+              <col span={1} className="w-full" />
+              <col span={1} className="w-auto" />
+              <col span={1} className="w-auto" />
+            </colgroup>
+            <tbody>
+              {rankingData.map((item) => (
+                <tr key={item.id}>
+                  <td>
+                    <span
+                      className={clsx(
+                        "size-6 text-sm rounded-full flex items-center justify-center font-semibold",
+                        {
+                          "bg-amber-500": item.position === 1,
+                          "bg-agorium-300 text-agorium-900":
+                            item.position === 2,
+                          "bg-orange-900": item.position === 3,
+                        },
+                      )}
+                    >
+                      {item.position}
+                    </span>
+                  </td>
+                  <td>
+                    <div
+                      className={clsx("w-[36px] h-[36px] p-1 rounded-full", {
+                        "bg-amber-500": item.position === 1,
+                        "bg-agorium-300 text-agorium-900": item.position === 2,
+                        "bg-orange-900": item.position === 3,
+                        "text-agorium-400": ![1, 2, 3].includes(item.position),
+                      })}
+                    >
+                      <Avatar
+                        size="full"
+                        name={"teste"}
+                        url={
+                          "https://cdn.awsli.com.br/600x1000/2515/2515067/produto/23384010353bd9f5651.jpg"
+                        }
+                      />
+                    </div>
+                  </td>
+                  <td className="tracking-wider">{item.user.fullName}</td>
+                  <td>
+                    <span className="whitespace-nowrap flex items-center justify-end w-full tracking-wider text-agorium-400">
+                      {item.totalPosts} posts
+                    </span>
+                  </td>
+                  <td>
+                    <span className="flex items-center justify-end w-full tracking-wider text-agorium-400">
+                      <MdArrowUpward /> {item.totalUpvotes}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Card>
-        <Card>teste</Card>
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard
