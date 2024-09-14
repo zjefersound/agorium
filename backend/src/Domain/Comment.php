@@ -107,17 +107,4 @@ class Comment
         $this->parentComment = $parentComment;
         return $this;
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'content' => $this->getContent(),
-            'createdAt' => $this->getCreatedAt()->format(DateTimeImmutable::ATOM),
-            'updatedAt' => $this->getUpdatedAt()?->format(DateTimeImmutable::ATOM),
-            'post' => $this->getPost()->getId(),
-            'user' => $this->getUser()->getId(),
-            'parentComment' => $this->getParentComment()?->getId(),
-        ];
-    }
 }

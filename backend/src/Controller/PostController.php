@@ -43,8 +43,8 @@ class PostController
         if ($postId > 0) {
             $postDTO->id = $postId;
         } else {
-            $jwt = (array) $req->getAttribute("jwt");
-            $postDTO->user = $this->userService->getUserById($jwt["sub"]);
+            $userId = (int) $req->getAttribute("userId");
+            $postDTO->user = $this->userService->getUserById($userId);
         }
 
         try {
