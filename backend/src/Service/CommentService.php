@@ -73,11 +73,8 @@ class CommentService
     public function getPostComments(int $postId, ?int $commentId = null): array
     {
         $comments = $this->commentRepository->getPostComments($postId, $commentId);
-        if (!$comments) {
-            throw new Exception("No comments found for this post.");
-        }
 
-        return $comments;
+        return $comments ?? [];
     }
 
     public function deleteComment(int $commentId)
