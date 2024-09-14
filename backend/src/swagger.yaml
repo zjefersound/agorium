@@ -82,6 +82,7 @@ paths:
           description: Unauthorized
       tags:
         - user
+  /user/me/info:
     put:
       summary: Update self user details
       description: Update the logged-in user's details like full name, username, and email.

@@ -5,7 +5,7 @@ namespace App\DTO;
 use App\Trait\AutoMapper;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UserUpdateDTO
+class UserInfoUpdateDTO
 {
 	use AutoMapper;
 

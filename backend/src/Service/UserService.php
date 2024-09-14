@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Repository\UserRepository;
 use App\Domain\User;
 use App\DTO\UserSignupDTO;
-use App\DTO\UserUpdateDTO;
+use App\DTO\UserInfoUpdateDTO;
 use Exception;
 use Nyholm\Psr7\UploadedFile;
 
@@ -61,7 +61,7 @@ class UserService
         return $user;
     }
 
-    public function updateUser(int $userId, UserUpdateDTO $userUpdateDTO): User
+    public function updateUserInfo(int $userId, UserInfoUpdateDTO $userInfoUpdateDTO): User
     {
         $user = $this->userRepository->find($userId);
 
@@ -69,17 +69,17 @@ class UserService
             throw new Exception("User not found.");
         }
 
-        if ($userUpdateDTO->email !== $user->getEmail() && $this->userRepository->isEmailTaken($userUpdateDTO->email)) {
+        if ($userInfoUpdateDTO->email !== $user->getEmail() && $this->userRepository->isEmailTaken($userInfoUpdateDTO->email)) {
             throw new Exception("Email is already taken!");
         }
 
-        if ($userUpdateDTO->username !== $user->getUsername() && $this->userRepository->isUsernameTaken($userUpdateDTO->username)) {
+        if ($userInfoUpdateDTO->username !== $user->getUsername() && $this->userRepository->isUsernameTaken($userInfoUpdateDTO->username)) {
             throw new Exception("Username is already taken!");
         }
 
-        $user->setFullName($userUpdateDTO->fullName);
-        $user->setUsername($userUpdateDTO->username);
-        $user->setEmail($userUpdateDTO->email);
+        $user->setFullName($userInfoUpdateDTO->fullName);
+        $user->setUsername($userInfoUpdateDTO->username);
+        $user->setEmail($userInfoUpdateDTO->email);
         $user->setUpdatedAt(new \DateTimeImmutable());
 
         try {
