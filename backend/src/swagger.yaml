@@ -263,6 +263,151 @@ paths:
 
   #endregion
 
+  #region Comments
+
+  /post/{postId}/comments:
+    get:
+      summary: Get comments for a post
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            default: 1
+      responses:
+        "200":
+          description: List of comments retrieved
+        "404":
+          description: Post not found
+        "401":
+          description: Unauthorized
+      security:
+        - BearerAuth: []
+      tags:
+        - comment
+
+  /post/{postId}/comment:
+    post:
+      summary: Add a comment to a post
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            default: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                parentCommentId:
+                  type: integer
+                  default: 0
+      responses:
+        "201":
+          description: Comment added
+        "404":
+          description: Post not found
+        "401":
+          description: Unauthorized
+      security:
+        - BearerAuth: []
+      tags:
+        - comment
+
+  /post/{postId}/comment/{commentId}:
+    get:
+      summary: Get a comment and its children
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            default: 1
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: string
+            default: 1
+      responses:
+        "200":
+          description: Comment
+        "404":
+          description: Comment or post not found
+        "401":
+          description: Unauthorized
+      security:
+        - BearerAuth: []
+      tags:
+        - comment
+    put:
+      summary: Update a comment
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+      responses:
+        "200":
+          description: Comment updated
+        "404":
+          description: Comment or post not found
+        "401":
+          description: Unauthorized
+      security:
+        - BearerAuth: []
+      tags:
+        - comment
+    delete:
+      summary: Delete a comment
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Comment deleted
+        "404":
+          description: Comment or post not found
+        "401":
+          description: Unauthorized
+      security:
+        - BearerAuth: []
+      tags:
+        - comment
+
+  #endregion
+
   #region Categories
 
   /category:

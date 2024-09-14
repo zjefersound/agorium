@@ -34,7 +34,7 @@ class AuthMiddleware implements MiddlewareInterface
         }
 
         try {
-            $request = $request->withAttribute('jwt', $decoded);
+            $request = $request->withAttribute('userId', $decoded['sub']);
             return $handler->handle($request);
         } catch (Throwable $th) {
             return $this->internal(["error" => $th->getMessage()]);

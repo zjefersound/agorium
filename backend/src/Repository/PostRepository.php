@@ -18,8 +18,7 @@ class PostRepository
 
     public function find(int $id)
     {
-        return $this->em->getRepository(Post::class)
-            ->find($id);
+        return $this->em->getRepository(Post::class)->find($id);
     }
 
     public function save(Post $post, array $tagNames): void

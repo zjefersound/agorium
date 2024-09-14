@@ -66,8 +66,8 @@ class UserController
 
     public function getUser(Request $req)
     {
-        $jwt = (array) $req->getAttribute("jwt");
-        $user = $this->userService->getUserById($jwt["sub"]);
+        $userId = (int) $req->getAttribute("userId");
+        $user = $this->userService->getUserById($userId);
         return $this->ok($user->jsonSerialize());
     }
 
