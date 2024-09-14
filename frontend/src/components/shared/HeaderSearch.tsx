@@ -58,7 +58,7 @@ export function HeaderSearch() {
         onKeyDown={handleSearchSubmit}
         className={clsx(
           "outline-0 bg-transparent text-agorium-50 placeholder:text-agorium-400",
-          "flex-1 text-sm disabled:opacity-50 disabled:cursor-not-allowed",
+          "flex-1 text-sm disabled:opacity-50 disabled:cursor-not-allowed w-full",
           "max-md:max-w-0 max-md:focus:max-w-full",
         )}
       />

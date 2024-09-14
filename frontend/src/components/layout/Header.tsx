@@ -19,7 +19,7 @@ export function Header() {
   const { user, handleLogout } = useAuth();
 
   return (
-    <header className="h-[var(--header-height)] shrink-0 bg-agorium-800 sticky top-0 z-10 flex items-center justify-between gap-x-3 px-[var(--page-padding-x)]">
+    <header className="h-[var(--header-height)] max-w-full shrink-0 bg-agorium-800 sticky top-0 z-10 flex items-center justify-between gap-x-3 px-[var(--page-padding-x)]">
       <Link to={"/"} className="flex items-center">
         <Logo />
         <p
@@ -34,7 +34,7 @@ export function Header() {
         </p>
       </Link>
       <HeaderSearch />
-      <div className="flex">
+      <div className="flex shrink-0">
         <Link to="/new-post" className="mr-6 max-md:hidden">
           <Button>
             <MdAdd className="size-6 mr-2" /> Create
