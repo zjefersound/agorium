@@ -52,8 +52,7 @@ class UserController
 
     public function updateUserInfo(Request $req): Response
     {
-        $jwt = (array) $req->getAttribute("jwt");
-        $userId = $jwt["sub"];
+        $userId = (int) $req->getAttribute("userId");
 
         $data = (array) json_decode($req->getBody()->getContents(), true);
 
