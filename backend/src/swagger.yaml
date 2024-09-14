@@ -82,6 +82,34 @@ paths:
           description: Unauthorized
       tags:
         - user
+    put:
+      summary: Update self user details
+      description: Update the logged-in user's details like full name, username, and email.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fullName:
+                  type: string
+                  example: "John Doe"
+                username:
+                  type: string
+                  example: "johndoe"
+                email:
+                  type: string
+                  example: "johndoe@email.com"
+      responses:
+        "200":
+          description: User updated successfully
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+      tags:
+        - user
 
   /user/avatar/{id}:
     get:
