@@ -17,6 +17,7 @@ import { Tags } from "../pages/Tags";
 import { NewPost } from "../pages/NewPost";
 import { Search } from "../pages/Search";
 import { EditPost } from "../pages/EditPost";
+import { Rankings } from "../pages/Rankings";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
@@ -55,6 +56,10 @@ const routes: { [key: string]: RouteObject[] } = {
     {
       path: "/search",
       element: <Search />,
+    },
+    {
+      path: "/rankings",
+      element: <Rankings />,
     },
   ],
   publicOnly: [
