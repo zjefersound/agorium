@@ -40,13 +40,10 @@ export function PostPage() {
     setLoadingComments(true);
     commentService
       .getAll(id)
-      .then((res) => {
-        console.log(res.data);
-
-        setComments([...res.data]);
-      })
+      .then((res) => setComments(res.data))
       .finally(() => setLoadingComments(false));
   }, [id]);
+
   useEffect(() => {
     if (!id) return;
     setLoadingPost(true);
