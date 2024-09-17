@@ -1,5 +1,3 @@
-import { TextEditor } from "../../components/form/TextEditor";
-import { FieldError } from "../../components/form/FieldError";
 import {
   FormEvent,
   memo,
@@ -8,12 +6,14 @@ import {
   useRef,
   useState,
 } from "react";
-import { Button } from "../ui/Button";
-import { Card } from "../ui/Card";
 import { MdOutlineClose, MdOutlineModeComment } from "react-icons/md";
-import { Text } from "../ui/Text";
-import { Comment } from "../../models/Comment";
-import { Loading } from "../ui/Loading";
+import { Button } from "../../../components/ui/Button";
+import { Card } from "../../../components/ui/Card";
+import { Text } from "../../../components/ui/Text";
+import { Loading } from "../../../components/ui/Loading";
+import { Comment } from "../../../models/Comment";
+import { TextEditor } from "../../../components/form/TextEditor";
+import { FieldError } from "../../../components/form/FieldError";
 
 interface CommentEditorProps {
   comment?: Comment | null;

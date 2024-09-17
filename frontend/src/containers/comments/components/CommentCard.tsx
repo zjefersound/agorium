@@ -3,17 +3,17 @@ import {
   MdCheckCircleOutline,
   MdOutlineReply,
 } from "react-icons/md";
-import { Comment } from "../../models/Comment";
-import { Button } from "../ui/Button";
-import { Card } from "../ui/Card";
-import { AuthorOverview } from "./AuthorOverview";
-import { Text } from "../ui/Text";
-import { memo, useCallback, useMemo } from "react";
-import { useAuth } from "../../hooks/useAuth";
-import { MarkdownPreview } from "../ui/MarkdownPreview";
-import { ChildCommentCard } from "./ChildCommentCard";
-import { useComments } from "../../containers/comments/hooks/useComments";
+import { Card } from "../../../components/ui/Card";
+import { MarkdownPreview } from "../../../components/ui/MarkdownPreview";
+import { Text } from "../../../components/ui/Text";
+import { AuthorOverview } from "../../../components/shared/AuthorOverview";
+import { useComments } from "../hooks/useComments";
+import { Comment } from "../../../models/Comment";
+import { useAuth } from "../../../hooks/useAuth";
 import { CommentActionsDropdown } from "./CommentActionsDropdown";
+import { memo, useCallback, useMemo } from "react";
+import { Button } from "../../../components/ui/Button";
+import { ChildCommentCard } from "./ChildCommentCard";
 
 interface CommentCardProps {
   comment: Comment;

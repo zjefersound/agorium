@@ -91,7 +91,7 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
       fetchComments,
       updateComment,
     }),
-    [comments, fetchComments, deleteComment],
+    [comments, deleteComment, fetchComments, updateComment],
   );
   if (loading && comments.length === 0) return <PostCommentsSkeleton />;
 

@@ -1,10 +1,10 @@
 import { memo, useCallback } from "react";
-import { CommentCard } from "../../components/shared/CommentCard";
-import { CommentEditor } from "../../components/shared/CommentEditor";
 import { Empty } from "../../components/ui/Empty";
 import { Text } from "../../components/ui/Text";
 import { useCommentCreation } from "./hooks/useCommentCreation";
 import { useComments } from "./hooks/useComments";
+import { CommentEditor } from "./components/CommentEditor";
+import { CommentCard } from "./components/CommentCard";
 
 interface PostCommentsProps {
   postId: string | number;

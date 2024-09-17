@@ -1,12 +1,13 @@
 import { memo, useCallback, useMemo } from "react";
-import { useComments } from "../../containers/comments/hooks/useComments";
-import { useAuth } from "../../hooks/useAuth";
-import { Comment } from "../../models/Comment";
-import { Card } from "../ui/Card";
-import { MarkdownPreview } from "../ui/MarkdownPreview";
-import { Text } from "../ui/Text";
-import { AuthorOverview } from "./AuthorOverview";
+
+import { Card } from "../../../components/ui/Card";
+import { MarkdownPreview } from "../../../components/ui/MarkdownPreview";
+import { Text } from "../../../components/ui/Text";
+import { AuthorOverview } from "../../../components/shared/AuthorOverview";
 import { CommentActionsDropdown } from "./CommentActionsDropdown";
+import { useComments } from "../hooks/useComments";
+import { Comment } from "../../../models/Comment";
+import { useAuth } from "../../../hooks/useAuth";
 
 function ChildCommentCard({ comment }: { comment: Comment }) {
   const { user } = useAuth();

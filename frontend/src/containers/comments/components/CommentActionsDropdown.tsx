@@ -1,10 +1,10 @@
-import { HoverDropdown } from "../ui/HoverDropdown";
+import { AlertDialog } from "../../../components/ui/AlertDialog";
+import { HoverDropdown } from "../../../components/ui/HoverDropdown";
 import {
   MdDeleteOutline,
   MdOutlineEdit,
   MdOutlineMoreVert,
 } from "react-icons/md";
-import { AlertDialog } from "../ui/AlertDialog";
 interface CommentActionsDropdownProps {
   onDelete: () => void;
   onEdit: () => void;
