@@ -11,15 +11,15 @@ import { useAuth } from "../../../hooks/useAuth";
 
 function ChildCommentCard({ comment }: { comment: Comment }) {
   const { user } = useAuth();
-  const { deleteComment } = useComments();
+  const { deleteComment, setCommentToUpdate } = useComments();
   const isAuthor = useMemo(
     () => user!.id === comment.user!.id,
     [user, comment],
   );
 
   const handleEditComment = useCallback(() => {
-    // do the thing
-  }, []);
+    setCommentToUpdate(comment);
+  }, [comment]);
 
   const handleDeleteComment = useCallback(() => {
     deleteComment(comment.id);

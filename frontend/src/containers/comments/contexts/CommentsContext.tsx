@@ -15,6 +15,7 @@ import { useToast } from "../../../hooks/useToast";
 import { AxiosError } from "axios";
 import { IApiErrorResponse } from "../../../models/IApiErrorResponse";
 import { getApiErrorMessage } from "../../../utils/getApiErrorMessage";
+import { CommentEditModal } from "../components/CommentEditModal";
 
 interface CommentsProviderProps {
   post: Post;
@@ -25,6 +26,8 @@ export interface CommentsContextType {
   fetchComments: () => void;
   deleteComment: (commentId: string | number) => Promise<void>;
   updateComment: (commentId: string | number, content: string) => Promise<void>;
+  commentToUpdate: Comment | null;
+  setCommentToUpdate: (comment: Comment | null) => void;
 }
 
 export const CommentsContext = createContext<CommentsContextType>(
@@ -36,6 +39,7 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
   const { launchToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState<Comment[]>([]);
+  const [commentToUpdate, setCommentToUpdate] = useState<Comment | null>(null);
   const isAuthor = useMemo(() => user!.id === post.user.id, [user, post]);
 
   const fetchComments = useCallback(() => {
@@ -90,8 +94,10 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
       deleteComment,
       fetchComments,
       updateComment,
+      commentToUpdate,
+      setCommentToUpdate,
     }),
-    [comments, deleteComment, fetchComments, updateComment],
+    [comments, deleteComment, fetchComments, updateComment, commentToUpdate],
   );
   if (loading && comments.length === 0) return <PostCommentsSkeleton />;
 
@@ -102,6 +108,7 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
         isAuthor={isAuthor}
         favoriteCommentId={post.favoriteCommentId}
       />
+      <CommentEditModal />
     </CommentsContext.Provider>
   );
 };
