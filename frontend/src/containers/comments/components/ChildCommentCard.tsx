@@ -19,6 +19,7 @@ function ChildCommentCard({ comment }: { comment: Comment }) {
 
   const handleEditComment = useCallback(() => {
     setCommentToUpdate(comment);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comment]);
 
   const handleDeleteComment = useCallback(() => {

@@ -7,6 +7,7 @@ export function CommentEditModal() {
   const { commentToUpdate, setCommentToUpdate, updateComment } = useComments();
   const handleCloseModal = useCallback(() => {
     setCommentToUpdate(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = useCallback(
