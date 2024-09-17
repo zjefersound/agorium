@@ -1,9 +1,6 @@
 import {
   MdArrowUpward,
   MdCheckCircleOutline,
-  MdDeleteOutline,
-  MdOutlineEdit,
-  MdOutlineMoreVert,
   MdOutlineReply,
 } from "react-icons/md";
 import { Comment } from "../../models/Comment";
@@ -11,12 +8,12 @@ import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
 import { AuthorOverview } from "./AuthorOverview";
 import { Text } from "../ui/Text";
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { MarkdownPreview } from "../ui/MarkdownPreview";
-import { HoverDropdown } from "../ui/HoverDropdown";
-import { AlertDialog } from "../ui/AlertDialog";
 import { ChildCommentCard } from "./ChildCommentCard";
+import { useComments } from "../../containers/comments/hooks/useComments";
+import { CommentActionsDropdown } from "./CommentActionsDropdown";
 
 interface CommentCardProps {
   comment: Comment;
@@ -31,13 +28,20 @@ function CommentCard({
   onReply,
 }: CommentCardProps) {
   const { user } = useAuth();
+  const { deleteComment } = useComments();
   const isAuthor = useMemo(
     () => user!.id === comment.user!.id,
     [user, comment],
   );
-  const handleDeleteComment = () => {
+
+  const handleEditComment = useCallback(() => {
     // do the thing
-  };
+  }, []);
+
+  const handleDeleteComment = useCallback(() => {
+    deleteComment(comment.id);
+  }, [comment.id, deleteComment]);
+
   return (
     <div>
       <Card className="space-y-2">
@@ -48,30 +52,12 @@ function CommentCard({
             username={comment.user!.username}
             avatar={comment.user!.avatar}
           />
-          <HoverDropdown.Root>
-            <HoverDropdown.Trigger>
-              <div className="hover:bg-agorium-700 p-1 rounded-full">
-                <MdOutlineMoreVert className="size-6" />
-              </div>
-            </HoverDropdown.Trigger>
-            <HoverDropdown.Content className="top-8 w-28" placement="right">
-              <HoverDropdown.Button>
-                <MdOutlineEdit className="size-6 mr-2 shrink-0 text-amber-100" />
-                Edit
-              </HoverDropdown.Button>
-              <AlertDialog
-                confirmText="Delete comment"
-                title="Are you sure you want to delete this comment?"
-                description="You won't be able to undo this action"
-                onConfirm={handleDeleteComment}
-              >
-                <HoverDropdown.Button className="text-red-400">
-                  <MdDeleteOutline className="size-6 mr-2 shrink-0" />
-                  Delete
-                </HoverDropdown.Button>
-              </AlertDialog>
-            </HoverDropdown.Content>
-          </HoverDropdown.Root>
+          {isAuthor && (
+            <CommentActionsDropdown
+              onDelete={handleDeleteComment}
+              onEdit={handleEditComment}
+            />
+          )}
         </div>
         <MarkdownPreview>{comment.content}</MarkdownPreview>
         <footer className="flex items-center space-x-3">

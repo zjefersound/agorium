@@ -4,19 +4,21 @@ import { ButtonHTMLAttributes, forwardRef, LegacyRef, ReactNode } from "react";
 interface HoverDropdownRootProps {
   children: ReactNode;
 }
+// eslint-disable-next-line react-refresh/only-export-components
 function HoverDropdownRoot({ children }: HoverDropdownRootProps) {
   return <div className="relative group flex flex-row-reverse">{children}</div>;
 }
 interface HoverDropdownTriggerProps {
   children: ReactNode;
 }
+// eslint-disable-next-line react-refresh/only-export-components
 function HoverDropdownTrigger({ children }: HoverDropdownTriggerProps) {
   return <div>{children}</div>;
 }
 
 interface HoverDropdownButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {}
-
+// eslint-disable-next-line react-refresh/only-export-components
 const HoverDropdownButton = forwardRef(
   (
     { children, className, ...restProps }: HoverDropdownButtonProps,
@@ -42,6 +44,7 @@ interface HoverDropdownContentProps {
   className?: string;
   placement?: "right" | "center" | "left";
 }
+// eslint-disable-next-line react-refresh/only-export-components
 function HoverDropdownContent({
   children,
   className,
@@ -86,7 +89,6 @@ function HoverDropdownContent({
   );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const HoverDropdown = {
   Root: HoverDropdownRoot,
   Trigger: HoverDropdownTrigger,

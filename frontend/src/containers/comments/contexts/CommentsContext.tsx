@@ -11,6 +11,7 @@ import { PostCommentsSkeleton } from "../../../components/shared/skeletons/PostC
 import { PostComments } from "../PostComments";
 import { Post } from "../../../models/Post";
 import { useAuth } from "../../../hooks/useAuth";
+import { useToast } from "../../../hooks/useToast";
 
 interface CommentsProviderProps {
   post: Post;
@@ -19,6 +20,7 @@ interface CommentsProviderProps {
 export interface CommentsContextType {
   comments: Comment[];
   fetchComments: () => void;
+  deleteComment: (commentId: string | number) => void;
 }
 
 export const CommentsContext = createContext<CommentsContextType>(
@@ -27,6 +29,7 @@ export const CommentsContext = createContext<CommentsContextType>(
 
 export const CommentsProvider = ({ post }: CommentsProviderProps) => {
   const { user } = useAuth();
+  const { launchToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState<Comment[]>([]);
   const isAuthor = useMemo(() => user!.id === post.user.id, [user, post]);
@@ -39,6 +42,21 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
       .finally(() => setLoading(false));
   }, [post.id]);
 
+  const deleteComment = useCallback(
+    (commentId: string | number) => {
+      commentService
+        .delete(post.id, commentId)
+        .then(fetchComments)
+        .catch(() => {
+          launchToast({
+            color: "danger",
+            title: "Failed to delete your comment",
+          });
+        });
+    },
+    // eslint-disable-next-line
+    [post.id, fetchComments],
+  );
   useEffect(() => {
     fetchComments();
   }, [fetchComments]);
@@ -47,8 +65,9 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
     () => ({
       comments,
       fetchComments,
+      deleteComment,
     }),
-    [comments, fetchComments],
+    [comments, fetchComments, deleteComment],
   );
   if (loading && comments.length === 0) return <PostCommentsSkeleton />;
 

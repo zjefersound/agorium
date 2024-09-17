@@ -1,5 +1,4 @@
 import { Comment } from "../models/Comment";
-import { IPaginatedResponse } from "../models/IPaginatedResponse";
 import { ISearchableOptions } from "../models/ISearchableOptions";
 import { api } from "./api";
 

@@ -24,12 +24,14 @@ function PostComments({
     // eslint-disable-next-line
     [],
   );
+
   const handleSubmit = useCallback(
     async (content: string) => {
       await handleCreateComment(content).then(fetchComments);
     },
-    [handleCreateComment],
+    [handleCreateComment, fetchComments],
   );
+
   return (
     <>
       <span id="comments-count" className="block">
