@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Repository\UserRepository;
 use App\Domain\User;
 use App\DTO\UserSignupDTO;
+use App\DTO\UserInfoUpdateDTO;
 use Exception;
 use Nyholm\Psr7\UploadedFile;
 
@@ -56,6 +57,36 @@ class UserService
         }
 
         $this->mailerService->sendWelcomeEmail($user->getEmail(), $user->getFullName());
+
+        return $user;
+    }
+
+    public function updateUserInfo(int $userId, UserInfoUpdateDTO $userInfoUpdateDTO): User
+    {
+        $user = $this->userRepository->find($userId);
+
+        if (!$user) {
+            throw new Exception("User not found.");
+        }
+
+        if ($userInfoUpdateDTO->email !== $user->getEmail() && $this->userRepository->isEmailTaken($userInfoUpdateDTO->email)) {
+            throw new Exception("Email is already taken!");
+        }
+
+        if ($userInfoUpdateDTO->username !== $user->getUsername() && $this->userRepository->isUsernameTaken($userInfoUpdateDTO->username)) {
+            throw new Exception("Username is already taken!");
+        }
+
+        $user->setFullName($userInfoUpdateDTO->fullName);
+        $user->setUsername($userInfoUpdateDTO->username);
+        $user->setEmail($userInfoUpdateDTO->email);
+        $user->setUpdatedAt(new \DateTimeImmutable());
+
+        try {
+            $this->userRepository->save($user);
+        } catch (\Throwable $th) {
+            throw new Exception("Error updating user!");
+        }
 
         return $user;
     }

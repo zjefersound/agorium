@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\UserSignupDTO;
+use App\DTO\UserInfoUpdateDTO;
 use App\Helper\ErrorMapper;
 use App\Service\AuthService;
 use App\Service\UserService;
@@ -47,6 +48,28 @@ class UserController
         }
 
         return $this->created("User created successfully.");
+    }
+
+    public function updateUserInfo(Request $req): Response
+    {
+        $userId = (int) $req->getAttribute("userId");
+
+        $data = (array) json_decode($req->getBody()->getContents(), true);
+
+        $userInfoUpdateDTO = new UserInfoUpdateDTO($data);
+        $errors = $this->validator->validate($userInfoUpdateDTO);
+
+        if (count($errors) > 0) {
+            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
+        }
+
+        try {
+            $user = $this->userService->updateUserInfo($userId, $userInfoUpdateDTO);
+        } catch (\Throwable $th) {
+            return $this->unprocessable(["error" => $th->getMessage()]);
+        }
+
+        return $this->ok($user->jsonSerialize());
     }
 
     public function login(Request $req)
