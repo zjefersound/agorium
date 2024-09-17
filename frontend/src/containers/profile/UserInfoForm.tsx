@@ -8,56 +8,12 @@ import { Alert } from "../../components/ui/Alert";
 import { TOAST_MESSAGES } from "../../constants/toastMessages";
 import { useToast } from "../../hooks/useToast";
 import { useAuth } from "../../hooks/useAuth";
+import { userFields } from "../../constants/forms/userFields";
 
 const signupFormFields: FieldConfig[] = [
-  {
-    id: "fullName",
-    label: "Name",
-    type: "text",
-    placeholder: "Enter your name",
-    validations: [
-      {
-        rule: (value) => value.trim().length >= 3,
-        message: "Name must be at least 3 characters long",
-      },
-      {
-        rule: (value) => value.split(" ").length > 1,
-        message: "Enter your last name",
-      },
-    ],
-  },
-  {
-    id: "username",
-    label: "Username",
-    type: "text",
-    placeholder: "Enter your username",
-    validations: [
-      {
-        rule: (value) => value.trim() !== "",
-        message: "Username is required",
-      },
-      {
-        rule: (value) => value.trim().length >= 3,
-        message: "Name must be at least 3 characters long",
-      },
-    ],
-  },
-  {
-    id: "email",
-    label: "Email",
-    type: "text",
-    placeholder: "Enter your email",
-    validations: [
-      {
-        rule: (value) => value.trim() !== "",
-        message: "Email is required",
-      },
-      {
-        rule: (value) => /\S+@\S+\.\S+/.test(value),
-        message: "Invalid email address",
-      },
-    ],
-  },
+  userFields.fullName,
+  userFields.username,
+  userFields.email,
 ];
 
 export function UserInfoForm() {
