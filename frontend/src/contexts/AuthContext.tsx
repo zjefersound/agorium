@@ -13,6 +13,7 @@ import { SplashScreen } from "../components/layout/SplashScreen";
 import { User } from "../models/User";
 import { TOAST_MESSAGES } from "../constants/toastMessages";
 import { IApiErrorResponse } from "../models/IApiErrorResponse";
+import { getApiErrorMessage } from "../utils/getApiErrorMessage";
 
 export interface AuthProviderProps {
   authenticated: boolean;
@@ -52,14 +53,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     return await userService
       .login(data)
       .then((res) => setToken(res.data.token))
-      .catch((err: AxiosError<IApiErrorResponse>) => {
-        if (axios.isAxiosError(err) && err.response) {
+      .catch((error: AxiosError<IApiErrorResponse>) => {
+        if (axios.isAxiosError(error) && error.response) {
           launchToast({
             title: TOAST_MESSAGES.Login.loginErrorTitle,
-            description:
-              typeof err.response.data.error === "string"
-                ? err.response.data.error
-                : "",
+            description: getApiErrorMessage(error),
             color: "danger",
           });
         } else {
@@ -115,9 +113,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
                 ? TOAST_MESSAGES.common.sessionUnauthorizedTitle
                 : TOAST_MESSAGES.common.unexpectedErrorTitle,
               description:
-                typeof error.response?.data.error === "string"
-                  ? error.response.data.error
-                  : TOAST_MESSAGES.common.unexpectedErrorDescription,
+                getApiErrorMessage(error) ||
+                TOAST_MESSAGES.common.unexpectedErrorDescription,
               color: "danger",
             });
           }

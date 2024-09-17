@@ -12,6 +12,9 @@ import { PostComments } from "../PostComments";
 import { Post } from "../../../models/Post";
 import { useAuth } from "../../../hooks/useAuth";
 import { useToast } from "../../../hooks/useToast";
+import { AxiosError } from "axios";
+import { IApiErrorResponse } from "../../../models/IApiErrorResponse";
+import { getApiErrorMessage } from "../../../utils/getApiErrorMessage";
 
 interface CommentsProviderProps {
   post: Post;
@@ -20,7 +23,8 @@ interface CommentsProviderProps {
 export interface CommentsContextType {
   comments: Comment[];
   fetchComments: () => void;
-  deleteComment: (commentId: string | number) => void;
+  deleteComment: (commentId: string | number) => Promise<void>;
+  updateComment: (commentId: string | number, content: string) => Promise<void>;
 }
 
 export const CommentsContext = createContext<CommentsContextType>(
@@ -44,19 +48,38 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
 
   const deleteComment = useCallback(
     (commentId: string | number) => {
-      commentService
+      return commentService
         .delete(post.id, commentId)
         .then(fetchComments)
-        .catch(() => {
+        .catch((error: AxiosError<IApiErrorResponse>) => {
           launchToast({
             color: "danger",
             title: "Failed to delete your comment",
+            description: getApiErrorMessage(error),
           });
         });
     },
     // eslint-disable-next-line
     [post.id, fetchComments],
   );
+
+  const updateComment = useCallback(
+    (commentId: string | number, content: string) => {
+      return commentService
+        .update(post.id, commentId, { content })
+        .then(fetchComments)
+        .catch((error: AxiosError<IApiErrorResponse>) => {
+          launchToast({
+            color: "danger",
+            title: "Failed to update your comment",
+            description: getApiErrorMessage(error),
+          });
+        });
+    },
+    // eslint-disable-next-line
+    [post.id, fetchComments],
+  );
+
   useEffect(() => {
     fetchComments();
   }, [fetchComments]);
@@ -64,8 +87,9 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
   const values = useMemo(
     () => ({
       comments,
-      fetchComments,
       deleteComment,
+      fetchComments,
+      updateComment,
     }),
     [comments, fetchComments, deleteComment],
   );

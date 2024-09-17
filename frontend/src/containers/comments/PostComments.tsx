@@ -3,7 +3,7 @@ import { CommentCard } from "../../components/shared/CommentCard";
 import { CommentEditor } from "../../components/shared/CommentEditor";
 import { Empty } from "../../components/ui/Empty";
 import { Text } from "../../components/ui/Text";
-import { useCommentManager } from "./hooks/useCommentManager";
+import { useCommentCreation } from "./hooks/useCommentCreation";
 import { useComments } from "./hooks/useComments";
 
 interface PostCommentsProps {
@@ -18,7 +18,7 @@ function PostComments({
 }: PostCommentsProps) {
   const { comments, fetchComments } = useComments();
   const { commentToReply, setCommentToReply, handleCreateComment } =
-    useCommentManager(postId);
+    useCommentCreation(postId);
   const handleRemoveCommentToReply = useCallback(
     () => setCommentToReply(null),
     // eslint-disable-next-line
