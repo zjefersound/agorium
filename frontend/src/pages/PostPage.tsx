@@ -9,8 +9,7 @@ import { Card } from "../components/ui/Card";
 import { Tag } from "../components/ui/Tag";
 import { Heading } from "../components/ui/Heading";
 import { GoBack } from "../components/ui/GoBack";
-import { useAuth } from "../hooks/useAuth";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "../hooks/useToast";
 import { Post } from "../models/Post";
 import { postService } from "../services/postService";
@@ -19,30 +18,13 @@ import { TOAST_MESSAGES } from "../constants/toastMessages";
 import { ContentSkeleton } from "../components/shared/skeletons/ContentSkeleton";
 import { PostNotFound } from "../components/shared/fallbacks/PostNotFound";
 import { PostContent } from "../containers/PostContent";
-import { PostComments } from "../containers/PostComments";
-import { commentService } from "../services/commentService";
-import { Comment } from "../models/Comment";
-import { PostCommentsSkeleton } from "../components/shared/skeletons/PostCommentsSkeleton";
+import { CommentsProvider } from "../containers/comments/contexts/CommentsContext";
 
 export function PostPage() {
   const { launchToast } = useToast();
-  const { user } = useAuth();
   const { id } = useParams();
   const [loadingPost, setLoadingPost] = useState(true);
   const [post, setPost] = useState<Post | null>(null);
-  const isAuthor = useMemo(() => user!.id === post?.user.id, [user, post]);
-
-  const [loadingComments, setLoadingComments] = useState(true);
-  const [comments, setComments] = useState<Comment[]>([]);
-
-  const handleFetchComments = useCallback(() => {
-    if (!id) return;
-    setLoadingComments(true);
-    commentService
-      .getAll(id)
-      .then((res) => setComments(res.data))
-      .finally(() => setLoadingComments(false));
-  }, [id]);
 
   useEffect(() => {
     if (!id) return;
@@ -62,7 +44,6 @@ export function PostPage() {
         }
       })
       .finally(() => setLoadingPost(false));
-    handleFetchComments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -98,14 +79,7 @@ export function PostPage() {
       <Content.Main>
         <GoBack to="/" />
         <PostContent post={post} />
-        {loadingComments && <PostCommentsSkeleton />}
-        <PostComments
-          isAuthor={isAuthor}
-          postId={post.id}
-          comments={comments}
-          favoriteCommentId={post.favoriteCommentId}
-          onRefreshComments={handleFetchComments}
-        />
+        <CommentsProvider post={post} />
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard

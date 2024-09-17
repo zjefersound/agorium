@@ -54,7 +54,7 @@ function CommentCard({
                 <MdOutlineMoreVert className="size-6" />
               </div>
             </HoverDropdown.Trigger>
-            <HoverDropdown.Content className="top-10 w-28" placement="right">
+            <HoverDropdown.Content className="top-8 w-28" placement="right">
               <HoverDropdown.Button>
                 <MdOutlineEdit className="size-6 mr-2 shrink-0 text-amber-100" />
                 Edit

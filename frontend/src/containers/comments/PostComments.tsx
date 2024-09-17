@@ -1,25 +1,22 @@
 import { memo, useCallback } from "react";
-import { CommentCard } from "../components/shared/CommentCard";
-import { CommentEditor } from "../components/shared/CommentEditor";
-import { Empty } from "../components/ui/Empty";
-import { Text } from "../components/ui/Text";
-import { useCommentManager } from "../hooks/shared/useCommentManager";
-import { Comment } from "../models/Comment";
+import { CommentCard } from "../../components/shared/CommentCard";
+import { CommentEditor } from "../../components/shared/CommentEditor";
+import { Empty } from "../../components/ui/Empty";
+import { Text } from "../../components/ui/Text";
+import { useCommentManager } from "../../hooks/shared/useCommentManager";
+import { useComments } from "./hooks/useComments";
 
 interface PostCommentsProps {
-  postId: number;
-  comments: Comment[];
+  postId: string | number;
   isAuthor: boolean;
   favoriteCommentId?: number;
-  onRefreshComments: () => void;
 }
 function PostComments({
   postId,
-  comments,
   isAuthor,
   favoriteCommentId,
-  onRefreshComments,
 }: PostCommentsProps) {
+  const { comments, fetchComments } = useComments();
   const { commentToReply, setCommentToReply, handleCreateComment } =
     useCommentManager(postId);
   const handleRemoveCommentToReply = useCallback(
@@ -29,7 +26,7 @@ function PostComments({
   );
   const handleSubmit = useCallback(
     async (content: string) => {
-      await handleCreateComment(content).then(() => onRefreshComments());
+      await handleCreateComment(content).then(fetchComments);
     },
     [handleCreateComment],
   );
