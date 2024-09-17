@@ -9,7 +9,13 @@ import { useComments } from "../hooks/useComments";
 import { Comment } from "../../../models/Comment";
 import { useAuth } from "../../../hooks/useAuth";
 
-function ChildCommentCard({ comment }: { comment: Comment }) {
+function ChildCommentCard({
+  parentComment,
+  comment,
+}: {
+  parentComment: Comment;
+  comment: Comment;
+}) {
   const { user } = useAuth();
   const { deleteComment, setCommentToUpdate } = useComments();
   const isAuthor = useMemo(
@@ -32,7 +38,9 @@ function ChildCommentCard({ comment }: { comment: Comment }) {
         <div className="space-y-2">
           <Text>
             Replying to{" "}
-            <span className="font-semibold">@{comment.user!.username}</span>{" "}
+            <span className="font-semibold">
+              @{parentComment.user!.username}
+            </span>{" "}
           </Text>
           <AuthorOverview
             date={comment.createdAt}

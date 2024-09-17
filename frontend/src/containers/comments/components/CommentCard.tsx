@@ -91,7 +91,11 @@ function CommentCard({
       {Boolean(comment.children.length) && (
         <div className="ml-3 ">
           {comment.children.map((childComment) => (
-            <ChildCommentCard key={childComment.id} comment={childComment} />
+            <ChildCommentCard
+              key={childComment.id}
+              parentComment={comment}
+              comment={childComment}
+            />
           ))}
         </div>
       )}
