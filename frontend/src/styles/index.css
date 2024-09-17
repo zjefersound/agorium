@@ -40,6 +40,11 @@
   color: var(--agorium-50);
 }
 
+html {
+  height: 100dvh;
+  overflow: hidden;
+}
+
 * {
   scrollbar-color: var(--agorium-900) var(--agorium-900);
   scrollbar-width: thin;

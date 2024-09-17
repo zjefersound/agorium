@@ -27,6 +27,7 @@ import { TOAST_MESSAGES } from "../../../constants/toastMessages";
 import { PostNotFound } from "../../../components/shared/fallbacks/PostNotFound";
 import { IApiErrorResponse } from "../../../models/IApiErrorResponse";
 import { useResource } from "../../../hooks/useResource";
+import { getApiErrorMessage } from "../../../utils/getApiErrorMessage";
 
 interface EditPostProviderProps {
   children: React.ReactNode;
@@ -76,13 +77,12 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
         postsResource.revalidate();
         navigate(`/post/${id}`);
       })
-      .catch((err: AxiosError<IApiErrorResponse>) => {
+      .catch((error: AxiosError<IApiErrorResponse>) => {
         launchToast({
           title: TOAST_MESSAGES.Post.createErrorTitle,
           description:
-            typeof err.response?.data.error === "string"
-              ? err.response?.data.error
-              : TOAST_MESSAGES.Post.createErrorDescription,
+            getApiErrorMessage(error) ||
+            TOAST_MESSAGES.Post.createErrorDescription,
         });
       });
   };

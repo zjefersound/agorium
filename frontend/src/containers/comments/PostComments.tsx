@@ -1,30 +1,37 @@
 import { memo, useCallback } from "react";
-import { CommentCard } from "../components/shared/CommentCard";
-import { CommentEditor } from "../components/shared/CommentEditor";
-import { Empty } from "../components/ui/Empty";
-import { Text } from "../components/ui/Text";
-import { useCommentManager } from "../hooks/shared/useCommentManager";
-import { Comment } from "../models/Comment";
+import { Empty } from "../../components/ui/Empty";
+import { Text } from "../../components/ui/Text";
+import { useCommentCreation } from "./hooks/useCommentCreation";
+import { useComments } from "./hooks/useComments";
+import { CommentEditor } from "./components/CommentEditor";
+import { CommentCard } from "./components/CommentCard";
 
 interface PostCommentsProps {
-  postId: number;
-  comments: Comment[];
+  postId: string | number;
   isAuthor: boolean;
   favoriteCommentId?: number;
 }
 function PostComments({
   postId,
-  comments,
   isAuthor,
   favoriteCommentId,
 }: PostCommentsProps) {
+  const { comments, fetchComments } = useComments();
   const { commentToReply, setCommentToReply, handleCreateComment } =
-    useCommentManager(postId);
+    useCommentCreation(postId);
   const handleRemoveCommentToReply = useCallback(
     () => setCommentToReply(null),
     // eslint-disable-next-line
     [],
   );
+
+  const handleSubmit = useCallback(
+    async (content: string) => {
+      await handleCreateComment(content).then(fetchComments);
+    },
+    [handleCreateComment, fetchComments],
+  );
+
   return (
     <>
       <span id="comments-count" className="block">
@@ -33,7 +40,7 @@ function PostComments({
       <CommentEditor
         comment={commentToReply}
         onRemoveComment={handleRemoveCommentToReply}
-        onSubmit={handleCreateComment}
+        onSubmit={handleSubmit}
       />
       {!comments?.length && (
         <Empty>

@@ -1,6 +1,6 @@
 <?php
 
-use App\Controller\{UserController, CategoryController, PostController};
+use App\Controller\{UserController, CategoryController, CommentController, PostController};
 use App\Middleware\AuthMiddleware;
 use Nyholm\Psr7\Response;
 use Nyholm\Psr7\Stream;
@@ -15,6 +15,7 @@ return function (App $app) {
 
     $app->group('user', function () use ($app) {
         $app->get('/user/me', UserController::class . ':getUser');
+        $app->put('/user/me/info', UserController::class . ':updateUserInfo');
     })->add(AuthMiddleware::class);
 
     $app->group('posts', function () use ($app) {
@@ -23,6 +24,14 @@ return function (App $app) {
         $app->post('/post', PostController::class . ':savePost');
         $app->put('/post/{id}', PostController::class . ':savePost');
         $app->delete('/post/{id}', PostController::class . ':deletePost');
+    })->add(AuthMiddleware::class);
+
+    $app->group('comments', function () use ($app) {
+        $app->get('/post/{postId}/comments', CommentController::class . ':getPostComments');
+        $app->post('/post/{postId}/comment', CommentController::class . ':saveComment');
+        $app->get('/post/{postId}/comment/{commentId}', CommentController::class . ':getPostComments');
+        $app->put('/post/{postId}/comment/{commentId}', CommentController::class . ':saveComment');
+        $app->delete('/post/{postId}/comment/{commentId}', CommentController::class . ':deleteComment');
     })->add(AuthMiddleware::class);
 
     $app->group('categories', function () use ($app) {

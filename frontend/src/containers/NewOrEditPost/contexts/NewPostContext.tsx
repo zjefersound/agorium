@@ -22,6 +22,7 @@ import { TOAST_MESSAGES } from "../../../constants/toastMessages";
 import { AxiosError } from "axios";
 import { IApiErrorResponse } from "../../../models/IApiErrorResponse";
 import { useResource } from "../../../hooks/useResource";
+import { getApiErrorMessage } from "../../../utils/getApiErrorMessage";
 
 interface NewPostProviderProps {
   children: React.ReactNode;
@@ -70,13 +71,12 @@ export const NewPostProvider = ({ children }: NewPostProviderProps) => {
         localStorage.removeItem("postDraft");
         navigate("/");
       })
-      .catch((err: AxiosError<IApiErrorResponse>) => {
+      .catch((error: AxiosError<IApiErrorResponse>) => {
         launchToast({
           title: TOAST_MESSAGES.Post.createErrorTitle,
           description:
-            typeof err.response?.data.error === "string"
-              ? err.response?.data.error
-              : TOAST_MESSAGES.Post.createErrorDescription,
+            getApiErrorMessage(error) ||
+            TOAST_MESSAGES.Post.createErrorDescription,
         });
       });
   };
