@@ -8,24 +8,28 @@ export type CommentPayload = {
   parentCommentId?: number;
 };
 
-function create(postId: number, payload: CommentPayload) {
+function create(postId: number | string, payload: CommentPayload) {
   return api.post(`/post/${postId}/comment`, payload);
 }
 
-function getById(postId: number, commentId: number) {
+function getById(postId: number | string, commentId: number | string) {
   return api.get<Comment>(`/post/${postId}/comment/${commentId}`);
 }
 
-function update(postId: number, commentId: number, payload: CommentPayload) {
+function update(
+  postId: number | string,
+  commentId: number | string,
+  payload: CommentPayload,
+) {
   return api.put(`/post/${postId}/comment/${commentId}`, payload);
 }
 
-function deleteComment(postId: number, commentId: number) {
+function deleteComment(postId: number | string, commentId: number | string) {
   return api.delete(`/post/${postId}/comment/${commentId}`);
 }
 
-function getAll(postId: number, options?: ISearchableOptions) {
-  return api.get<IPaginatedResponse<Comment>>(`/post/${postId}/comments`, {
+function getAll(postId: number | string, options?: ISearchableOptions) {
+  return api.get<Comment[]>(`/post/${postId}/comments`, {
     params: {
       ...options,
     },

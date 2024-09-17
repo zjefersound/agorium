@@ -10,7 +10,7 @@ import { Tag } from "../components/ui/Tag";
 import { Heading } from "../components/ui/Heading";
 import { GoBack } from "../components/ui/GoBack";
 import { useAuth } from "../hooks/useAuth";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useToast } from "../hooks/useToast";
 import { Post } from "../models/Post";
 import { postService } from "../services/postService";
@@ -20,6 +20,9 @@ import { ContentSkeleton } from "../components/shared/skeletons/ContentSkeleton"
 import { PostNotFound } from "../components/shared/fallbacks/PostNotFound";
 import { PostContent } from "../containers/PostContent";
 import { PostComments } from "../containers/PostComments";
+import { commentService } from "../services/commentService";
+import { Comment } from "../models/Comment";
+import { PostCommentsSkeleton } from "../components/shared/skeletons/PostCommentsSkeleton";
 
 export function PostPage() {
   const { launchToast } = useToast();
@@ -29,6 +32,21 @@ export function PostPage() {
   const [post, setPost] = useState<Post | null>(null);
   const isAuthor = useMemo(() => user!.id === post?.user.id, [user, post]);
 
+  const [loadingComments, setLoadingComments] = useState(true);
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  const handleFetchComments = useCallback(() => {
+    if (!id) return;
+    setLoadingComments(true);
+    commentService
+      .getAll(id)
+      .then((res) => {
+        console.log(res.data);
+
+        setComments([...res.data]);
+      })
+      .finally(() => setLoadingComments(false));
+  }, [id]);
   useEffect(() => {
     if (!id) return;
     setLoadingPost(true);
@@ -47,6 +65,7 @@ export function PostPage() {
         }
       })
       .finally(() => setLoadingPost(false));
+    handleFetchComments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -82,11 +101,13 @@ export function PostPage() {
       <Content.Main>
         <GoBack to="/" />
         <PostContent post={post} />
+        {loadingComments && <PostCommentsSkeleton />}
         <PostComments
           isAuthor={isAuthor}
           postId={post.id}
-          comments={mockedPosts[0].comments!}
+          comments={comments}
           favoriteCommentId={post.favoriteCommentId}
+          onRefreshComments={handleFetchComments}
         />
       </Content.Main>
       <Content.Sidebar>

@@ -11,12 +11,14 @@ interface PostCommentsProps {
   comments: Comment[];
   isAuthor: boolean;
   favoriteCommentId?: number;
+  onRefreshComments: () => void;
 }
 function PostComments({
   postId,
   comments,
   isAuthor,
   favoriteCommentId,
+  onRefreshComments,
 }: PostCommentsProps) {
   const { commentToReply, setCommentToReply, handleCreateComment } =
     useCommentManager(postId);
@@ -24,6 +26,12 @@ function PostComments({
     () => setCommentToReply(null),
     // eslint-disable-next-line
     [],
+  );
+  const handleSubmit = useCallback(
+    async (content: string) => {
+      await handleCreateComment(content).then(() => onRefreshComments());
+    },
+    [handleCreateComment],
   );
   return (
     <>
@@ -33,7 +41,7 @@ function PostComments({
       <CommentEditor
         comment={commentToReply}
         onRemoveComment={handleRemoveCommentToReply}
-        onSubmit={handleCreateComment}
+        onSubmit={handleSubmit}
       />
       {!comments?.length && (
         <Empty>
