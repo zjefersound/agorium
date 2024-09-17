@@ -1,19 +1,9 @@
-import {
-  FormEvent,
-  memo,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { MdOutlineClose, MdOutlineModeComment } from "react-icons/md";
-import { Button } from "../../../components/ui/Button";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { MdOutlineClose } from "react-icons/md";
 import { Card } from "../../../components/ui/Card";
 import { Text } from "../../../components/ui/Text";
-import { Loading } from "../../../components/ui/Loading";
 import { Comment } from "../../../models/Comment";
-import { TextEditor } from "../../../components/form/TextEditor";
-import { FieldError } from "../../../components/form/FieldError";
+import { CommentForm } from "./CommentForm";
 
 interface CommentEditorProps {
   comment?: Comment | null;
@@ -26,34 +16,13 @@ function CommentEditor({
   onSubmit,
 }: CommentEditorProps) {
   const commentElementRef = useRef<HTMLDivElement>(null);
-  const [loading, setLoading] = useState(false);
-  const valueRef = useRef("");
-  const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
 
   const handleClear = useCallback(() => {
     setOpen(false);
-    setError("");
     onRemoveComment();
-    valueRef.current = "";
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleSubmit = useCallback(
-    (e: FormEvent) => {
-      e.preventDefault();
-      const value = valueRef.current;
-      if (!value.trim()) {
-        setError("Comment is required");
-        return;
-      }
-      setLoading(true);
-      onSubmit(value)
-        .then(handleClear)
-        .finally(() => setLoading(false));
-    },
-    [onSubmit, handleClear],
-  );
 
   useEffect(() => {
     if (comment) {
@@ -73,7 +42,7 @@ function CommentEditor({
         </button>
       )}
       {open && (
-        <form onSubmit={handleSubmit}>
+        <div>
           {comment && (
             <div className="bg-agorium-700 rounded-t-md pt-1 px-2 pb-5 -mb-4 flex justify-between items-center">
               <Text>Replying to @{comment.user?.username}</Text>
@@ -82,34 +51,8 @@ function CommentEditor({
               </button>
             </div>
           )}
-          <div className="flex flex-col bg-agorium-800 border-[1px] border-agorium-700 rounded-md">
-            <div className="transition-[.3s] max-h-[280px] overflow-auto">
-              <TextEditor
-                markdown=""
-                placeholder="Type your comment..."
-                onChange={(value) => {
-                  valueRef.current = value;
-                }}
-              />
-            </div>
-            <div className="flex items-center p-3">
-              <FieldError message={error} />
-              <Button
-                className="ml-auto"
-                type="button"
-                color="secondary"
-                onClick={handleClear}
-              >
-                Cancel
-              </Button>
-              <Button className="ml-3" type="submit" disabled={loading}>
-                {loading && <Loading size="sm" className="mr-2" />}
-                <MdOutlineModeComment className="size-6 mr-2" />
-                Comment
-              </Button>
-            </div>
-          </div>
-        </form>
+          <CommentForm onClear={handleClear} onSubmit={onSubmit} />
+        </div>
       )}
     </div>
   );
