@@ -3,7 +3,7 @@ import { CommentCard } from "../../components/shared/CommentCard";
 import { CommentEditor } from "../../components/shared/CommentEditor";
 import { Empty } from "../../components/ui/Empty";
 import { Text } from "../../components/ui/Text";
-import { useCommentManager } from "../../hooks/shared/useCommentManager";
+import { useCommentManager } from "./hooks/useCommentManager";
 import { useComments } from "./hooks/useComments";
 
 interface PostCommentsProps {

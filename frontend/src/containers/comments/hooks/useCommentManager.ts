@@ -1,6 +1,9 @@
 import { useCallback, useState } from "react";
-import { CommentPayload, commentService } from "../../services/commentService";
-import { Comment } from "../../models/Comment";
+import {
+  CommentPayload,
+  commentService,
+} from "../../../services/commentService";
+import { Comment } from "../../../models/Comment";
 
 export function useCommentManager(postId: string | number) {
   const [commentToReply, setCommentToReply] = useState<null | Comment>(null);
