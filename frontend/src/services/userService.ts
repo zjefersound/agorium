@@ -39,8 +39,19 @@ async function signup(data: UserSignupPayload) {
 function me() {
   return api.get<User>("/user/me");
 }
+
+export type UserUpdateInfoPayload = {
+  email: string;
+  username: string;
+  fullName: string;
+};
+function updateInfo(payload: UserUpdateInfoPayload) {
+  return api.put<User>("/user/me/info", payload);
+}
+
 export const userService = {
   login,
   signup,
   me,
+  updateInfo,
 };

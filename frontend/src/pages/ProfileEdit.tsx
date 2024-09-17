@@ -3,17 +3,26 @@ import { SimpleUserCard } from "../components/shared/SimpleUserCard";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts, rankingCardItems } from "../examples/mocks/mocks";
 import { RankingCard } from "../components/shared/RankingCard";
-import { HomeContent } from "../containers/HomeContent";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
+import { UserInfoForm } from "../containers/profile/UserInfoForm";
+import { Card } from "../components/ui/Card";
+import { Heading } from "../components/ui/Heading";
+import { GoBack } from "../components/ui/GoBack";
 
-export function Home() {
+export function ProfileEdit() {
   return (
     <Content.Root>
       <Content.Sidebar>
         <GlobalSidebar />
       </Content.Sidebar>
       <Content.Main>
-        <HomeContent />
+        <GoBack to="/profile" />
+        <Card>
+          <Heading size="xs" asChild>
+            <h2 className="mb-6">Editing profile</h2>
+          </Heading>
+          <UserInfoForm />
+        </Card>
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard

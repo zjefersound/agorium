@@ -3,17 +3,19 @@ import { SimpleUserCard } from "../components/shared/SimpleUserCard";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts, rankingCardItems } from "../examples/mocks/mocks";
 import { RankingCard } from "../components/shared/RankingCard";
-import { HomeContent } from "../containers/HomeContent";
+import { Card } from "../components/ui/Card";
+import { ProfileCard } from "../containers/profile/ProfileCard";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
 
-export function Home() {
+export function Profile() {
   return (
     <Content.Root>
       <Content.Sidebar>
         <GlobalSidebar />
       </Content.Sidebar>
       <Content.Main>
-        <HomeContent />
+        <ProfileCard />
+        <Card>User info placeholder</Card>
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard

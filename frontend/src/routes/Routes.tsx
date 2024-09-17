@@ -17,6 +17,8 @@ import { Tags } from "../pages/Tags";
 import { NewPost } from "../pages/NewPost";
 import { Search } from "../pages/Search";
 import { EditPost } from "../pages/EditPost";
+import { Profile } from "../pages/Profile";
+import { ProfileEdit } from "../pages/ProfileEdit";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
@@ -43,6 +45,14 @@ const routes: { [key: string]: RouteObject[] } = {
     {
       path: "/post/:id/edit",
       element: <EditPost />,
+    },
+    {
+      path: "/profile",
+      element: <Profile />,
+    },
+    {
+      path: "/profile/edit",
+      element: <ProfileEdit />,
     },
     {
       path: "/tags",
