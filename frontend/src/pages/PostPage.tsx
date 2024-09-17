@@ -9,8 +9,7 @@ import { Card } from "../components/ui/Card";
 import { Tag } from "../components/ui/Tag";
 import { Heading } from "../components/ui/Heading";
 import { GoBack } from "../components/ui/GoBack";
-import { useAuth } from "../hooks/useAuth";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "../hooks/useToast";
 import { Post } from "../models/Post";
 import { postService } from "../services/postService";
@@ -19,15 +18,13 @@ import { TOAST_MESSAGES } from "../constants/toastMessages";
 import { ContentSkeleton } from "../components/shared/skeletons/ContentSkeleton";
 import { PostNotFound } from "../components/shared/fallbacks/PostNotFound";
 import { PostContent } from "../containers/PostContent";
-import { PostComments } from "../containers/PostComments";
+import { CommentsProvider } from "../containers/comments/contexts/CommentsContext";
 
 export function PostPage() {
   const { launchToast } = useToast();
-  const { user } = useAuth();
   const { id } = useParams();
   const [loadingPost, setLoadingPost] = useState(true);
   const [post, setPost] = useState<Post | null>(null);
-  const isAuthor = useMemo(() => user!.id === post?.user.id, [user, post]);
 
   useEffect(() => {
     if (!id) return;
@@ -82,12 +79,7 @@ export function PostPage() {
       <Content.Main>
         <GoBack to="/" />
         <PostContent post={post} />
-        <PostComments
-          isAuthor={isAuthor}
-          postId={post.id}
-          comments={mockedPosts[0].comments!}
-          favoriteCommentId={post.favoriteCommentId}
-        />
+        <CommentsProvider post={post} />
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard
