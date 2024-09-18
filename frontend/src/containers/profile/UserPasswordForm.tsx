@@ -28,7 +28,7 @@ export function UserPasswordForm() {
         password: data.password,
         currentPassword: data.currentPassword,
       })
-      .then((res) => {
+      .then(() => {
         navigate("/profile");
         launchToast({
           title: TOAST_MESSAGES.UserPassword.createdTitle,
