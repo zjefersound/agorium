@@ -103,9 +103,4 @@ class UserService
     {
         return $this->userRepository->find($id);
     }
-
-    private function generateGuid(): string
-    {
-        return bin2hex(random_bytes(16));
-    }
 }

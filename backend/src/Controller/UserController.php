@@ -72,7 +72,7 @@ class UserController
         return $this->ok($user->jsonSerialize());
     }
 
-    public function updateUserAvatar(Request $req, Response $response): Response
+    public function updateUserAvatar(Request $req): Response
     {
         $userId = (int) $req->getAttribute("userId");
         $uploadedFiles = $req->getUploadedFiles();
