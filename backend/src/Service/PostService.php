@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Domain\Post;
 use App\DTO\PostDTO;
-use App\DTO\SearchDTO;
+use App\DTO\PostSearchDTO;
 use App\Repository\CategoryRepository;
 use App\Repository\PostRepository;
 use DateTimeImmutable;
@@ -62,7 +62,7 @@ class PostService
         return $post;
     }
 
-    public function searchPosts(SearchDTO $search): array
+    public function searchPosts(PostSearchDTO $search): array
     {
         $search->term ??= "";
         $search->page ??= 1;

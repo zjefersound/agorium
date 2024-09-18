@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Domain\Post;
 use App\Domain\Tag;
-use App\DTO\SearchDTO;
+use App\DTO\PostSearchDTO;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PostRepository
@@ -32,7 +32,7 @@ class PostRepository
         $this->cleanUpTags();
     }
 
-    public function search(SearchDTO $search): array
+    public function search(PostSearchDTO $search): array
     {
         $qb = $this->em->getRepository(Post::class)->createQueryBuilder('c');
 
@@ -40,6 +40,12 @@ class PostRepository
         if (!empty($search->term)) {
             $qb->where('c.title LIKE :search')
                 ->setParameter('search', '%' . $search->term . '%');
+        }
+
+        // Filter by categoryId
+        if (!empty($search->categoryId)) {
+            $qb->andWhere('c.category = :categoryId')
+                ->setParameter('categoryId', $search->categoryId);
         }
 
         $totalQb = clone $qb;

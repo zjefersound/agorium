@@ -301,7 +301,7 @@ paths:
       summary: "Search posts with pagination and sorting"
       parameters:
         - in: query
-          name: search
+          name: term
           required: false
           schema:
             type: string
@@ -335,6 +335,13 @@ paths:
             type: string
             example: "asc"
           description: "Sort order, either asc or desc."
+        - in: query
+          name: categoryId
+          required: false
+          schema:
+            type: integer
+            example: "1"
+          description: "Filter by category"
       responses:
         "200":
           description: Categories retrieved successfully

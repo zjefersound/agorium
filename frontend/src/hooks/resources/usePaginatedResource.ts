@@ -15,17 +15,18 @@ interface PaginatedCache<T> {
   pagination: PaginationResponse;
 }
 
-export function usePaginatedResource<T>({
+export function usePaginatedResource<
+  T,
+  O extends ISearchableOptions = ISearchableOptions,
+>({
   alias,
   fetch,
   expiresIn = Infinity,
 }: {
   alias: string;
-  fetch: (
-    options?: ISearchableOptions,
-  ) => Promise<AxiosResponse<IPaginatedResponse<T>>>;
+  fetch: (options?: O) => Promise<AxiosResponse<IPaginatedResponse<T>>>;
   expiresIn?: number;
-}): IPaginatedResource<T> {
+}): IPaginatedResource<T, O> {
   const cache = useCache<PaginatedCache<T>>();
   const [data, setData] = useState<T[]>([]);
   const pagination = useRef<PaginationResponse>({
@@ -41,16 +42,8 @@ export function usePaginatedResource<T>({
     setValid(false);
   }, []);
   const fetchData = useCallback(
-    async (options?: ISearchableOptions) => {
-      const cacheKey = !options
-        ? "default"
-        : JSON.stringify({
-            term: options.term,
-            sortBy: options.sortBy,
-            sortOrder: options.sortOrder,
-            limit: options.limit,
-            page: options.page,
-          });
+    async (options?: O) => {
+      const cacheKey = !options ? "default" : JSON.stringify(options);
       const cachedValue = cache.get(cacheKey);
       if (cachedValue) {
         setData(cachedValue.data);
