@@ -51,7 +51,7 @@ export function UserInfoForm() {
   });
   return (
     <>
-      <SmartForm submitText="Save changes" formState={formState} />
+      <SmartForm submitText="Save information" formState={formState} />
       {error && (
         <Alert color="error" className="mt-6">
           {error}

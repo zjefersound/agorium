@@ -46,7 +46,7 @@ export function UserAvatarForm() {
   });
   return (
     <>
-      <SmartForm submitText="Save changes" formState={formState} />
+      <SmartForm submitText="Save avatar" formState={formState} />
       {error && (
         <Alert color="error" className="mt-6">
           {error}
