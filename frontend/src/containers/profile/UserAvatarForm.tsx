@@ -13,7 +13,9 @@ import { useToast } from "../../hooks/useToast";
 import { userFields } from "../../constants/forms/userFields";
 import { useAuth } from "../../hooks/useAuth";
 
-const userAvatarFormFields: FieldConfig[] = [userFields.avatar];
+const userAvatarFormFields: FieldConfig[] = [
+  { ...userFields.avatar, required: true },
+];
 
 export function UserAvatarForm() {
   const { setUser } = useAuth();
