@@ -56,10 +56,12 @@ async function updateAvatar(data: UserUpdateAvatarPayload) {
   const formData = new FormData();
 
   const avatarBlob = await dataURLtoBlob(data.avatar.dataURL);
-  if (!avatarBlob) return;
+  if (!avatarBlob) {
+    throw new Error("Couldn't parse image");
+  }
   formData.append("avatar", avatarBlob, data.avatar.name);
 
-  return api.post("/user/me/avatar", formData);
+  return api.post<User>("/user/me/avatar", formData);
 }
 
 export const userService = {

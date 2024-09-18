@@ -11,21 +11,24 @@ import { Alert } from "../../components/ui/Alert";
 import { TOAST_MESSAGES } from "../../constants/toastMessages";
 import { useToast } from "../../hooks/useToast";
 import { userFields } from "../../constants/forms/userFields";
+import { useAuth } from "../../hooks/useAuth";
 
 const userAvatarFormFields: FieldConfig[] = [userFields.avatar];
 
 export function UserAvatarForm() {
+  const { setUser } = useAuth();
   const { launchToast } = useToast();
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const onSubmit = (data: UserUpdateAvatarPayload) => {
     return userService
       .updateAvatar(data)
-      .then(() => {
+      .then((res) => {
+        setUser(res.data);
         navigate("/profile");
         launchToast({
-          title: TOAST_MESSAGES.Signup.createdTitle,
-          description: TOAST_MESSAGES.Signup.createdDescription,
+          title: TOAST_MESSAGES.UserAvatar.createdTitle,
+          description: TOAST_MESSAGES.UserAvatar.createdDescription,
         });
       })
       .catch((error) => {

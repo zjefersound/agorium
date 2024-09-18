@@ -33,8 +33,8 @@ export function UserInfoForm() {
         setUser(res.data);
         navigate("/profile");
         launchToast({
-          title: TOAST_MESSAGES.Signup.createdTitle,
-          description: TOAST_MESSAGES.Signup.createdDescription,
+          title: TOAST_MESSAGES.UserInfo.createdTitle,
+          description: TOAST_MESSAGES.UserInfo.createdDescription,
         });
       })
       .catch((error) => {
