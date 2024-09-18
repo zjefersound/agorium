@@ -72,6 +72,26 @@ class UserController
         return $this->ok($user->jsonSerialize());
     }
 
+    public function updateUserAvatar(Request $req, Response $response): Response
+    {
+        $userId = (int) $req->getAttribute("userId");
+        $uploadedFiles = $req->getUploadedFiles();
+
+        if (!isset($uploadedFiles["avatar"])) {
+            return $this->unprocessable(["error" => "Avatar is required"]);
+        }
+
+        $avatar = $uploadedFiles["avatar"];
+
+        try {
+            $this->userService->updateUserAvatar($userId, $avatar);
+        } catch (\Throwable $th) {
+            return $this->unprocessable(["error" => $th->getMessage()]);
+        }
+
+        return $this->ok("User avatar updated successfully.");
+    }
+
     public function login(Request $req)
     {
         $data = (array) json_decode($req->getBody()->getContents(), true);

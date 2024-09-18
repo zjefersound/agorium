@@ -61,6 +61,39 @@ class UserService
         return $user;
     }
 
+    public function updateUserAvatar(int $userId, ?UploadedFile $uploadedAvatar = null): User
+    {
+        $user = $this->userRepository->find($userId);
+
+        $avatarStream = isset($uploadedAvatar) ? $uploadedAvatar->getStream() : null;
+
+        if ($avatarStream && $avatarStream->getSize() != null && $avatarStream->getSize() > 0) {
+            $fileType = explode(', ', $uploadedAvatar->getClientMediaType());
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+            if (!array_intersect($fileType, $allowedTypes)) {
+                throw new Exception('Invalid file type. Only JPEG, PNG, and GIF are allowed.');
+            }
+
+            $avatarGuid = $this->generateGuid() . '.' . pathinfo($uploadedAvatar->getClientFilename(), PATHINFO_EXTENSION);
+
+            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
+            $uploadedAvatar->moveTo($uploadDir . $avatarGuid);
+
+            $user->setAvatar($avatarGuid);
+        }
+
+        $user->setUpdatedAt(new \DateTimeImmutable());
+
+        try {
+            $this->userRepository->save($user);
+        } catch (\Throwable $th) {
+            throw new Exception("Error updating user avatar!");
+        }
+
+        return $user;
+    }
+
     public function updateUserInfo(int $userId, UserInfoUpdateDTO $userInfoUpdateDTO): User
     {
         $user = $this->userRepository->find($userId);
