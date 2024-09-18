@@ -14,7 +14,7 @@ function Avatar({ name, url, size = "sm", ...rest }: Props) {
     <AvatarPrimitive.Root
       {...rest}
       className={clsx(
-        "inline-flex select-none items-center justify-center overflow-hidden rounded-full align-middle",
+        "shrink-0 inline-flex select-none items-center justify-center overflow-hidden rounded-full align-middle",
         {
           "h-5 w-5": size === "xs",
           "h-9 w-9": size === "sm",

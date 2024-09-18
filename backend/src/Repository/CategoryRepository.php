@@ -27,6 +27,9 @@ class CategoryRepository extends EntityRepository
                 ->setParameter('search', '%' . $search->term . '%');
         }
 
+        $totalQb = clone $qb;
+        $total = (int) $totalQb->select('COUNT(c.id)')->getQuery()->getSingleScalarResult();
+
         // Sorting
         if (!empty($search->sortBy)) {
             $qb->orderBy('c.' . $search->sortBy, $search->sortOrder);
@@ -39,8 +42,6 @@ class CategoryRepository extends EntityRepository
         // Get paginated results
         $query = $qb->getQuery();
         $categories = $query->getResult();
-
-        $total = count($categories);
 
         return [
             'data' =>  array_map(fn($category) => $category->jsonSerialize(), $categories),

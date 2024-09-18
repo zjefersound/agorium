@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace App\DI;
 
 use App\Controller\CategoryController;
+use App\Controller\CommentController;
 use App\Controller\PostController;
 use App\Controller\UserController;
 use App\Domain\Category;
+use App\Domain\Comment;
 use App\Domain\User;
 use App\Middleware\AuthMiddleware;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
-use App\Service\{AuthService, CategoryService, MailerService, PostService, UserService};
+use App\Service\{AuthService, CategoryService, CommentService, MailerService, PostService, UserService};
 use Doctrine\ORM\EntityManager;
 use Nyholm\Psr7\Response;
 use Psr\Container\ContainerInterface;
@@ -79,16 +82,22 @@ final class Slim implements ServiceProvider
                 $c->get(EntityManager::class)->getClassMetadata(Category::class)
             );
         });
+
+        $c->set(CommentRepository::class, static function (ContainerInterface $c): CommentRepository {
+            return new CommentRepository(
+                $c->get(EntityManager::class),
+                $c->get(EntityManager::class)->getClassMetadata(Comment::class)
+            );
+        });
     }
 
     private function provideServices(Container $c): void
     {
-        $c->set(PostService::class, static function (ContainerInterface $c): PostService {
-            return new PostService($c->get(PostRepository::class), $c->get(CategoryRepository::class));
-        });
-
-        $c->set(CategoryService::class, static function (ContainerInterface $c): CategoryService {
-            return new CategoryService($c->get(CategoryRepository::class));
+        $c->set(AuthService::class, static function (ContainerInterface $c): AuthService {
+            return new AuthService(
+                $c->get(UserRepository::class),
+                $c->get('settings')['jwt']['secret']
+            );
         });
 
         $c->set(MailerService::class, static function (ContainerInterface $c): MailerService {
@@ -102,10 +111,19 @@ final class Slim implements ServiceProvider
             );
         });
 
-        $c->set(AuthService::class, static function (ContainerInterface $c): AuthService {
-            return new AuthService(
-                $c->get(UserRepository::class),
-                $c->get('settings')['jwt']['secret']
+        $c->set(PostService::class, static function (ContainerInterface $c): PostService {
+            return new PostService($c->get(PostRepository::class), $c->get(CategoryRepository::class));
+        });
+
+        $c->set(CategoryService::class, static function (ContainerInterface $c): CategoryService {
+            return new CategoryService($c->get(CategoryRepository::class));
+        });
+
+        $c->set(CommentService::class, static function (ContainerInterface $c): CommentService {
+            return new CommentService(
+                $c->get(CommentRepository::class),
+                $c->get(PostRepository::class),
+                $c->get(UserRepository::class)
             );
         });
     }
@@ -126,6 +144,14 @@ final class Slim implements ServiceProvider
 
         $c->set(CategoryController::class, static function (ContainerInterface $c): CategoryController {
             return new CategoryController($c->get(CategoryService::class));
+        });
+
+        $c->set(CommentController::class, static function (ContainerInterface $c): CommentController {
+            return new CommentController(
+                $c->get(CommentService::class),
+                $c->get(UserService::class),
+                $c->get(ValidatorInterface::class)
+            );
         });
     }
 

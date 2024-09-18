@@ -129,15 +129,20 @@ class User
 
     public function jsonSerialize(): array
     {
-        return [
+        $response = [
             'id' => $this->getId(),
             'fullName' => $this->fullName,
             'username' => $this->username,
             'email' => $this->email,
             'createdAt' => $this->createdAt->format(DateTimeImmutable::ATOM),
             'updatedAt' => $this->updatedAt?->format(DateTimeImmutable::ATOM),
-            'avatar' => "/user/avatar/" . $this->getId()
         ];
+
+        if ($this->getAvatar()) {
+            $response["avatar"] = "/user/avatar/" . $this->getId() . "/" . $this->getAvatar();
+        }
+
+        return $response;
     }
     public function jsonSerializePublic(): array
     {
@@ -148,7 +153,7 @@ class User
         ];
 
         if ($this->getAvatar()) {
-            $response["avatar"] = "/user/avatar/" . $this->getId();
+            $response["avatar"] = "/user/avatar/" . $this->getId() . "/" . $this->getAvatar();
         }
 
         return $response;

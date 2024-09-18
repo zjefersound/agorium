@@ -1,54 +1,29 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Content } from "../components/layout/Content";
-import { NavigationCard } from "../components/shared/NavigationCard";
-import { PopularItemCard } from "../components/shared/PopularItemCard";
 import { SimpleUserCard } from "../components/shared/SimpleUserCard";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts } from "../examples/mocks/mocks";
 import { Card } from "../components/ui/Card";
-import { Avatar } from "../components/ui/Avatar";
-import { formatDistance } from "date-fns";
-import { Text } from "../components/ui/Text";
 import { Tag } from "../components/ui/Tag";
 import { Heading } from "../components/ui/Heading";
-import { Button } from "../components/ui/Button";
-import {
-  MdArrowUpward,
-  MdOutlineEdit,
-  MdOutlineModeComment,
-  MdOutlineShare,
-} from "react-icons/md";
-import { CommentCard } from "../components/shared/CommentCard";
 import { GoBack } from "../components/ui/GoBack";
-import { useAuth } from "../hooks/useAuth";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "../hooks/useToast";
-import { Empty } from "../components/ui/Empty";
-import { MarkdownPreview } from "../components/ui/MarkdownPreview";
 import { Post } from "../models/Post";
 import { postService } from "../services/postService";
 import { AxiosError } from "axios";
 import { TOAST_MESSAGES } from "../constants/toastMessages";
 import { ContentSkeleton } from "../components/shared/skeletons/ContentSkeleton";
 import { PostNotFound } from "../components/shared/fallbacks/PostNotFound";
+import { PostContent } from "../containers/PostContent";
+import { CommentsProvider } from "../containers/comments/contexts/CommentsContext";
+import { GlobalSidebar } from "../components/shared/GlobalSidebar";
 
 export function PostPage() {
   const { launchToast } = useToast();
-  const { user } = useAuth();
   const { id } = useParams();
   const [loadingPost, setLoadingPost] = useState(true);
   const [post, setPost] = useState<Post | null>(null);
-
-  const isAuthor = useMemo(() => user!.id === post?.user.id, [user, post]);
-  const handleShare = useCallback(() => {
-    navigator.clipboard.writeText(window.location.href);
-    launchToast({
-      color: "info",
-      title: "Copied to clipboard",
-      description: `Copied post link to your clipboard`,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -70,113 +45,18 @@ export function PostPage() {
       .finally(() => setLoadingPost(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
   if (loadingPost) return <ContentSkeleton />;
   if (!post) return <PostNotFound />;
   return (
     <Content.Root>
       <Content.Sidebar>
-        <NavigationCard />
-        <PopularItemCard
-          title="Popular tags"
-          path="/tags"
-          items={[
-            { id: 1, label: "#biology", totalPosts: 53 },
-            { id: 7, label: "#math", totalPosts: 43 },
-            { id: 8, label: "#science", totalPosts: 41 },
-            { id: 9, label: "#englsih", totalPosts: 31 },
-            { id: 10, label: "#history", totalPosts: 12 },
-          ]}
-        />
-        <PopularItemCard
-          title="Popular categories"
-          path="/categories"
-          items={[
-            { id: 2, label: "Issue", totalPosts: 286 },
-            { id: 3, label: "Discussion", totalPosts: 233 },
-            { id: 4, label: "Feedback", totalPosts: 211 },
-            { id: 5, label: "Debate", totalPosts: 173 },
-            { id: 6, label: "Tutorials", totalPosts: 163 },
-          ]}
-        />
+        <GlobalSidebar />
       </Content.Sidebar>
       <Content.Main>
         <GoBack to="/" />
-        <Card className="space-y-6">
-          <header className="flex">
-            <Avatar name={post.user.fullName} url={post.user.avatar} />
-            <div className="flex flex-col ml-4">
-              <span>{post.user.username}</span>
-              <Text size="sm" asChild>
-                <span className="tracking-wider">
-                  {formatDistance(new Date(post.createdAt), new Date(), {
-                    addSuffix: true,
-                  })}
-                </span>
-              </Text>
-            </div>
-            {isAuthor && (
-              <Link to={`/post/${post.id}/edit`} className="ml-auto">
-                <Button color="secondary" size="sm">
-                  <MdOutlineEdit className="size-5 mr-2" />
-                  Edit
-                </Button>
-              </Link>
-            )}
-          </header>
-          <div>
-            <span className="text-amber-100 font-semibold text-sm">
-              {post.category.name}
-            </span>
-            <Heading size="xs" asChild>
-              <h2 className="tracking-wider">{post.title}</h2>
-            </Heading>
-            <ul className="flex flex-wrap gap-x-3 gap-y-2 mt-2 lg:hidden">
-              {post.tags?.map((tag) => (
-                <li key={tag.id}>
-                  <Tag>{tag.name}</Tag>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <MarkdownPreview>{post.content}</MarkdownPreview>
-          <div className="flex space-x-3">
-            <Button color={post.voted ? "primary" : "secondary"} size="sm">
-              <MdArrowUpward className="size-5 mr-2" />
-              {post.totalUpvotes}
-            </Button>
-            <Button color="secondary" size="sm">
-              <MdOutlineModeComment className="size-5 mr-2" />
-              {post.comments?.length || 0}
-            </Button>
-            <Button color="secondary" size="sm" onClick={handleShare}>
-              <MdOutlineShare className="size-5 mr-2" />
-              Share
-            </Button>
-          </div>
-        </Card>
-        <span id="comments-count" className="block">
-          {post.comments?.length || 0} comment(s)
-        </span>
-        {!post.comments?.length && (
-          <Empty>
-            <p className="to-amber-100 font-bold mb-3 text-center">
-              No comments were found
-            </p>
-            <Text asChild>
-              <span className="text-center">
-                Be the first to share your thoughts
-              </span>
-            </Text>
-          </Empty>
-        )}
-        {post.comments?.map((comment) => (
-          <CommentCard
-            key={comment.id}
-            favorite={comment.id === post.favoriteCommentId}
-            comment={comment}
-            isPostAuthor={isAuthor}
-          />
-        ))}
+        <PostContent post={post} />
+        <CommentsProvider post={post} />
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\PostDTO;
-use App\DTO\SearchDTO;
+use App\DTO\PostSearchDTO;
 use App\Helper\ErrorMapper;
 use App\Service\PostService;
 use App\Service\UserService;
@@ -43,8 +43,8 @@ class PostController
         if ($postId > 0) {
             $postDTO->id = $postId;
         } else {
-            $jwt = (array) $req->getAttribute("jwt");
-            $postDTO->user = $this->userService->getUserById($jwt["sub"]);
+            $userId = (int) $req->getAttribute("userId");
+            $postDTO->user = $this->userService->getUserById($userId);
         }
 
         try {
@@ -71,7 +71,11 @@ class PostController
     public function searchPosts(ServerRequest $req): Response
     {
         $queryParams = $req->getQueryParams();
-        $search = new SearchDTO($queryParams);
+        try {
+            $search = new PostSearchDTO($queryParams);
+        } catch (\Throwable $th) {
+            return $this->unprocessable(["error" => "Invalid query parameters"]);
+        }
 
         $result = $this->postService->searchPosts($search);
 

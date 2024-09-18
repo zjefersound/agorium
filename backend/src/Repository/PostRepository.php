@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Domain\Post;
 use App\Domain\Tag;
-use App\DTO\SearchDTO;
+use App\DTO\PostSearchDTO;
 use Doctrine\ORM\EntityManagerInterface;
 
 class PostRepository
@@ -18,8 +18,7 @@ class PostRepository
 
     public function find(int $id)
     {
-        return $this->em->getRepository(Post::class)
-            ->find($id);
+        return $this->em->getRepository(Post::class)->find($id);
     }
 
     public function save(Post $post, array $tagNames): void
@@ -33,7 +32,7 @@ class PostRepository
         $this->cleanUpTags();
     }
 
-    public function search(SearchDTO $search): array
+    public function search(PostSearchDTO $search): array
     {
         $qb = $this->em->getRepository(Post::class)->createQueryBuilder('c');
 
@@ -42,6 +41,15 @@ class PostRepository
             $qb->where('c.title LIKE :search')
                 ->setParameter('search', '%' . $search->term . '%');
         }
+
+        // Filter by categoryId
+        if (!empty($search->categoryId)) {
+            $qb->andWhere('c.category = :categoryId')
+                ->setParameter('categoryId', $search->categoryId);
+        }
+
+        $totalQb = clone $qb;
+        $total = (int) $totalQb->select('COUNT(c.id)')->getQuery()->getSingleScalarResult();
 
         // Sorting
         if (!empty($search->sortBy)) {
@@ -55,8 +63,6 @@ class PostRepository
         // Get paginated results
         $query = $qb->getQuery();
         $posts = $query->getResult();
-
-        $total = count($posts);
 
         return [
             'data' =>  array_map(fn($post) => $post->jsonSerialize(), $posts),

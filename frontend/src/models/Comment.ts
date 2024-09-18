@@ -1,4 +1,3 @@
-import { Post } from "./Post";
 import { User } from "./User";
 
 export type Comment = {
@@ -12,8 +11,7 @@ export type Comment = {
 
   voted: boolean;
   totalUpvotes: number;
-
-  parentComment?: Comment;
-  post?: Post;
   user?: User;
+
+  children: Comment[];
 };

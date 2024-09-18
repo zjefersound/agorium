@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\DTO\UserSignupDTO;
+use App\DTO\UserPasswordUpdateDTO;
+use App\DTO\UserInfoUpdateDTO;
 use App\Helper\ErrorMapper;
 use App\Service\AuthService;
 use App\Service\UserService;
@@ -49,6 +51,67 @@ class UserController
         return $this->created("User created successfully.");
     }
 
+    public function updateUserInfo(Request $req): Response
+    {
+        $userId = (int) $req->getAttribute("userId");
+
+        $data = (array) json_decode($req->getBody()->getContents(), true);
+
+        $userInfoUpdateDTO = new UserInfoUpdateDTO($data);
+        $errors = $this->validator->validate($userInfoUpdateDTO);
+
+        if (count($errors) > 0) {
+            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
+        }
+
+        try {
+            $user = $this->userService->updateUserInfo($userId, $userInfoUpdateDTO);
+        } catch (\Throwable $th) {
+            return $this->unprocessable(["error" => $th->getMessage()]);
+        }
+
+        return $this->ok($user->jsonSerialize());
+    }
+
+    public function updateUserAvatar(Request $req): Response
+    {
+        $userId = (int) $req->getAttribute("userId");
+        $uploadedFiles = $req->getUploadedFiles();
+
+        if (!isset($uploadedFiles["avatar"])) {
+            return $this->unprocessable(["error" => "Avatar is required"]);
+        }
+
+        $avatar = $uploadedFiles["avatar"];
+
+        try {
+            $user = $this->userService->updateUserAvatar($userId, $avatar);
+        } catch (\Throwable $th) {
+            return $this->unprocessable(["error" => $th->getMessage()]);
+        }
+
+        return $this->ok($user->jsonSerialize());
+    }
+
+    public function updateUserPassword(Request $req): Response
+    {
+        $userId = (int) $req->getAttribute("userId");
+        $data = (array) json_decode($req->getBody()->getContents(), true);
+        $userPasswordUpdateDTO = new UserPasswordUpdateDTO($data);
+
+        $errors = $this->validator->validate($userPasswordUpdateDTO);
+        if (count($errors) > 0) {
+            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
+        }
+
+        try {
+            $this->userService->updateUserPassword($userId, $userPasswordUpdateDTO);
+        } catch (\Throwable $th) {
+            return $this->unprocessable(["error" => $th->getMessage()]);
+        }
+        return $this->ok("Password updated successfully");
+    }
+
     public function login(Request $req)
     {
         $data = (array) json_decode($req->getBody()->getContents(), true);
@@ -66,8 +129,8 @@ class UserController
 
     public function getUser(Request $req)
     {
-        $jwt = (array) $req->getAttribute("jwt");
-        $user = $this->userService->getUserById($jwt["sub"]);
+        $userId = (int) $req->getAttribute("userId");
+        $user = $this->userService->getUserById($userId);
         return $this->ok($user->jsonSerialize());
     }
 

@@ -39,8 +39,44 @@ async function signup(data: UserSignupPayload) {
 function me() {
   return api.get<User>("/user/me");
 }
+
+export type UserUpdateInfoPayload = {
+  email: string;
+  username: string;
+  fullName: string;
+};
+function updateInfo(payload: UserUpdateInfoPayload) {
+  return api.put<User>("/user/me/info", payload);
+}
+
+export type UserUpdateAvatarPayload = {
+  avatar: UploadedFile;
+};
+async function updateAvatar(data: UserUpdateAvatarPayload) {
+  const formData = new FormData();
+
+  const avatarBlob = await dataURLtoBlob(data.avatar.dataURL);
+  if (!avatarBlob) {
+    throw new Error("Couldn't parse image");
+  }
+  formData.append("avatar", avatarBlob, data.avatar.name);
+
+  return api.post<User>("/user/me/avatar", formData);
+}
+
+export type UserUpdatePasswordPayload = {
+  currentPassword: string;
+  password: string;
+};
+function updatePassword(payload: UserUpdatePasswordPayload) {
+  return api.put("/user/me/password", payload);
+}
+
 export const userService = {
   login,
   signup,
   me,
+  updateAvatar,
+  updateInfo,
+  updatePassword,
 };
