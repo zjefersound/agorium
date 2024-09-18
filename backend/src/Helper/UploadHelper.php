@@ -13,7 +13,7 @@ class UploadHelper
 {
     /**
      * Upload the user's avatar and return the generated filename.
-     * 
+     *
      * @param UploadedFile $uploadedAvatar
      * @return string
      * @throws InvalidArgumentException
@@ -40,10 +40,8 @@ class UploadHelper
 
             // Define the upload directory and ensure it exists
             $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/uploads/';
-            if (!is_dir($uploadDir)) {
-                if (!mkdir($uploadDir, 0777, true)) {
-                    throw new RuntimeException('Failed to create the upload directory.');
-                }
+            if (!is_dir($uploadDir) && !mkdir($uploadDir, 0777, true)) {
+                throw new RuntimeException('Failed to create the upload directory.');
             }
 
             // Move the uploaded file
@@ -61,7 +59,7 @@ class UploadHelper
 
     /**
      * Generate a unique GUID for the uploaded file.
-     * 
+     *
      * @return string
      */
     public static function generateGuid(): string
