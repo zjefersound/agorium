@@ -14,8 +14,7 @@ import { useResource } from "../hooks/useResource";
 import { useCallback, useEffect, useMemo } from "react";
 import { ISelectOption } from "../models/ISelectOption";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
-import { Empty } from "../components/ui/Empty";
-import { Text } from "../components/ui/Text";
+import { PostsNotFound } from "../components/shared/fallbacks/PostsNotFound";
 
 export function Categories() {
   const { id } = useParams();
@@ -74,14 +73,7 @@ export function Categories() {
             <PostCard key={post.id} post={post} />
           ))}
           {!postsResource.loading && !postsResource.data.length && (
-            <Empty>
-              <p className="to-amber-100 font-bold mb-3 text-center">
-                No posts were found
-              </p>
-              <Text asChild>
-                <span className="text-center">Try another category!</span>
-              </Text>
-            </Empty>
+            <PostsNotFound description="Try another category!" />
           )}
         </div>
       </Content.Main>

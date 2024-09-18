@@ -4,11 +4,9 @@ import { RxArrowTopRight, RxClock } from "react-icons/rx";
 import { SmallTabs } from "../components/ui/SmallTabs";
 import { useResource } from "../hooks/useResource";
 import { useEffect, useState } from "react";
-import { Empty } from "../components/ui/Empty";
-import { Text } from "../components/ui/Text";
-import { Skeleton } from "../components/ui/Skeleton";
-import { PostCardSkeleton } from "../components/shared/skeletons/PostCardSkeleton";
 import { Button } from "../components/ui/Button";
+import { PostsNotFound } from "../components/shared/fallbacks/PostsNotFound";
+import { PostCardsSkeleton } from "../components/shared/skeletons/PostCardsSkeleton";
 
 export function HomeContent() {
   const { postsResource } = useResource();
@@ -23,27 +21,10 @@ export function HomeContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  if (postsResource.loading && page === 1) {
-    return (
-      <div className="flex flex-col space-y-6">
-        <Skeleton className="h-8 w-[200px]" />
-        <PostCardSkeleton />
-        <PostCardSkeleton />
-        <PostCardSkeleton />
-      </div>
-    );
-  }
+  if (postsResource.loading && page === 1) return <PostCardsSkeleton />;
+
   if (!postsResource.loading && !postsResource.data.length)
-    return (
-      <Empty>
-        <p className="to-amber-100 font-bold mb-3 text-center">
-          No posts were found
-        </p>
-        <Text asChild>
-          <span className="text-center">Start by creating yours!</span>
-        </Text>
-      </Empty>
-    );
+    return <PostsNotFound description="Start by creating yours!" />;
 
   return (
     <div className="flex flex-col space-y-6">

@@ -10,9 +10,8 @@ import {
 } from "react-router-dom";
 import { useResource } from "../hooks/useResource";
 import { useEffect } from "react";
-import { Empty } from "../components/ui/Empty";
-import { Text } from "../components/ui/Text";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
+import { PostsNotFound } from "../components/shared/fallbacks/PostsNotFound";
 
 export function Search() {
   const navigate = useNavigate();
@@ -58,16 +57,7 @@ export function Search() {
             <PostCard key={post.id} post={post} />
           ))}
           {!postsResource.loading && !postsResource.data.length && (
-            <Empty>
-              <p className="to-amber-100 font-bold mb-3 text-center">
-                No posts were found
-              </p>
-              <Text asChild>
-                <span className="text-center">
-                  Try searching something different :)
-                </span>
-              </Text>
-            </Empty>
+            <PostsNotFound description="Try searching something different :)" />
           )}
         </div>
       </Content.Main>
