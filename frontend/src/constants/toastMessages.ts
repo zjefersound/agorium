@@ -6,6 +6,14 @@ export const TOAST_MESSAGES = {
     createdTitle: "Account created sucessfuly",
     createdDescription: "Log in using your credentials",
   },
+  UserInfo: {
+    createdTitle: "User information updated sucessfuly",
+    createdDescription: "Your profile has been updated",
+  },
+  UserAvatar: {
+    createdTitle: "User avatar updated sucessfuly",
+    createdDescription: "Your avatar has been updated",
+  },
   Post: {
     createdTitle: "Post created successfully",
     createdDescription: "Your post has been published.",

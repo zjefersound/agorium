@@ -112,7 +112,32 @@ paths:
       tags:
         - user
 
-  /user/avatar/{id}:
+  /user/me/avatar:
+    post:
+      summary: Update self user avatar
+      description: Update the logged-in user's avatar.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: base64
+            encoding:
+              avatar:
+                contentType: image/png, image/jpeg
+      responses:
+        "200":
+          description: User avatar updated successfully
+        "400":
+          description: Error updating user avatar
+      tags:
+        - user
+
+  /user/avatar/{id}/{path}:
     get:
       summary: Get user avatar
       parameters:

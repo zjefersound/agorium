@@ -2,39 +2,35 @@ import { useNavigate } from "react-router-dom";
 import { FieldConfig } from "../../components/form/SmartField/types";
 import { SmartForm } from "../../components/form/SmartForm";
 import { useSmartForm } from "../../components/form/SmartForm/hooks/useSmartForm";
-import { userService, UserUpdateInfoPayload } from "../../services/userService";
+import {
+  userService,
+  UserUpdateAvatarPayload,
+} from "../../services/userService";
 import { useState } from "react";
 import { Alert } from "../../components/ui/Alert";
 import { TOAST_MESSAGES } from "../../constants/toastMessages";
 import { useToast } from "../../hooks/useToast";
-import { useAuth } from "../../hooks/useAuth";
 import { userFields } from "../../constants/forms/userFields";
+import { useAuth } from "../../hooks/useAuth";
 
-const userInfoFormFields: FieldConfig[] = [
-  userFields.fullName,
-  userFields.username,
-  userFields.email,
+const userAvatarFormFields: FieldConfig[] = [
+  { ...userFields.avatar, required: true },
 ];
 
-export function UserInfoForm() {
-  const { user, setUser } = useAuth();
-  const dataValue = {
-    fullName: user!.fullName,
-    username: user!.username,
-    email: user!.email,
-  };
+export function UserAvatarForm() {
+  const { setUser } = useAuth();
   const { launchToast } = useToast();
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const onSubmit = (data: UserUpdateInfoPayload) => {
+  const onSubmit = (data: UserUpdateAvatarPayload) => {
     return userService
-      .updateInfo(data)
+      .updateAvatar(data)
       .then((res) => {
         setUser(res.data);
         navigate("/profile");
         launchToast({
-          title: TOAST_MESSAGES.UserInfo.createdTitle,
-          description: TOAST_MESSAGES.UserInfo.createdDescription,
+          title: TOAST_MESSAGES.UserAvatar.createdTitle,
+          description: TOAST_MESSAGES.UserAvatar.createdDescription,
         });
       })
       .catch((error) => {
@@ -45,13 +41,12 @@ export function UserInfoForm() {
       });
   };
   const formState = useSmartForm({
-    dataValue,
-    fields: userInfoFormFields,
+    fields: userAvatarFormFields,
     onSubmit,
   });
   return (
     <>
-      <SmartForm submitText="Save information" formState={formState} />
+      <SmartForm submitText="Save avatar" formState={formState} />
       {error && (
         <Alert color="error" className="mt-6">
           {error}

@@ -139,7 +139,7 @@ class User
         ];
 
         if ($this->getAvatar()) {
-            $response["avatar"] = "/user/avatar/" . $this->getId();
+            $response["avatar"] = "/user/avatar/" . $this->getId() . "/" . $this->getAvatar();
         }
 
         return $response;
@@ -153,7 +153,7 @@ class User
         ];
 
         if ($this->getAvatar()) {
-            $response["avatar"] = "/user/avatar/" . $this->getId();
+            $response["avatar"] = "/user/avatar/" . $this->getId() . "/" . $this->getAvatar();
         }
 
         return $response;
