@@ -599,7 +599,7 @@ paths:
       summary: "Search categories with pagination and sorting"
       parameters:
         - in: query
-          name: search
+          name: term
           required: false
           schema:
             type: string
@@ -648,7 +648,7 @@ paths:
       summary: "Get a list of tags"
       parameters:
         - in: query
-          name: search
+          name: term
           required: false
           schema:
             type: string
