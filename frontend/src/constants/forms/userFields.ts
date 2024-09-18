@@ -94,4 +94,16 @@ export const userFields = {
     height: 200,
     width: 200,
   } as FieldConfig,
+  currentPassword: {
+    id: "currentPassword",
+    label: "Current password",
+    type: "password",
+    placeholder: "Enter your current password",
+    validations: [
+      {
+        rule: (value) => value.trim() !== "",
+        message: "Current password is required",
+      },
+    ],
+  } as FieldConfig,
 };

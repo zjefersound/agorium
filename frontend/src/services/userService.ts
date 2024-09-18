@@ -64,10 +64,19 @@ async function updateAvatar(data: UserUpdateAvatarPayload) {
   return api.post<User>("/user/me/avatar", formData);
 }
 
+export type UserUpdatePasswordPayload = {
+  currentPassword: string;
+  password: string;
+};
+function updatePassword(payload: UserUpdatePasswordPayload) {
+  return api.put("/user/me/password", payload);
+}
+
 export const userService = {
   login,
   signup,
   me,
   updateAvatar,
   updateInfo,
+  updatePassword,
 };

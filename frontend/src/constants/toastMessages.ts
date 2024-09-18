@@ -10,6 +10,10 @@ export const TOAST_MESSAGES = {
     createdTitle: "User information updated sucessfuly",
     createdDescription: "Your profile has been updated",
   },
+  UserPassword: {
+    createdTitle: "User password updated sucessfuly",
+    createdDescription: "Your password has been updated",
+  },
   UserAvatar: {
     createdTitle: "User avatar updated sucessfuly",
     createdDescription: "Your avatar has been updated",
