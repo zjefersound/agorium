@@ -49,9 +49,23 @@ function updateInfo(payload: UserUpdateInfoPayload) {
   return api.put<User>("/user/me/info", payload);
 }
 
+export type UserUpdateAvatarPayload = {
+  avatar: UploadedFile;
+};
+async function updateAvatar(data: UserUpdateAvatarPayload) {
+  const formData = new FormData();
+
+  const avatarBlob = await dataURLtoBlob(data.avatar.dataURL);
+  if (!avatarBlob) return;
+  formData.append("avatar", avatarBlob, data.avatar.name);
+
+  return api.post("/user/me/avatar", formData);
+}
+
 export const userService = {
   login,
   signup,
   me,
+  updateAvatar,
   updateInfo,
 };

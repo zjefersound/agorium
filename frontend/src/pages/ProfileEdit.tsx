@@ -8,6 +8,7 @@ import { UserInfoForm } from "../containers/profile/UserInfoForm";
 import { Card } from "../components/ui/Card";
 import { Heading } from "../components/ui/Heading";
 import { GoBack } from "../components/ui/GoBack";
+import { UserAvatarForm } from "../containers/profile/UserAvatarForm";
 
 export function ProfileEdit() {
   return (
@@ -22,6 +23,12 @@ export function ProfileEdit() {
             <h2 className="mb-6">Editing profile</h2>
           </Heading>
           <UserInfoForm />
+        </Card>
+        <Card>
+          <Heading size="xs" asChild>
+            <h2 className="mb-6">Editing avatar</h2>
+          </Heading>
+          <UserAvatarForm />
         </Card>
       </Content.Main>
       <Content.Sidebar>

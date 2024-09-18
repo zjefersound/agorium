@@ -2,35 +2,26 @@ import { useNavigate } from "react-router-dom";
 import { FieldConfig } from "../../components/form/SmartField/types";
 import { SmartForm } from "../../components/form/SmartForm";
 import { useSmartForm } from "../../components/form/SmartForm/hooks/useSmartForm";
-import { userService, UserUpdateInfoPayload } from "../../services/userService";
+import {
+  userService,
+  UserUpdateAvatarPayload,
+} from "../../services/userService";
 import { useState } from "react";
 import { Alert } from "../../components/ui/Alert";
 import { TOAST_MESSAGES } from "../../constants/toastMessages";
 import { useToast } from "../../hooks/useToast";
-import { useAuth } from "../../hooks/useAuth";
 import { userFields } from "../../constants/forms/userFields";
 
-const userInfoFormFields: FieldConfig[] = [
-  userFields.fullName,
-  userFields.username,
-  userFields.email,
-];
+const userAvatarFormFields: FieldConfig[] = [userFields.avatar];
 
-export function UserInfoForm() {
-  const { user, setUser } = useAuth();
-  const dataValue = {
-    fullName: user!.fullName,
-    username: user!.username,
-    email: user!.email,
-  };
+export function UserAvatarForm() {
   const { launchToast } = useToast();
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const onSubmit = (data: UserUpdateInfoPayload) => {
+  const onSubmit = (data: UserUpdateAvatarPayload) => {
     return userService
-      .updateInfo(data)
-      .then((res) => {
-        setUser(res.data);
+      .updateAvatar(data)
+      .then(() => {
         navigate("/profile");
         launchToast({
           title: TOAST_MESSAGES.Signup.createdTitle,
@@ -45,8 +36,7 @@ export function UserInfoForm() {
       });
   };
   const formState = useSmartForm({
-    dataValue,
-    fields: userInfoFormFields,
+    fields: userAvatarFormFields,
     onSubmit,
   });
   return (
