@@ -29,7 +29,11 @@ export const userFields = {
       },
       {
         rule: (value) => value.trim().length >= 3,
-        message: "Name must be at least 3 characters long",
+        message: "Username must be at least 3 characters long",
+      },
+      {
+        rule: (value) => value.trim().length <= 50,
+        message: "Username must be at most 50 characters long",
       },
     ],
   } as FieldConfig,
