@@ -17,6 +17,7 @@ return function (App $app) {
         $app->get('/user/me', UserController::class . ':getUser');
         $app->put('/user/me/info', UserController::class . ':updateUserInfo');
         $app->post('/user/me/avatar', UserController::class . ':updateUserAvatar');
+        $app->put('/user/me/password', UserController::class . ':updateUserPassword');
     })->add(AuthMiddleware::class);
 
     $app->group('posts', function () use ($app) {

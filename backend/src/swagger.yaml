@@ -112,6 +112,34 @@ paths:
       tags:
         - user
 
+  /user/me/password:
+    put:
+      summary: Update self user password
+      description: Update the logged-in user's password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: "string"
+                newPassword:
+                  type: string
+                  example: "strong"
+
+      responses:
+        "200":
+          description: Password updated successfully
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+      tags:
+        - user
+
   /user/me/avatar:
     post:
       summary: Update self user avatar

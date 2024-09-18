@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use App\Domain\User;
 use App\DTO\UserSignupDTO;
 use App\DTO\UserInfoUpdateDTO;
+use App\DTO\UserPasswordUpdateDTO;
 use App\Helper\UploadHelper;
 use Exception;
 use Nyholm\Psr7\UploadedFile;
@@ -59,6 +60,26 @@ class UserService
         }
 
         $user->setUpdatedAt(new \DateTimeImmutable());
+
+        try {
+            $this->userRepository->save($user);
+        } catch (\Throwable $th) {
+            throw new Exception("Error updating user avatar!");
+        }
+
+        return $user;
+    }
+
+    public function updateUserPassword(int $userId, UserPasswordUpdateDTO $userPasswordUpdateDTO): User
+    {
+        $user = $this->userRepository->find($userId);
+
+        if ($user && password_verify($userPasswordUpdateDTO->password, $user->getPasswordHash())) {
+            $user->setPasswordHash($userPasswordUpdateDTO->newPassword);
+            $user->setUpdatedAt(new \DateTimeImmutable());
+        } else {
+            throw new Exception("Password is incorrect.");
+        }
 
         try {
             $this->userRepository->save($user);
