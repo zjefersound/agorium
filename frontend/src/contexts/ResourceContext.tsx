@@ -5,7 +5,7 @@ import { Post } from "../models/Post";
 import { IPaginatedResource } from "../models/IPaginatedResource";
 import { usePaginatedResource } from "../hooks/resources/usePaginatedResource";
 import { categoryService } from "../services/categoryService";
-import { postService } from "../services/postService";
+import { IPostSearchableOptions, postService } from "../services/postService";
 
 interface ResourceProviderProps {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ interface ResourceProviderProps {
 
 export interface ResourceContextType {
   categoriesResource: IPaginatedResource<Category>;
-  postsResource: IPaginatedResource<Post>;
+  postsResource: IPaginatedResource<Post, IPostSearchableOptions>;
 }
 
 export const ResourceContext = createContext<ResourceContextType>(
@@ -26,7 +26,7 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
     alias: "categories",
     fetch: categoryService.getAll,
   });
-  const postsResource = usePaginatedResource<Post>({
+  const postsResource = usePaginatedResource<Post, IPostSearchableOptions>({
     alias: "posts",
     fetch: postService.getAll,
     expiresIn: 1000 * 60 * 2, // 2 min

@@ -25,8 +25,10 @@ function update(id: number | string, data: PostPayload) {
 function deletePost(id: number | string) {
   return api.delete(`/post/${id}`);
 }
-
-function getAll(options?: ISearchableOptions) {
+export interface IPostSearchableOptions extends ISearchableOptions {
+  categoryId: string;
+}
+function getAll(options?: IPostSearchableOptions) {
   return api.get<IPaginatedResponse<Post>>("/posts", {
     params: {
       ...options,
