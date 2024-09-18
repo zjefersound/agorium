@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\PostDTO;
-use App\DTO\SearchDTO;
+use App\DTO\PostSearchDTO;
 use App\Helper\ErrorMapper;
 use App\Service\PostService;
 use App\Service\UserService;
@@ -71,7 +71,7 @@ class PostController
     public function searchPosts(ServerRequest $req): Response
     {
         $queryParams = $req->getQueryParams();
-        $search = new SearchDTO($queryParams);
+        $search = new PostSearchDTO($queryParams);
 
         $result = $this->postService->searchPosts($search);
 
