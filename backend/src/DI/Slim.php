@@ -8,15 +8,18 @@ use App\Controller\CategoryController;
 use App\Controller\CommentController;
 use App\Controller\PostController;
 use App\Controller\UserController;
+use App\Controller\TagController;
 use App\Domain\Category;
 use App\Domain\Comment;
+use App\Domain\Tag;
 use App\Domain\User;
 use App\Middleware\AuthMiddleware;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
+use App\Repository\TagRepository;
 use App\Repository\UserRepository;
-use App\Service\{AuthService, CategoryService, CommentService, MailerService, PostService, UserService};
+use App\Service\{AuthService, CategoryService, CommentService, MailerService, PostService, TagService, UserService};
 use Doctrine\ORM\EntityManager;
 use Nyholm\Psr7\Response;
 use Psr\Container\ContainerInterface;
@@ -89,6 +92,13 @@ final class Slim implements ServiceProvider
                 $c->get(EntityManager::class)->getClassMetadata(Comment::class)
             );
         });
+
+        $c->set(TagRepository::class, static function (ContainerInterface $c): TagRepository {
+            return new TagRepository(
+                $c->get(EntityManager::class),
+                $c->get(EntityManager::class)->getClassMetadata(Tag::class)
+            );
+        });
     }
 
     private function provideServices(Container $c): void
@@ -126,6 +136,10 @@ final class Slim implements ServiceProvider
                 $c->get(UserRepository::class)
             );
         });
+
+        $c->set(TagService::class, static function (ContainerInterface $c): TagService {
+            return new TagService($c->get(TagRepository::class));
+        });
     }
 
     private function provideControllers(Container $c): void
@@ -152,6 +166,10 @@ final class Slim implements ServiceProvider
                 $c->get(UserService::class),
                 $c->get(ValidatorInterface::class)
             );
+        });
+
+        $c->set(TagController::class, static function (ContainerInterface $c): TagController {
+            return new TagController($c->get(TagService::class));
         });
     }
 

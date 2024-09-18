@@ -643,6 +643,52 @@ paths:
 
   #endregion
 
+  /tags:
+    get:
+      summary: "Get a list of tags"
+      parameters:
+        - in: query
+          name: search
+          required: false
+          schema:
+            type: string
+            example: "technology"
+          description: "Optional search term for tag name."
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            example: 1
+          description: "Page number for pagination, default is 1."
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            example: 10
+          description: "Number of items per page, default is 10."
+        - in: query
+          name: sortBy
+          required: false
+          schema:
+            type: string
+            example: "name"
+          description: "Field to sort by, e.g., name."
+        - in: query
+          name: sortOrder
+          required: false
+          schema:
+            type: string
+            example: "asc"
+          description: "Sort order, either asc or desc."
+      responses:
+        "200":
+          description: Tags retrieved successfully
+        "401":
+          description: Unauthorized
+      tags:
+        - tag
 components:
   securitySchemes:
     BearerAuth:

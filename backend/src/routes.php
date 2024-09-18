@@ -1,6 +1,6 @@
 <?php
 
-use App\Controller\{UserController, CategoryController, CommentController, PostController};
+use App\Controller\{UserController, CategoryController, CommentController, PostController, TagController};
 use App\Middleware\AuthMiddleware;
 use Nyholm\Psr7\Response;
 use Nyholm\Psr7\Stream;
@@ -42,6 +42,10 @@ return function (App $app) {
         $app->post('/category', CategoryController::class . ':saveCategory');
         $app->put('/category/{id}', CategoryController::class . ':saveCategory');
         $app->delete('/category/{id}', CategoryController::class . ':deleteCategory');
+    })->add(AuthMiddleware::class);
+
+    $app->group('tags', function () use ($app) {
+        $app->get('/tags', TagController::class . ':searchTags');
     })->add(AuthMiddleware::class);
 
     $app->get('/swagger', function ($req, $res) {
