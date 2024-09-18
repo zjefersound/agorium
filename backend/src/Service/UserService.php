@@ -74,8 +74,8 @@ class UserService
     {
         $user = $this->userRepository->find($userId);
 
-        if ($user && password_verify($userPasswordUpdateDTO->password, $user->getPasswordHash())) {
-            $user->setPasswordHash($userPasswordUpdateDTO->newPassword);
+        if ($user && password_verify($userPasswordUpdateDTO->currentPassword, $user->getPasswordHash())) {
+            $user->setPasswordHash($userPasswordUpdateDTO->password);
             $user->setUpdatedAt(new \DateTimeImmutable());
         } else {
             throw new Exception("Password is incorrect.");
