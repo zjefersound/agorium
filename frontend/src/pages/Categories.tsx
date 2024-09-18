@@ -11,15 +11,22 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { useResource } from "../hooks/useResource";
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { ISelectOption } from "../models/ISelectOption";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
+import { Empty } from "../components/ui/Empty";
+import { Text } from "../components/ui/Text";
 
 export function Categories() {
   const { id } = useParams();
+  const categoryId = id ?? "";
   const navigate = useNavigate();
-  const { categoriesResource } = useResource();
+  const { categoriesResource, postsResource } = useResource();
   const [searchParams] = useSearchParams();
+  const handleSelectCategory = useCallback(
+    (value: string) => navigate("/categories/" + value),
+    [],
+  );
   const categoriesOptions: ISelectOption[] = useMemo(
     () =>
       categoriesResource.data.map((c) => ({
@@ -28,6 +35,12 @@ export function Categories() {
       })),
     [categoriesResource.data],
   );
+  useEffect(() => {
+    const filters = categoryId ? { categoryId } : {};
+    postsResource.fetchData(filters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryId]);
+
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -36,8 +49,8 @@ export function Categories() {
       <Content.Main>
         <div className="flex flex-col space-y-6">
           <SmallTabs
-            value={id ?? ""}
-            onChange={(value) => navigate("/categories/" + value)}
+            value={categoryId}
+            onChange={handleSelectCategory}
             options={categoriesOptions}
           />
           <div className="flex justify-between items-center">
@@ -57,9 +70,19 @@ export function Categories() {
               ]}
             />
           </div>
-          {mockedPosts.map((post) => (
+          {postsResource.data.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
+          {!postsResource.loading && !postsResource.data.length && (
+            <Empty>
+              <p className="to-amber-100 font-bold mb-3 text-center">
+                No posts were found
+              </p>
+              <Text asChild>
+                <span className="text-center">Try another category!</span>
+              </Text>
+            </Empty>
+          )}
         </div>
       </Content.Main>
       <Content.Sidebar>

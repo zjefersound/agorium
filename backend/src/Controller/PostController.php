@@ -71,7 +71,11 @@ class PostController
     public function searchPosts(ServerRequest $req): Response
     {
         $queryParams = $req->getQueryParams();
-        $search = new PostSearchDTO($queryParams);
+        try {
+            $search = new PostSearchDTO($queryParams);
+        } catch (\Throwable $th) {
+            return $this->unprocessable(["error" => "Invalid query parameters"]);
+        }
 
         $result = $this->postService->searchPosts($search);
 
