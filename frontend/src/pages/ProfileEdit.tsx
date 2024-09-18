@@ -10,6 +10,7 @@ import { Heading } from "../components/ui/Heading";
 import { GoBack } from "../components/ui/GoBack";
 import { UserAvatarForm } from "../containers/profile/UserAvatarForm";
 import { UserPasswordForm } from "../containers/profile/UserPasswordForm";
+import { Text } from "../components/ui/Text";
 
 export function ProfileEdit() {
   return (
@@ -21,20 +22,31 @@ export function ProfileEdit() {
         <GoBack to="/profile" />
         <Card>
           <Heading size="xs" asChild>
-            <h2 className="mb-6">Editing profile</h2>
+            <h2 className="mb-4">Edit Profile Information</h2>
           </Heading>
+          <Text className="mb-6">
+            Update your personal information to keep your profile up-to-date.
+          </Text>
           <UserInfoForm />
         </Card>
+
         <Card>
           <Heading size="xs" asChild>
-            <h2 className="mb-6">Editing avatar</h2>
+            <h2 className="mb-4">Change Avatar</h2>
           </Heading>
+          <Text className="mb-6">
+            Upload a new avatar to personalize your profile appearance.
+          </Text>
           <UserAvatarForm />
         </Card>
+
         <Card>
           <Heading size="xs" asChild>
-            <h2 className="mb-6">Editing password</h2>
+            <h2 className="mb-4">Update Password</h2>
           </Heading>
+          <Text className="mb-6">
+            Secure your account by updating your password regularly.
+          </Text>
           <UserPasswordForm />
         </Card>
       </Content.Main>

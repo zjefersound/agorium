@@ -1,48 +1,51 @@
 export const TOAST_MESSAGES = {
   Login: {
-    loginErrorTitle: "Error when trying to log in",
+    loginErrorTitle: "Login Error",
+    loginErrorDescription:
+      "Unable to log in. Please check your credentials and try again.",
   },
   Signup: {
-    createdTitle: "Account created sucessfuly",
-    createdDescription: "Log in using your credentials",
+    createdTitle: "Account Successfully Created",
+    createdDescription: "You can now log in with your new credentials.",
   },
   UserInfo: {
-    createdTitle: "User information updated sucessfuly",
-    createdDescription: "Your profile has been updated",
+    createdTitle: "Profile Updated Successfully",
+    createdDescription: "Your profile information has been updated.",
   },
   UserPassword: {
-    createdTitle: "User password updated sucessfuly",
-    createdDescription: "Your password has been updated",
+    createdTitle: "Password Updated Successfully",
+    createdDescription: "Your password has been changed.",
   },
   UserAvatar: {
-    createdTitle: "User avatar updated sucessfuly",
-    createdDescription: "Your avatar has been updated",
+    createdTitle: "Avatar Updated Successfully",
+    createdDescription: "Your avatar has been updated.",
   },
   Post: {
-    createdTitle: "Post created successfully",
-    createdDescription: "Your post has been published.",
-    createErrorTitle: "Error creating post",
+    createdTitle: "Post Published Successfully",
+    createdDescription: "Your post is now live.",
+    createErrorTitle: "Error Publishing Post",
     createErrorDescription:
       "There was an issue publishing your post. Please try again.",
-    updatedTitle: "Post saved successfully",
+    updatedTitle: "Post Updated Successfully",
     updatedDescription: "Your post has been updated.",
-    updateErrorTitle: "Error updating post",
+    updateErrorTitle: "Error Updating Post",
     updateErrorDescription:
       "There was an issue updating your post. Please try again.",
-    deletedTitle: "Post deleted successfully",
-    deletedDescription: "You post has been deleted",
-    deleteErrorTitle: "Error deleting post",
+    deletedTitle: "Post Deleted Successfully",
+    deletedDescription: "Your post has been removed.",
+    deleteErrorTitle: "Error Deleting Post",
     deleteErrorDescription:
       "There was an issue deleting your post. Please try again.",
-    notFoundTitle: "Post was not found",
-    notFoundDescription: "Verify if your URL is correct and try again.",
+    notFoundTitle: "Post Not Found",
+    notFoundDescription:
+      "The post could not be located. Please check the URL and try again.",
   },
   common: {
-    unexpectedErrorTitle: "Unexpected error",
+    unexpectedErrorTitle: "Unexpected Error",
     unexpectedErrorDescription:
-      "Verify your internet connection and try again later.",
-    sessionUnauthorizedTitle: "Your session is invalid",
-    sessionExpiredTitle: "Session expired",
-    sessionExpiredDescription: "Please login into the app",
+      "Please check your internet connection and try again later.",
+    sessionUnauthorizedTitle: "Unauthorized Session",
+    sessionExpiredTitle: "Session Expired",
+    sessionExpiredDescription: "Please log in to continue.",
   },
 };

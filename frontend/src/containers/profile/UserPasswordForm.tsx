@@ -48,7 +48,7 @@ export function UserPasswordForm() {
   });
   return (
     <>
-      <SmartForm submitText="Save information" formState={formState} />
+      <SmartForm submitText="Update password" formState={formState} />
       {error && (
         <Alert color="error" className="mt-6">
           {error}
