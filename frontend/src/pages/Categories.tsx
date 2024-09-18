@@ -25,7 +25,7 @@ export function Categories() {
   const [searchParams] = useSearchParams();
   const handleSelectCategory = useCallback(
     (value: string) => navigate("/categories/" + value),
-    [],
+    [navigate],
   );
   const categoriesOptions: ISelectOption[] = useMemo(
     () =>
