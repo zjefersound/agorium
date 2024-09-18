@@ -84,12 +84,12 @@ class UserController
         $avatar = $uploadedFiles["avatar"];
 
         try {
-            $this->userService->updateUserAvatar($userId, $avatar);
+            $user = $this->userService->updateUserAvatar($userId, $avatar);
         } catch (\Throwable $th) {
             return $this->unprocessable(["error" => $th->getMessage()]);
         }
 
-        return $this->ok("User avatar updated successfully.");
+        return $this->ok($user->jsonSerialize());
     }
 
     public function login(Request $req)

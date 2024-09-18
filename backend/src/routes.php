@@ -11,7 +11,7 @@ return function (App $app) {
 
     $app->post('/signup', UserController::class . ':signup');
     $app->post('/login', UserController::class . ':login');
-    $app->get('/user/avatar/{id}', UserController::class . ':getUserAvatar');
+    $app->get('/user/avatar/{id}/{path}', UserController::class . ':getUserAvatar');
 
     $app->group('user', function () use ($app) {
         $app->get('/user/me', UserController::class . ':getUser');

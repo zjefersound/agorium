@@ -137,7 +137,7 @@ paths:
       tags:
         - user
 
-  /user/avatar/{id}:
+  /user/avatar/{id}/{path}:
     get:
       summary: Get user avatar
       parameters:
