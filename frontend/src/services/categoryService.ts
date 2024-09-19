@@ -11,6 +11,15 @@ function getAll(options?: ISearchableOptions) {
   });
 }
 
+export interface ITrendingCategory {
+  category: Category;
+  totalPosts: number;
+}
+function getTrending() {
+  return api.get<ITrendingCategory[]>("/categories/trending");
+}
+
 export const categoryService = {
   getAll,
+  getTrending,
 };
