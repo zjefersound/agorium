@@ -29,4 +29,13 @@ class TagService
             throw new Exception("An error occured while searching for categories.");
         }
     }
+
+    public function getTrendingTags(): array
+    {
+        try {
+            return $this->tagRepository->trending();
+        } catch (\Throwable $th) {
+            throw new Exception("An error occured while searching for trending tags.");
+        }
+    }
 }

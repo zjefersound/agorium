@@ -28,4 +28,10 @@ class TagController
 
         return $this->ok($result);
     }
+
+    public function getTrendingTags(): Response
+    {
+        $result = $this->tagService->getTrendingTags();
+        return $this->ok($result);
+    }
 }

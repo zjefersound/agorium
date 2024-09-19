@@ -47,6 +47,7 @@ return function (App $app) {
 
     $app->group('tags', function () use ($app) {
         $app->get('/tags', TagController::class . ':searchTags');
+        $app->get('/tags/trending', TagController::class . ':getTrendingTags');
     })->add(AuthMiddleware::class);
 
     $app->get('/swagger', function ($req, $res) {

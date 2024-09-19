@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity, ORM\Table(name: 'tags')]
@@ -12,6 +14,7 @@ class Tag
     public function __construct(string $name)
     {
         $this->name = $name;
+        $this->posts = new ArrayCollection();
     }
 
     #[ORM\Id, ORM\Column(type: 'integer'), ORM\GeneratedValue(strategy: 'AUTO')]
@@ -19,6 +22,9 @@ class Tag
 
     #[ORM\Column(type: 'string', length: 100, nullable: false)]
     private string $name;
+
+    #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'tags')]
+    private Collection $posts;
 
     public function getId(): int
     {
@@ -35,6 +41,12 @@ class Tag
         $this->name = $name;
         return $this;
     }
+
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
 
     public function jsonSerialize(): array
     {
