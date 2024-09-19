@@ -22,9 +22,9 @@ class CommentRepository
     public function getPostComments(int $postId, ?int $commentId = null): array
     {
         $conn = $this->em->getConnection();
-    
+
         $commentCondition = $commentId ? 'AND c.id = :commentId' : 'AND c.parent_comment_id IS NULL';
-    
+
         $sql = <<<SQL
             WITH RECURSIVE comment_tree AS (
                 SELECT 
@@ -66,24 +66,24 @@ class CommentRepository
             SELECT * FROM comment_tree
             ORDER BY depth, created_at ASC;
         SQL;
-    
+
         $stmt = $conn->prepare($sql);
         $stmt->bindValue("postId", $postId);
-    
+
         if ($commentId) {
             $stmt->bindValue("commentId", $commentId);
         }
-    
+
         $resultSet = $stmt->executeQuery()->fetchAllAssociative();
-    
+
         if ($commentId && empty($resultSet)) {
             throw new \Exception("Comment not found");
         }
-    
+
         $comments = $this->buildHierarchy($resultSet);
-    
+
         return $commentId ? ($comments[0] ?? []) : $comments;
-    }    
+    }
 
     public function save(Comment $comment)
     {
@@ -113,7 +113,7 @@ class CommentRepository
                 'id' => $comment['user_id'],
                 'fullName' => $comment['fullName'],
                 'username' => $comment['username'],
-                'avatar' => $comment['avatar'] ? "/user/avatar/" . $comment['user_id'] : null,
+                'avatar' => $comment['avatar'] ? "/user/avatar/" . $comment['user_id'] . "/" . $comment['avatar'] : null,
             ];
 
             $commentsById[$comment['id']] = [

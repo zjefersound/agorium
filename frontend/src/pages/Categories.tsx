@@ -1,27 +1,19 @@
 import { Content } from "../components/layout/Content";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts } from "../examples/mocks/mocks";
-import { PostCard } from "../components/shared/PostCard";
 import { SmallTabs } from "../components/ui/SmallTabs";
-import { ButtonGroup } from "../components/ui/ButtonGroup";
-import {
-  createSearchParams,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useResource } from "../hooks/useResource";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { ISelectOption } from "../models/ISelectOption";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
-import { PostsNotFound } from "../components/shared/fallbacks/PostsNotFound";
+import { PostList } from "../components/shared/PostList";
 
 export function Categories() {
   const { id } = useParams();
   const categoryId = id ?? "";
   const navigate = useNavigate();
-  const { categoriesResource, postsResource } = useResource();
-  const [searchParams] = useSearchParams();
+  const { categoriesResource } = useResource();
   const handleSelectCategory = useCallback(
     (value: string) => navigate("/categories/" + value),
     [navigate],
@@ -34,12 +26,9 @@ export function Categories() {
       })),
     [categoriesResource.data],
   );
-  useEffect(() => {
-    const filters = categoryId ? { categoryId } : {};
-    postsResource.fetchData(filters);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const postsFilter = useMemo(() => {
+    return { categoryId };
   }, [categoryId]);
-
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -52,29 +41,7 @@ export function Categories() {
             onChange={handleSelectCategory}
             options={categoriesOptions}
           />
-          <div className="flex justify-between items-center">
-            <span>34 Posts</span>
-            <ButtonGroup
-              value={searchParams.get("order") ?? "relevance"}
-              onChange={(value) =>
-                navigate({
-                  search: createSearchParams({
-                    order: value,
-                  }).toString(),
-                })
-              }
-              options={[
-                { label: "Relevance", value: "relevance" },
-                { label: "Newest", value: "newest" },
-              ]}
-            />
-          </div>
-          {postsResource.data.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-          {!postsResource.loading && !postsResource.data.length && (
-            <PostsNotFound description="Try another category!" />
-          )}
+          <PostList filter={postsFilter} />
         </div>
       </Content.Main>
       <Content.Sidebar>
