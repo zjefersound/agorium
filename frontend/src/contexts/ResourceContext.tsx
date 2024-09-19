@@ -11,6 +11,8 @@ import {
 import { IPostSearchableOptions, postService } from "../services/postService";
 import { IGenericResource } from "../models/IGenericResource";
 import { useGenericResource } from "../hooks/resources/useGenericResource";
+import { Tag } from "../models/Tag";
+import { tagService } from "../services/tagService";
 
 interface ResourceProviderProps {
   children: React.ReactNode;
@@ -20,6 +22,7 @@ export interface ResourceContextType {
   categoriesResource: IPaginatedResource<Category>;
   popularCategoriesResource: IGenericResource<ITrendingCategory[]>;
   postsResource: IPaginatedResource<Post, IPostSearchableOptions>;
+  tagsResource: IPaginatedResource<Tag>;
 }
 
 export const ResourceContext = createContext<ResourceContextType>(
@@ -37,6 +40,12 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
     fetch: categoryService.getTrending,
     expiresIn: 1000 * 60 * 5, // 5 min
   });
+
+  const tagsResource = usePaginatedResource<Tag>({
+    alias: "tags",
+    fetch: tagService.getAll,
+    expiresIn: 1000 * 30, // 30 s
+  });
   const postsResource = usePaginatedResource<Post, IPostSearchableOptions>({
     alias: "posts",
     fetch: postService.getAll,
@@ -44,8 +53,18 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
   });
 
   const values = useMemo(
-    () => ({ categoriesResource, popularCategoriesResource, postsResource }),
-    [categoriesResource, popularCategoriesResource, postsResource],
+    () => ({
+      categoriesResource,
+      popularCategoriesResource,
+      postsResource,
+      tagsResource,
+    }),
+    [
+      categoriesResource,
+      popularCategoriesResource,
+      postsResource,
+      tagsResource,
+    ],
   );
 
   useEffect(() => {
