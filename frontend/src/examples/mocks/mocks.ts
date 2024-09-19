@@ -11,15 +11,15 @@ function randomIntFromInterval(min: number, max: number) {
 export const users: User[] = [
   {
     id: 1,
-    username: "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkK",
+    username: "johndoe",
     email: "john.doe@example.com",
-    fullName: "CHUPISCO AZEDO COM LEITE FERMENTADO",
+    fullName: "John Doe",
     createdAt: "2024-01-01T09:00:00Z",
     updatedAt: "2024-08-01T10:00:00Z",
   },
   {
     id: 2,
-    username: "kkkkkkkkkkkkkkkkkkkkkkkkkk",
+    username: "pricilinha",
     email: "jane.smith@example.com",
     fullName: "Jane Smith",
     createdAt: "2024-01-05T09:00:00Z",
@@ -27,11 +27,13 @@ export const users: User[] = [
   },
   {
     id: 3,
-    username: "KKKKKKKKKKKKKKKKKKKKKKKKKK",
-    email: "michael.brown@example.com",
-    fullName: "Michael Brown",
+    username: "vitiligo123",
+    email: "michael.jackson@example.com",
+    fullName: "Michael Jackson",
     createdAt: "2024-02-10T09:00:00Z",
     updatedAt: "2024-08-10T10:00:00Z",
+    avatar:
+      "https://rollingstone.com.br/media/uploads/2023/06/michael-jackson-cantor-rei-do-pop-foto-jim-ruyman-pool-getty-images.jpg",
   },
   {
     id: 4,

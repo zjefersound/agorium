@@ -19,7 +19,7 @@ export function PodiumInfo({ item, className }: PodiumInfoProps) {
         <span className="flex text-[13px] font-bold text-center text-agorium-50 flex-col w-full">
           {getFirstName(item.user.fullName)}
         </span>
-        <span className=" text-xs text-agorium-400 line-clamp-1 break-all w-full">
+        <span className=" text-xs text-agorium-400 line-clamp-1 text-center break-all w-full">
           {item.user.username}
         </span>
       </div>

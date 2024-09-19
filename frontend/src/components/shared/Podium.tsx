@@ -13,10 +13,8 @@ export function Podium({ items }: PodiumProps) {
         <div className="w-[68px] h-[68px] top-[86px] left-[246] bg-agorium-200 p-1 rounded-full">
           <Avatar
             size="full"
-            name={"teste"}
-            url={
-              "https://cdn.awsli.com.br/600x1000/2515/2515067/produto/23384010353bd9f5651.jpg"
-            }
+            name={items[1].user.fullName}
+            url={items[1].user.avatar}
           />
         </div>
         <span className="flex justify-center items-center text-agorium-900 font-semibold  bg-agorium-200 w-6 h-6 rounded-full -mt-3 mb-3">
@@ -32,10 +30,8 @@ export function Podium({ items }: PodiumProps) {
         <div className="w-[82px] h-[82px] top-[31px] left-[355px] bg-amber-500 p-1 rounded-full">
           <Avatar
             size="full"
-            name={"teste"}
-            url={
-              "https://cdn.awsli.com.br/600x1000/2515/2515067/produto/23384010353bd9f5651.jpg"
-            }
+            name={items[0].user.fullName}
+            url={items[0].user.avatar}
           />
         </div>
         <span className="flex justify-center items-center bg-amber-500 w-6 h-6 rounded-full -mt-3 mb-3">
@@ -50,10 +46,8 @@ export function Podium({ items }: PodiumProps) {
         <div className="w-[68px] h-[68px] top-[86px] left-[246px] bg-orange-900 p-1 rounded-full">
           <Avatar
             size="full"
-            name={"teste"}
-            url={
-              "https://cdn.awsli.com.br/600x1000/2515/2515067/produto/23384010353bd9f5651.jpg"
-            }
+            name={items[2].user.fullName}
+            url={items[2].user.avatar}
           />
         </div>
         <span className="flex justify-center items-center bg-orange-900 w-6 h-6 rounded-full -mt-3 mb-3">

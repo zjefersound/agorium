@@ -44,10 +44,8 @@ export function PodiumList({ items }: PodiumList) {
               >
                 <Avatar
                   size="full"
-                  name={"teste"}
-                  url={
-                    "https://cdn.awsli.com.br/600x1000/2515/2515067/produto/23384010353bd9f5651.jpg"
-                  }
+                  name={item.user.fullName}
+                  url={item.user.avatar}
                 />
               </div>
             </td>
