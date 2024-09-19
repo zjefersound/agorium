@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\SearchDTO;
 use App\Service\TagService;
 use App\Trait\HttpResponse;
 use Nyholm\Psr7\Response;
@@ -21,7 +22,7 @@ class TagController
     public function searchTags(ServerRequest $req): Response
     {
         $queryParams = $req->getQueryParams();
-        $search = $queryParams['search'] ?? '';
+        $search = new SearchDTO($queryParams);
 
         $result = $this->tagService->searchTags($search);
 

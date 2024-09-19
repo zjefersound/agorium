@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Domain\Tag;
+use App\DTO\SearchDTO;
 use Doctrine\ORM\EntityRepository;
 
 class TagRepository extends EntityRepository
@@ -16,20 +17,42 @@ class TagRepository extends EntityRepository
         return $tag;
     }
 
-    public function search(string $searchTerm): array
+    public function search(SearchDTO $search): array
     {
         $qb = $this->createQueryBuilder('t');
 
         // Optional term search
-        if (!empty($searchTerm)) {
+        if (!empty($search->term)) {
             $qb->where('t.name LIKE :search')
-                ->setParameter('search', '%' . $searchTerm . '%');
+                ->setParameter('search', '%' . $search->term . '%');
         }
 
-        // Execute query and get results
-        $tags = $qb->getQuery()->getResult();
+        // Clone for total count
+        $totalQb = clone $qb;
+        $total = (int) $totalQb->select('COUNT(t.id)')->getQuery()->getSingleScalarResult();
 
-        return array_map(fn($tag) => $tag->jsonSerialize(), $tags);
+        // Sorting
+        if (!empty($search->sortBy)) {
+            $qb->orderBy('t.' . $search->sortBy, $search->sortOrder);
+        }
+
+        // Apply pagination
+        $qb->setFirstResult(($search->page - 1) * $search->limit)
+            ->setMaxResults($search->limit);
+
+        // Get paginated results
+        $query = $qb->getQuery();
+        $tags = $query->getResult();
+
+        return [
+            'data' => array_map(fn($tag) => $tag->jsonSerialize(), $tags),
+            'pagination' => [
+                'currentPage' => $search->page,
+                'perPage' => $search->limit,
+                'total' => $total,
+                'totalPages' => ceil($total / $search->limit),
+            ],
+        ];
     }
 
     public function delete(Tag $tag)
