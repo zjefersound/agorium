@@ -3,16 +3,8 @@ import { NavigationCard } from "./NavigationCard";
 import { PopularItemCard } from "./PopularItemCard";
 import { useResource } from "../../hooks/useResource";
 
-const popularTags = [
-  { id: 1, label: "#biology", totalPosts: 53 },
-  { id: 7, label: "#math", totalPosts: 43 },
-  { id: 8, label: "#science", totalPosts: 41 },
-  { id: 9, label: "#englsih", totalPosts: 31 },
-  { id: 10, label: "#history", totalPosts: 12 },
-];
-
 function GlobalSidebar() {
-  const { popularCategoriesResource } = useResource();
+  const { popularCategoriesResource, popularTagsResource } = useResource();
   const popularCategories = useMemo(
     () =>
       (popularCategoriesResource.data ?? []).map((p) => ({
@@ -21,6 +13,15 @@ function GlobalSidebar() {
         totalPosts: p.totalPosts,
       })),
     [popularCategoriesResource.data],
+  );
+  const popularTags = useMemo(
+    () =>
+      (popularTagsResource.data ?? []).map((p) => ({
+        id: p.tag.id,
+        label: p.tag.name,
+        totalPosts: p.totalPosts,
+      })),
+    [popularTagsResource.data],
   );
   return (
     <>

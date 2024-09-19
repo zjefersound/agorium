@@ -12,7 +12,7 @@ import { IPostSearchableOptions, postService } from "../services/postService";
 import { IGenericResource } from "../models/IGenericResource";
 import { useGenericResource } from "../hooks/resources/useGenericResource";
 import { Tag } from "../models/Tag";
-import { tagService } from "../services/tagService";
+import { ITrendingTag, tagService } from "../services/tagService";
 
 interface ResourceProviderProps {
   children: React.ReactNode;
@@ -21,6 +21,7 @@ interface ResourceProviderProps {
 export interface ResourceContextType {
   categoriesResource: IPaginatedResource<Category>;
   popularCategoriesResource: IGenericResource<ITrendingCategory[]>;
+  popularTagsResource: IGenericResource<ITrendingTag[]>;
   postsResource: IPaginatedResource<Post, IPostSearchableOptions>;
   tagsResource: IPaginatedResource<Tag>;
 }
@@ -35,9 +36,15 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
     alias: "categories",
     fetch: categoryService.getAll,
   });
+
   const popularCategoriesResource = useGenericResource<ITrendingCategory[]>({
     alias: "posts",
     fetch: categoryService.getTrending,
+    expiresIn: 1000 * 60 * 5, // 5 min
+  });
+  const popularTagsResource = useGenericResource<ITrendingTag[]>({
+    alias: "posts",
+    fetch: tagService.getTrending,
     expiresIn: 1000 * 60 * 5, // 5 min
   });
 
@@ -56,12 +63,14 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
     () => ({
       categoriesResource,
       popularCategoriesResource,
+      popularTagsResource,
       postsResource,
       tagsResource,
     }),
     [
       categoriesResource,
       popularCategoriesResource,
+      popularTagsResource,
       postsResource,
       tagsResource,
     ],
@@ -70,6 +79,7 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
   useEffect(() => {
     if (!authenticated) return;
     popularCategoriesResource.fetchData();
+    popularTagsResource.fetchData();
     categoriesResource.fetchData();
     // eslint-disable-next-line
   }, [authenticated]);
