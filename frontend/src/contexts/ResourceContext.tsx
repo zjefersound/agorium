@@ -6,6 +6,8 @@ import { IPaginatedResource } from "../models/IPaginatedResource";
 import { usePaginatedResource } from "../hooks/resources/usePaginatedResource";
 import { categoryService } from "../services/categoryService";
 import { IPostSearchableOptions, postService } from "../services/postService";
+import { Tag } from "../models/Tag";
+import { tagService } from "../services/tagService";
 
 interface ResourceProviderProps {
   children: React.ReactNode;
@@ -14,6 +16,7 @@ interface ResourceProviderProps {
 export interface ResourceContextType {
   categoriesResource: IPaginatedResource<Category>;
   postsResource: IPaginatedResource<Post, IPostSearchableOptions>;
+  tagsResource: IPaginatedResource<Tag>;
 }
 
 export const ResourceContext = createContext<ResourceContextType>(
@@ -26,6 +29,10 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
     alias: "categories",
     fetch: categoryService.getAll,
   });
+  const tagsResource = usePaginatedResource<Tag>({
+    alias: "tags",
+    fetch: tagService.getAll,
+  });
   const postsResource = usePaginatedResource<Post, IPostSearchableOptions>({
     alias: "posts",
     fetch: postService.getAll,
@@ -33,8 +40,8 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
   });
 
   const values = useMemo(
-    () => ({ categoriesResource, postsResource }),
-    [categoriesResource, postsResource],
+    () => ({ categoriesResource, postsResource, tagsResource }),
+    [categoriesResource, postsResource, tagsResource],
   );
 
   useEffect(() => {
