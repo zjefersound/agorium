@@ -56,13 +56,15 @@ class CategoryRepository extends EntityRepository
 
     public function trending(): array
     {
-        $qb = $this->getEntityManager()->createQuery(
-            'SELECT c as category, COUNT(p.id) as totalPosts
-         FROM App\Domain\Category c
-         LEFT JOIN App\Domain\Post p WITH p.category = c
-         GROUP BY c.id
-         ORDER BY totalPosts DESC'
-        )
+        $sql = <<<SQL
+            SELECT c as category, COUNT(p.id) as totalPosts
+                FROM App\Domain\Category c
+                LEFT JOIN App\Domain\Post p WITH p.category = c
+                GROUP BY c.id
+                ORDER BY totalPosts DESC
+        SQL;
+
+        $qb = $this->getEntityManager()->createQuery($sql)
             ->setMaxResults(5);
 
         $results = $qb->getResult();
