@@ -4,18 +4,22 @@ import { Post } from "../../models/Post";
 import { Tag } from "../../models/Tag";
 import { User } from "../../models/User";
 
+function randomIntFromInterval(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 export const users: User[] = [
   {
     id: 1,
-    username: "john_doe",
+    username: "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkK",
     email: "john.doe@example.com",
-    fullName: "John Doe",
+    fullName: "CHUPISCO AZEDO COM LEITE FERMENTADO",
     createdAt: "2024-01-01T09:00:00Z",
     updatedAt: "2024-08-01T10:00:00Z",
   },
   {
     id: 2,
-    username: "jane_smith",
+    username: "kkkkkkkkkkkkkkkkkkkkkkkkkk",
     email: "jane.smith@example.com",
     fullName: "Jane Smith",
     createdAt: "2024-01-05T09:00:00Z",
@@ -23,7 +27,7 @@ export const users: User[] = [
   },
   {
     id: 3,
-    username: "michael_brown",
+    username: "KKKKKKKKKKKKKKKKKKKKKKKKKK",
     email: "michael.brown@example.com",
     fullName: "Michael Brown",
     createdAt: "2024-02-10T09:00:00Z",
@@ -230,6 +234,83 @@ export const rankingCardItems: RankingCardItem[] = [
     totalUpvotes: 75,
   },
 ];
+export interface RankingDataItem extends RankingCardItem {
+  totalPosts: number;
+}
+
+export const rankingData: RankingDataItem[] = [
+  {
+    id: Math.random(),
+    user: users[0],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[1],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[2],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[3],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[4],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[5],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[1],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[2],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[3],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[4],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+  {
+    id: Math.random(),
+    user: users[5],
+    totalPosts: randomIntFromInterval(30, 150),
+    totalUpvotes: randomIntFromInterval(500, 1500),
+  },
+].map((item, index) => {
+  return {
+    ...item,
+    position: index + 1,
+  };
+});
 
 export const academicTags: Tag[] = [
   { id: 1, name: "Research Methodology" },
