@@ -54,6 +54,25 @@ class CategoryRepository extends EntityRepository
         ];
     }
 
+    public function trending(): array
+    {
+        $qb = $this->getEntityManager()->createQuery(
+            'SELECT c as category, COUNT(p.id) as totalPosts
+         FROM App\Domain\Category c
+         LEFT JOIN App\Domain\Post p WITH p.category = c
+         GROUP BY c.id
+         ORDER BY totalPosts DESC'
+        )
+            ->setMaxResults(5);
+
+        $results = $qb->getResult();
+
+        return array_map(fn($result) => [
+            'category' => $result['category']->jsonSerialize(),
+            'totalPosts' => (int) $result['totalPosts']
+        ], $results);
+    }
+
     public function delete(Category $category)
     {
         $em = $this->getEntityManager();

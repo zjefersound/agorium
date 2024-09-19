@@ -62,6 +62,12 @@ class CategoryController
         return $this->ok($result);
     }
 
+    public function getTrendingCategories(): Response
+    {
+        $result = $this->categoryService->getTrendingCategories();
+        return $this->ok($result);
+    }
+
     public function deleteCategory($req, $res, $args): Response
     {
         $categoryId = (int)$args['id'];
