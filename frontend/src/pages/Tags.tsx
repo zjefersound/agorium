@@ -14,13 +14,14 @@ import { GlobalSidebar } from "../components/shared/GlobalSidebar";
 import { ISelectOption } from "../models/ISelectOption";
 import { useCallback, useEffect, useMemo } from "react";
 import { useResource } from "../hooks/useResource";
+import { PostsNotFound } from "../components/shared/fallbacks/PostsNotFound";
 
 export function Tags() {
   const { id } = useParams();
   const tagId = id ?? "";
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { tagsResource } = useResource();
+  const { tagsResource, postsResource } = useResource();
   const handleSelectTag = useCallback(
     (value: string) => navigate("/tags/" + value),
     [navigate],
@@ -37,6 +38,13 @@ export function Tags() {
     tagsResource.fetchData({ limit: 100000 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const filters = tagId ? { tagId } : {};
+    postsResource.fetchData(filters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tagId]);
+
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -66,9 +74,12 @@ export function Tags() {
               ]}
             />
           </div>
-          {mockedPosts.map((post) => (
+          {postsResource.data.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
+          {!postsResource.loading && !postsResource.data.length && (
+            <PostsNotFound description="Try another tag!" />
+          )}
         </div>
       </Content.Main>
       <Content.Sidebar>
