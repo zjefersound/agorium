@@ -58,7 +58,7 @@ export function Tags() {
             options={tagsOptions}
           />
           <div className="flex justify-between items-center">
-            <span>34 Posts</span>
+            <span>{postsResource.pagination.total} Posts</span>
             <ButtonGroup
               value={searchParams.get("order") ?? "relevance"}
               onChange={(value) =>
