@@ -13,7 +13,11 @@ const sortOptions = [
   { label: "Newest", value: "newest" },
 ];
 
-function PostList({ filter = {} }: { filter?: IPostSearchableOptions }) {
+interface PostListProps {
+  filter?: IPostSearchableOptions;
+}
+
+function PostList({ filter = {} }: PostListProps) {
   const { postsResource } = useResource();
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(1);
