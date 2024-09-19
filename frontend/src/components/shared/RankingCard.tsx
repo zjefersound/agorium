@@ -38,7 +38,7 @@ export function RankingCard({ items }: RankingCardProps) {
                   {
                     "bg-amber-500": item.position === 1,
                     "bg-agorium-300 text-agorium-900": item.position === 2,
-                    "bg-orange-600": item.position === 3,
+                    "bg-orange-900": item.position === 3,
                     "text-agorium-400": ![1, 2, 3].includes(item.position),
                   },
                 )}
