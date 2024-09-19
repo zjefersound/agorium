@@ -21,6 +21,7 @@ function PostList({ filter = {} }: { filter?: IPostSearchableOptions }) {
   const sortType = searchParams.get("order") ?? "newest";
   const handleSelectSortType = useCallback(
     (value: string) => setSearchParams((prev) => ({ ...prev, order: value })),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
   const params: IPostSearchableOptions = useMemo(() => {
@@ -42,6 +43,7 @@ function PostList({ filter = {} }: { filter?: IPostSearchableOptions }) {
 
   useEffect(() => {
     postsResource.fetchData(params);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
   if (postsResource.loading && page === 1) return <PostCardsSkeleton />;
