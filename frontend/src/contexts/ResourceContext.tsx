@@ -32,6 +32,7 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
   const tagsResource = usePaginatedResource<Tag>({
     alias: "tags",
     fetch: tagService.getAll,
+    expiresIn: 1000 * 30, // 30 s
   });
   const postsResource = usePaginatedResource<Post, IPostSearchableOptions>({
     alias: "posts",
