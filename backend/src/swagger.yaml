@@ -648,6 +648,17 @@ paths:
       tags:
         - category
 
+  /categories/trending:
+    get:
+      summary: "Search trending categories"
+      responses:
+        "200":
+          description: Categories retrieved successfully
+        "401":
+          description: Unauthorized
+      tags:
+        - category
+
   #endregion
 
   /tags:

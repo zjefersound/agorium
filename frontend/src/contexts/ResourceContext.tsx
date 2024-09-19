@@ -4,8 +4,13 @@ import { Category } from "../models/Category";
 import { Post } from "../models/Post";
 import { IPaginatedResource } from "../models/IPaginatedResource";
 import { usePaginatedResource } from "../hooks/resources/usePaginatedResource";
-import { categoryService } from "../services/categoryService";
+import {
+  categoryService,
+  ITrendingCategory,
+} from "../services/categoryService";
 import { IPostSearchableOptions, postService } from "../services/postService";
+import { IGenericResource } from "../models/IGenericResource";
+import { useGenericResource } from "../hooks/resources/useGenericResource";
 import { Tag } from "../models/Tag";
 import { tagService } from "../services/tagService";
 
@@ -15,6 +20,7 @@ interface ResourceProviderProps {
 
 export interface ResourceContextType {
   categoriesResource: IPaginatedResource<Category>;
+  popularCategoriesResource: IGenericResource<ITrendingCategory[]>;
   postsResource: IPaginatedResource<Post, IPostSearchableOptions>;
   tagsResource: IPaginatedResource<Tag>;
 }
@@ -29,6 +35,12 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
     alias: "categories",
     fetch: categoryService.getAll,
   });
+  const popularCategoriesResource = useGenericResource<ITrendingCategory[]>({
+    alias: "posts",
+    fetch: categoryService.getTrending,
+    expiresIn: 1000 * 60 * 5, // 5 min
+  });
+
   const tagsResource = usePaginatedResource<Tag>({
     alias: "tags",
     fetch: tagService.getAll,
@@ -41,13 +53,23 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
   });
 
   const values = useMemo(
-    () => ({ categoriesResource, postsResource, tagsResource }),
-    [categoriesResource, postsResource, tagsResource],
+    () => ({
+      categoriesResource,
+      popularCategoriesResource,
+      postsResource,
+      tagsResource,
+    }),
+    [
+      categoriesResource,
+      popularCategoriesResource,
+      postsResource,
+      tagsResource,
+    ],
   );
 
   useEffect(() => {
     if (!authenticated) return;
-
+    popularCategoriesResource.fetchData();
     categoriesResource.fetchData();
     // eslint-disable-next-line
   }, [authenticated]);

@@ -1,6 +1,7 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { NavigationCard } from "./NavigationCard";
 import { PopularItemCard } from "./PopularItemCard";
+import { useResource } from "../../hooks/useResource";
 
 const popularTags = [
   { id: 1, label: "#biology", totalPosts: 53 },
@@ -10,15 +11,17 @@ const popularTags = [
   { id: 10, label: "#history", totalPosts: 12 },
 ];
 
-const popularCategories = [
-  { id: 2, label: "Issue", totalPosts: 286 },
-  { id: 3, label: "Discussion", totalPosts: 233 },
-  { id: 4, label: "Feedback", totalPosts: 211 },
-  { id: 5, label: "Debate", totalPosts: 173 },
-  { id: 6, label: "Tutorials", totalPosts: 163 },
-];
-
 function GlobalSidebar() {
+  const { popularCategoriesResource } = useResource();
+  const popularCategories = useMemo(
+    () =>
+      (popularCategoriesResource.data ?? []).map((p) => ({
+        id: p.category.id,
+        label: p.category.name,
+        totalPosts: p.totalPosts,
+      })),
+    [popularCategoriesResource.data],
+  );
   return (
     <>
       <NavigationCard />

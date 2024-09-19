@@ -38,6 +38,7 @@ return function (App $app) {
 
     $app->group('categories', function () use ($app) {
         $app->get('/categories', CategoryController::class . ':searchCategories');
+        $app->get('/categories/trending', CategoryController::class . ':getTrendingCategories');
         $app->get('/category/{id}', CategoryController::class . ':getCategory');
         $app->post('/category', CategoryController::class . ':saveCategory');
         $app->put('/category/{id}', CategoryController::class . ':saveCategory');

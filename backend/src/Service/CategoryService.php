@@ -65,6 +65,15 @@ class CategoryService
         }
     }
 
+    public function getTrendingCategories(): array
+    {
+        try {
+            return $this->categoryRepository->trending();
+        } catch (\Throwable $th) {
+            throw new Exception("An error occured while searching for trending categories.");
+        }
+    }
+
     public function deleteCategory(int $categoryId)
     {
         $category = $this->categoryRepository->find($categoryId);
