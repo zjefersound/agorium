@@ -342,6 +342,13 @@ paths:
             type: integer
             example: "1"
           description: "Filter by category"
+        - in: query
+          name: tagId
+          required: false
+          schema:
+            type: integer
+            example: "1"
+          description: "Filter by tag"
       responses:
         "200":
           description: Categories retrieved successfully

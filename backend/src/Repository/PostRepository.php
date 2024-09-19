@@ -34,26 +34,33 @@ class PostRepository
 
     public function search(PostSearchDTO $search): array
     {
-        $qb = $this->em->getRepository(Post::class)->createQueryBuilder('c');
+        $qb = $this->em->getRepository(Post::class)->createQueryBuilder('p');
 
         // Optional term search
         if (!empty($search->term)) {
-            $qb->where('c.title LIKE :search')
+            $qb->where('p.title LIKE :search')
                 ->setParameter('search', '%' . $search->term . '%');
         }
 
         // Filter by categoryId
         if (!empty($search->categoryId)) {
-            $qb->andWhere('c.category = :categoryId')
+            $qb->andWhere('p.category = :categoryId')
                 ->setParameter('categoryId', $search->categoryId);
         }
 
+        // Filter by tagId
+        if (!empty($search->tagId)) {
+            $qb->innerJoin('p.tags', 't')
+                ->andWhere('t.id = :tagId')
+                ->setParameter('tagId', $search->tagId);
+        }
+
         $totalQb = clone $qb;
-        $total = (int) $totalQb->select('COUNT(c.id)')->getQuery()->getSingleScalarResult();
+        $total = (int) $totalQb->select('COUNT(p.id)')->getQuery()->getSingleScalarResult();
 
         // Sorting
         if (!empty($search->sortBy)) {
-            $qb->orderBy('c.' . $search->sortBy, $search->sortOrder);
+            $qb->orderBy('p.' . $search->sortBy, $search->sortOrder);
         }
 
         // Apply pagination
