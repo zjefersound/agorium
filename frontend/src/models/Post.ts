@@ -2,6 +2,7 @@ import { Category } from "./Category";
 import { Comment } from "./Comment";
 import { Tag } from "./Tag";
 import { User } from "./User";
+import { Vote } from "./Vote";
 
 export type Post = {
   id: number;
@@ -12,8 +13,9 @@ export type Post = {
   categoryId: number;
   userId: number;
 
-  voted: boolean;
+  voted?: Vote;
   totalUpvotes: number;
+  totalComments: number;
 
   favoriteCommentId?: number;
 

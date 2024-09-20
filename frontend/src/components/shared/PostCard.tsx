@@ -41,7 +41,7 @@ function PostCard({ post }: PostCardProps) {
           <Text asChild>
             <span className="flex items-center ml-4">
               <MdOutlineModeComment className="mr-1 size-4" />{" "}
-              {post.comments?.length || 0}
+              {post.totalComments}
             </span>
           </Text>
           <Text asChild>
