@@ -707,6 +707,17 @@ paths:
           description: Unauthorized
       tags:
         - tag
+  /tags/trending:
+    get:
+      summary: "Search trending tags"
+      responses:
+        "200":
+          description: Tags retrieved successfully
+        "401":
+          description: Unauthorized
+      tags:
+        - tag
+
 components:
   securitySchemes:
     BearerAuth:
