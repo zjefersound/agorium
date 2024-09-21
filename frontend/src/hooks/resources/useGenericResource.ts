@@ -9,13 +9,15 @@ interface GenericCache<T> {
   updatedAt: Date;
 }
 
-export function useGenericResource<T, O = unknown>({
+export function useGenericResource<T, O = undefined>({
   alias,
   fetch,
   expiresIn = Infinity,
 }: {
   alias: string;
-  fetch: (options?: O) => Promise<AxiosResponse<T>>;
+  fetch: O extends undefined
+    ? () => Promise<AxiosResponse<T>>
+    : (options: O) => Promise<AxiosResponse<T>>;
   expiresIn?: number;
 }): IGenericResource<T, O> {
   const cache = useCache<GenericCache<T>>();
@@ -27,7 +29,7 @@ export function useGenericResource<T, O = unknown>({
     setValid(false);
   }, []);
   const fetchData = useCallback(
-    async (options?: O) => {
+    async (options: O) => {
       const cacheKey = !options ? "default" : JSON.stringify(options);
       const cachedValue = cache.get(cacheKey);
       if (cachedValue) {
@@ -59,7 +61,9 @@ export function useGenericResource<T, O = unknown>({
 
   return {
     data,
-    fetchData,
+    fetchData: fetchData as O extends undefined
+      ? () => Promise<unknown>
+      : (options: O) => Promise<unknown>,
     loading,
     revalidate,
   };

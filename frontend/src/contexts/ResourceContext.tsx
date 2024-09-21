@@ -22,6 +22,7 @@ export interface ResourceContextType {
   categoriesResource: IPaginatedResource<Category>;
   popularCategoriesResource: IGenericResource<ITrendingCategory[]>;
   popularTagsResource: IGenericResource<ITrendingTag[]>;
+  postResource: IGenericResource<Post, string>;
   postsResource: IPaginatedResource<Post, IPostSearchableOptions>;
   tagsResource: IPaginatedResource<Tag>;
 }
@@ -38,14 +39,20 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
   });
 
   const popularCategoriesResource = useGenericResource<ITrendingCategory[]>({
-    alias: "posts",
+    alias: "popular categories",
     fetch: categoryService.getTrending,
     expiresIn: 1000 * 60 * 5, // 5 min
   });
   const popularTagsResource = useGenericResource<ITrendingTag[]>({
-    alias: "posts",
+    alias: "popular tags",
     fetch: tagService.getTrending,
     expiresIn: 1000 * 60 * 5, // 5 min
+  });
+
+  const postResource = useGenericResource<Post, string>({
+    alias: "post",
+    fetch: postService.getById,
+    expiresIn: 1000 * 60 * 1, // 5 min
   });
 
   const tagsResource = usePaginatedResource<Tag>({
@@ -64,6 +71,7 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
       categoriesResource,
       popularCategoriesResource,
       popularTagsResource,
+      postResource,
       postsResource,
       tagsResource,
     }),
@@ -71,6 +79,7 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
       categoriesResource,
       popularCategoriesResource,
       popularTagsResource,
+      postResource,
       postsResource,
       tagsResource,
     ],
