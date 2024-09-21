@@ -19,8 +19,8 @@ export function HeaderSearch() {
       const searchObject: Dictionary<string> = {
         text: searchText,
       };
-      if (searchParams.get("order")) {
-        searchObject.order = searchParams.get("order")!;
+      if (searchParams.get("sortBy")) {
+        searchObject.sortBy = searchParams.get("sortBy")!;
       }
       navigate({
         pathname: "/search",

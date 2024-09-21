@@ -23,9 +23,9 @@ function PostList({ filter = {}, hideDefaultFilters }: PostListProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(1);
 
-  const sortType = searchParams.get("order") ?? "createdAt";
+  const sortType = searchParams.get("sortBy") ?? "createdAt";
   const handleSelectSortType = useCallback(
-    (value: string) => setSearchParams((prev) => ({ ...prev, order: value })),
+    (value: string) => setSearchParams((prev) => ({ ...prev, sortBy: value })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );

@@ -18,9 +18,9 @@ const orderOptions = [
 
 export function HomeContent() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedOrder = searchParams.get("order") || "createdAt";
-  const handleSelectOrder = useCallback((order: string) => {
-    setSearchParams((p) => ({ ...p, order }));
+  const selectedOrder = searchParams.get("sortBy") || "createdAt";
+  const handleSelectOrder = useCallback((sortBy: string) => {
+    setSearchParams((p) => ({ ...p, sortBy }));
   }, []);
   return (
     <div className="flex flex-col space-y-6">
