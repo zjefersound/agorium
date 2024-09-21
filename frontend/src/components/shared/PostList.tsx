@@ -9,20 +9,21 @@ import { ButtonGroup } from "../ui/ButtonGroup";
 import { useSearchParams } from "react-router-dom";
 
 const sortOptions = [
-  { label: "Relevance", value: "relevance" },
-  { label: "Newest", value: "newest" },
+  { label: "Relevance", value: "title" }, // TO DO: change to upvotes
+  { label: "Newest", value: "createdAt" },
 ];
 
 interface PostListProps {
+  hideDefaultFilters?: boolean;
   filter?: IPostSearchableOptions;
 }
 
-function PostList({ filter = {} }: PostListProps) {
+function PostList({ filter = {}, hideDefaultFilters }: PostListProps) {
   const { postsResource } = useResource();
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(1);
 
-  const sortType = searchParams.get("order") ?? "newest";
+  const sortType = searchParams.get("order") ?? "createdAt";
   const handleSelectSortType = useCallback(
     (value: string) => setSearchParams((prev) => ({ ...prev, order: value })),
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -35,15 +36,34 @@ function PostList({ filter = {} }: PostListProps) {
       sortBy: "createdAt",
       sortOrder: "desc",
     };
+    if (sortType) returnParams.sortBy = sortType;
     if (filter.categoryId?.trim()) returnParams.categoryId = filter.categoryId;
     if (filter.tagId?.trim()) returnParams.tagId = filter.tagId;
+    if (filter.term?.trim()) returnParams.term = filter.term;
+    if (filter.sortBy) returnParams.sortBy = filter.sortBy;
+    if (filter.sortOrder) returnParams.sortBy = filter.sortOrder;
 
     return returnParams;
-  }, [page, filter.categoryId, filter.tagId]);
+  }, [
+    page,
+    filter.categoryId,
+    filter.tagId,
+    filter.term,
+    filter.sortBy,
+    filter.sortOrder,
+    sortType,
+  ]);
 
   useEffect(() => {
     setPage(1);
-  }, [filter.categoryId, filter.tagId]);
+  }, [
+    filter.categoryId,
+    filter.tagId,
+    filter.term,
+    filter.sortBy,
+    filter.sortOrder,
+    sortType,
+  ]);
 
   useEffect(() => {
     postsResource.fetchData(params);
@@ -59,11 +79,13 @@ function PostList({ filter = {} }: PostListProps) {
     <div className="flex flex-col space-y-6">
       <div className="flex justify-between items-center">
         <span>{postsResource.pagination.total} Posts</span>
-        <ButtonGroup
-          value={sortType}
-          onChange={handleSelectSortType}
-          options={sortOptions}
-        />
+        {!hideDefaultFilters && (
+          <ButtonGroup
+            value={sortType}
+            onChange={handleSelectSortType}
+            options={sortOptions}
+          />
+        )}
       </div>
       {postsResource.data.map((post) => (
         <PostCard key={post.id} post={post} />
