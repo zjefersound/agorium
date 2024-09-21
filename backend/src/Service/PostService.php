@@ -62,6 +62,41 @@ class PostService
         return $post;
     }
 
+    public function updateFavoriteComment(int $postId, int $favoriteCommentId, int $userId): void
+    {
+        $post = $this->postRepository->find($postId);
+
+        if (!$post) {
+            throw new Exception("Post not found.");
+        }
+
+        if ($post->getUser()->getId() !== $userId) {
+            throw new Exception("User not authorized to update this post.");
+        }
+
+        $comment = $post->getComments()->filter(function ($comment) use ($favoriteCommentId) {
+            return $comment->getId() === $favoriteCommentId;
+        })->first();
+
+        if (!$comment) {
+            throw new Exception("Comment not found or not associated with this post.");
+        }
+
+        if ($post->getFavoriteComment() && $post->getFavoriteComment()->getId() === $favoriteCommentId) {
+            // If the input comment is the same as the current favorite, remove it (toggle off)
+            $post->setFavoriteComment(null);
+        } else {
+            $post->setFavoriteComment($comment);
+        }
+        $post->setUpdatedAt(new DateTimeImmutable());
+
+        try {
+            $this->postRepository->save($post);
+        } catch (\Throwable $th) {
+            throw new Exception("Error updating favorite comment.");
+        }
+    }
+
     public function searchPosts(PostSearchDTO $search): array
     {
         $search->term ??= "";

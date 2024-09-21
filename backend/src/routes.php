@@ -26,6 +26,7 @@ return function (App $app) {
         $app->post('/post', PostController::class . ':savePost');
         $app->put('/post/{id}', PostController::class . ':savePost');
         $app->delete('/post/{id}', PostController::class . ':deletePost');
+        $app->patch('/post/{id}/favorite-comment', PostController::class . ':updateFavoriteComment');
     })->add(AuthMiddleware::class);
 
     $app->group('comments', function () use ($app) {

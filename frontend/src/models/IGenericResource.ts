@@ -1,6 +1,8 @@
-export interface IGenericResource<T, O = unknown> {
+export interface IGenericResource<T, O = undefined> {
   data: T | null;
-  fetchData: (options?: O) => Promise<unknown>;
+  fetchData: O extends undefined
+    ? () => Promise<unknown>
+    : (options: O) => Promise<unknown>;
   loading: boolean;
   revalidate: () => void;
 }

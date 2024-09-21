@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { AxiosResponse } from "axios";
 import { useCache } from "../useCache";
 import { isDateExpired } from "../../utils/isDateExpired";
@@ -9,25 +9,28 @@ interface GenericCache<T> {
   updatedAt: Date;
 }
 
-export function useGenericResource<T, O = unknown>({
+export function useGenericResource<T, O = undefined>({
   alias,
   fetch,
   expiresIn = Infinity,
 }: {
   alias: string;
-  fetch: (options?: O) => Promise<AxiosResponse<T>>;
+  fetch: O extends undefined
+    ? () => Promise<AxiosResponse<T>>
+    : (options: O) => Promise<AxiosResponse<T>>;
   expiresIn?: number;
 }): IGenericResource<T, O> {
   const cache = useCache<GenericCache<T>>();
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
-  const [valid, setValid] = useState(true);
+  const validRef = useRef(true);
 
   const revalidate = useCallback(async () => {
-    setValid(false);
+    validRef.current = false;
   }, []);
+
   const fetchData = useCallback(
-    async (options?: O) => {
+    async (options: O) => {
       const cacheKey = !options ? "default" : JSON.stringify(options);
       const cachedValue = cache.get(cacheKey);
       if (cachedValue) {
@@ -37,8 +40,7 @@ export function useGenericResource<T, O = unknown>({
       const isNotExpired =
         cachedValue && !isDateExpired(cachedValue.updatedAt, expiresIn);
 
-      // if it's valid and not expired skip fetch
-      if (valid && isNotExpired) return;
+      if (validRef.current && isNotExpired) return;
 
       setLoading(true);
       return fetch(options)
@@ -48,18 +50,19 @@ export function useGenericResource<T, O = unknown>({
             data: res.data,
             updatedAt: new Date(),
           });
-          setValid(true);
+          validRef.current = true; // Update ref value to true
         })
         .catch((error) => console.error("Failed to fetch " + alias, error))
         .finally(() => setLoading(false));
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [valid],
+    [fetch, expiresIn, cache, alias],
   );
 
   return {
     data,
-    fetchData,
+    fetchData: fetchData as O extends undefined
+      ? () => Promise<unknown>
+      : (options: O) => Promise<unknown>,
     loading,
     revalidate,
   };

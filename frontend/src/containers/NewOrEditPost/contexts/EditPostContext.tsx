@@ -53,7 +53,8 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
   const { user } = useAuth();
   const { id } = useParams();
   const { launchToast } = useToast();
-  const { postsResource } = useResource();
+  const { postsResource, popularTagsResource, popularCategoriesResource } =
+    useResource();
   const [loadingPost, setLoadingPost] = useState(true);
   const [post, setPost] = useState<Post | null>(null);
 
@@ -75,6 +76,10 @@ export const EditPostProvider = ({ children }: EditPostProviderProps) => {
           description: TOAST_MESSAGES.Post.createdDescription,
         });
         postsResource.revalidate();
+        popularTagsResource.revalidate();
+        popularCategoriesResource.revalidate();
+        popularTagsResource.fetchData();
+        popularCategoriesResource.fetchData();
         navigate(`/post/${id}`);
       })
       .catch((error: AxiosError<IApiErrorResponse>) => {

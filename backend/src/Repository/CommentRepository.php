@@ -123,6 +123,7 @@ class CommentRepository
                 'updatedAt' => $comment['updated_at'],
                 'user' => $user,
                 'children' => [],
+                'totalUpvotes' => 0,
             ];
         }
 
