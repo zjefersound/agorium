@@ -22,7 +22,7 @@ export const HOME_POST_SORT_OPTIONS = [
   { Icon: MdOutlineWhatshot, label: "Hot", value: POST_SORT_BY.totalComments },
   {
     Icon: MdOutlineSortByAlpha,
-    label: "Alphabetic",
+    label: "Alphabetical",
     value: POST_SORT_BY.title,
   },
 ].filter((o) => availableSortOptions.includes(o.value));
