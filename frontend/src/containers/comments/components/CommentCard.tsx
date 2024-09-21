@@ -67,7 +67,7 @@ function CommentCard({
           )}
         </div>
         <MarkdownPreview>{comment.content}</MarkdownPreview>
-        <footer className="flex items-center space-x-3">
+        <footer className="flex items-center gap-3 flex-wrap">
           <Button
             size="sm"
             color={comment.voted ? "primary" : "secondary"}
@@ -78,7 +78,7 @@ function CommentCard({
           <Button size="sm" color="secondary" onClick={() => onReply(comment)}>
             <MdOutlineReply className="mr-2 size-5" /> Reply
           </Button>
-          {comment.id === favoriteCommentId && (
+          {!isPostAuthor && comment.id === favoriteCommentId && (
             <span className="text-xs leading-3 text-emerald-400 flex items-center">
               <MdCheckCircleOutline className="size-6 mr-2 shrink-0" />
               <span className="hidden min-[360px]:inline">
@@ -90,10 +90,10 @@ function CommentCard({
             <Button
               size="sm"
               color={comment.id === favoriteCommentId ? "success" : "secondary"}
-              className="ml-auto"
               onClick={handleMarkFavoriteComment}
             >
-              <MdCheckCircleOutline className="mr-2 size-5" /> Mark as favorite
+              <MdCheckCircleOutline className="mr-2 size-5" />{" "}
+              {comment.id === favoriteCommentId ? "Favorited" : "Favorite"}
             </Button>
           )}
           <Text>{comment.children.length} replies</Text>
