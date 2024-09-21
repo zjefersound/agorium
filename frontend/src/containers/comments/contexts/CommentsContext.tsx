@@ -16,6 +16,8 @@ import { AxiosError } from "axios";
 import { IApiErrorResponse } from "../../../models/IApiErrorResponse";
 import { getApiErrorMessage } from "../../../utils/getApiErrorMessage";
 import { CommentEditModal } from "../components/CommentEditModal";
+import { postService } from "../../../services/postService";
+import { useResource } from "../../../hooks/useResource";
 
 interface CommentsProviderProps {
   post: Post;
@@ -25,6 +27,7 @@ export interface CommentsContextType {
   comments: Comment[];
   fetchComments: () => void;
   deleteComment: (commentId: string | number) => Promise<void>;
+  setFavoriteComment: (commentId: string | number) => Promise<void>;
   updateComment: (commentId: string | number, content: string) => Promise<void>;
   commentToUpdate: Comment | null;
   setCommentToUpdate: (comment: Comment | null) => void;
@@ -36,6 +39,7 @@ export const CommentsContext = createContext<CommentsContextType>(
 
 export const CommentsProvider = ({ post }: CommentsProviderProps) => {
   const { user } = useAuth();
+  const { postResource } = useResource();
   const { launchToast } = useToast();
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -67,6 +71,26 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
     [post.id, fetchComments],
   );
 
+  const setFavoriteComment = useCallback(
+    (commentId: string | number) => {
+      return postService
+        .updateFavoriteComment(post.id, commentId)
+        .then(() => {
+          postResource.revalidate();
+          postResource.fetchData(post.id);
+        })
+        .catch((error: AxiosError<IApiErrorResponse>) => {
+          launchToast({
+            color: "danger",
+            title: "Failed to mark comment as favorite",
+            description: getApiErrorMessage(error),
+          });
+        });
+    },
+    // eslint-disable-next-line
+    [post.id],
+  );
+
   const updateComment = useCallback(
     (commentId: string | number, content: string) => {
       return commentService
@@ -96,6 +120,7 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
       updateComment,
       commentToUpdate,
       setCommentToUpdate,
+      setFavoriteComment,
     }),
     [comments, deleteComment, fetchComments, updateComment, commentToUpdate],
   );

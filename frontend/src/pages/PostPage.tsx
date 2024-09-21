@@ -7,46 +7,25 @@ import { Card } from "../components/ui/Card";
 import { Tag } from "../components/ui/Tag";
 import { Heading } from "../components/ui/Heading";
 import { GoBack } from "../components/ui/GoBack";
-import { useEffect, useState } from "react";
-import { useToast } from "../hooks/useToast";
-import { Post } from "../models/Post";
-import { postService } from "../services/postService";
-import { AxiosError } from "axios";
-import { TOAST_MESSAGES } from "../constants/toastMessages";
+import { useEffect } from "react";
 import { ContentSkeleton } from "../components/shared/skeletons/ContentSkeleton";
 import { PostNotFound } from "../components/shared/fallbacks/PostNotFound";
 import { PostContent } from "../containers/PostContent";
 import { CommentsProvider } from "../containers/comments/contexts/CommentsContext";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
+import { useResource } from "../hooks/useResource";
 
 export function PostPage() {
-  const { launchToast } = useToast();
   const { id } = useParams();
-  const [loadingPost, setLoadingPost] = useState(true);
-  const [post, setPost] = useState<Post | null>(null);
-
+  const { postResource } = useResource();
+  const post = postResource.data;
   useEffect(() => {
     if (!id) return;
-    setLoadingPost(true);
-    postService
-      .getById(id)
-      .then((res) => {
-        setPost(res.data);
-      })
-      .catch((error: AxiosError) => {
-        if (error.status !== 404) {
-          launchToast({
-            color: "danger",
-            title: TOAST_MESSAGES.common.unexpectedErrorTitle,
-            description: TOAST_MESSAGES.common.unexpectedErrorDescription,
-          });
-        }
-      })
-      .finally(() => setLoadingPost(false));
+    postResource.fetchData(Number(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  if (loadingPost) return <ContentSkeleton />;
+  if (postResource.loading && !post) return <ContentSkeleton />;
   if (!post) return <PostNotFound />;
   return (
     <Content.Root>

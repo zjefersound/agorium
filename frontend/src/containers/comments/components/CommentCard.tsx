@@ -17,22 +17,28 @@ import { ChildCommentCard } from "./ChildCommentCard";
 
 interface CommentCardProps {
   comment: Comment;
-  favorite?: boolean;
+  favoriteCommentId?: number;
   isPostAuthor?: boolean;
   onReply: (comment: Comment) => void;
 }
 function CommentCard({
   comment,
-  favorite,
+  favoriteCommentId,
   isPostAuthor,
   onReply,
 }: CommentCardProps) {
   const { user } = useAuth();
-  const { deleteComment, setCommentToUpdate } = useComments();
+  const { deleteComment, setCommentToUpdate, setFavoriteComment } =
+    useComments();
   const isAuthor = useMemo(
     () => user!.id === comment.user!.id,
     [user, comment],
   );
+
+  const handleMarkFavoriteComment = useCallback(() => {
+    setFavoriteComment(comment.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [comment.id]);
 
   const handleEditComment = useCallback(() => {
     setCommentToUpdate(comment);
@@ -62,13 +68,17 @@ function CommentCard({
         </div>
         <MarkdownPreview>{comment.content}</MarkdownPreview>
         <footer className="flex items-center space-x-3">
-          <Button size="sm" color={comment.voted ? "primary" : "secondary"}>
+          <Button
+            size="sm"
+            color={comment.voted ? "primary" : "secondary"}
+            disabled={isAuthor}
+          >
             <MdArrowUpward className="mr-2 size-5" /> {comment.totalUpvotes}
           </Button>
           <Button size="sm" color="secondary" onClick={() => onReply(comment)}>
             <MdOutlineReply className="mr-2 size-5" /> Reply
           </Button>
-          {!isPostAuthor && favorite && (
+          {comment.id === favoriteCommentId && (
             <span className="text-xs leading-3 text-emerald-400 flex items-center">
               <MdCheckCircleOutline className="size-6 mr-2 shrink-0" />
               <span className="hidden min-[360px]:inline">
@@ -79,10 +89,11 @@ function CommentCard({
           {!isAuthor && isPostAuthor && (
             <Button
               size="sm"
-              color={favorite ? "success" : "secondary"}
+              color={comment.id === favoriteCommentId ? "success" : "secondary"}
               className="ml-auto"
+              onClick={handleMarkFavoriteComment}
             >
-              <MdCheckCircleOutline className="mr-2 size-5" /> Accept answer
+              <MdCheckCircleOutline className="mr-2 size-5" /> Mark as favorite
             </Button>
           )}
           <Text>{comment.children.length} replies</Text>

@@ -22,7 +22,7 @@ export interface ResourceContextType {
   categoriesResource: IPaginatedResource<Category>;
   popularCategoriesResource: IGenericResource<ITrendingCategory[]>;
   popularTagsResource: IGenericResource<ITrendingTag[]>;
-  postResource: IGenericResource<Post, string>;
+  postResource: IGenericResource<Post, number>;
   postsResource: IPaginatedResource<Post, IPostSearchableOptions>;
   tagsResource: IPaginatedResource<Tag>;
 }
@@ -49,7 +49,7 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
     expiresIn: 1000 * 60 * 5, // 5 min
   });
 
-  const postResource = useGenericResource<Post, string>({
+  const postResource = useGenericResource<Post, number>({
     alias: "post",
     fetch: postService.getById,
     expiresIn: 1000 * 60 * 1, // 5 min

@@ -66,7 +66,7 @@ function PostComments({
       {comments.map((comment) => (
         <CommentCard
           key={comment.id}
-          favorite={comment.id === favoriteCommentId}
+          favoriteCommentId={favoriteCommentId}
           comment={comment}
           isPostAuthor={isAuthor}
           onReply={setCommentToReply}
