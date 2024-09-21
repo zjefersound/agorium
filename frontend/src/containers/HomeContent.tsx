@@ -7,9 +7,12 @@ import { HOME_POST_SORT_OPTIONS } from "../constants/post";
 export function HomeContent() {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedOrder = searchParams.get("sortBy") || "createdAt";
-  const handleSelectOrder = useCallback((sortBy: string) => {
-    setSearchParams((p) => ({ ...p, sortBy }));
-  }, []);
+  const handleSelectOrder = useCallback(
+    (sortBy: string) => {
+      setSearchParams({ sortBy });
+    },
+    [setSearchParams],
+  );
   return (
     <div className="flex flex-col space-y-6">
       <SmallTabs

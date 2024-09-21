@@ -122,7 +122,14 @@ export const CommentsProvider = ({ post }: CommentsProviderProps) => {
       setCommentToUpdate,
       setFavoriteComment,
     }),
-    [comments, deleteComment, fetchComments, updateComment, commentToUpdate],
+    [
+      comments,
+      deleteComment,
+      fetchComments,
+      updateComment,
+      commentToUpdate,
+      setFavoriteComment,
+    ],
   );
   if (loading && comments.length === 0) return <PostCommentsSkeleton />;
 

@@ -55,7 +55,6 @@ export function useGenericResource<T, O = undefined>({
         .catch((error) => console.error("Failed to fetch " + alias, error))
         .finally(() => setLoading(false));
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [fetch, expiresIn, cache, alias],
   );
 
