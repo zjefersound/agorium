@@ -12,6 +12,7 @@ import { memo, useCallback, useMemo } from "react";
 import { useToast } from "../hooks/useToast";
 import { useAuth } from "../hooks/useAuth";
 import { Tag } from "../components/ui/Tag";
+import { formatCompactNumber } from "../utils/formatCompactNumber";
 
 interface PostContentProps {
   post: Post;
@@ -71,7 +72,7 @@ function PostContent({ post }: PostContentProps) {
       <div className="flex space-x-3">
         <Button color={post.voted ? "primary" : "secondary"} size="sm">
           <MdArrowUpward className="size-5 mr-2" />
-          {post.totalUpvotes}
+          {formatCompactNumber(post.totalUpvotes)}
         </Button>
         <Button color="secondary" size="sm" onClick={handleShare}>
           <MdOutlineShare className="size-5 mr-2" />

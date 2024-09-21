@@ -7,6 +7,7 @@ import { MdArrowUpward, MdOutlineModeComment } from "react-icons/md";
 import Markdown from "react-markdown";
 import { AuthorOverview } from "./AuthorOverview";
 import { memo } from "react";
+import { formatCompactNumber } from "../../utils/formatCompactNumber";
 
 interface PostCardProps {
   post: Post;
@@ -41,12 +42,13 @@ function PostCard({ post }: PostCardProps) {
           <Text asChild>
             <span className="flex items-center ml-4">
               <MdOutlineModeComment className="mr-1 size-4" />{" "}
-              {post.totalComments}
+              {formatCompactNumber(post.totalComments)}
             </span>
           </Text>
           <Text asChild>
             <span className="flex items-center ml-4">
-              <MdArrowUpward className="mr-1 size-4" /> {post.totalUpvotes}
+              <MdArrowUpward className="mr-1 size-4" />{" "}
+              {formatCompactNumber(post.totalUpvotes)}
             </span>
           </Text>
         </footer>

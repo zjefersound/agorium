@@ -14,6 +14,7 @@ import { CommentActionsDropdown } from "./CommentActionsDropdown";
 import { memo, useCallback, useMemo } from "react";
 import { Button } from "../../../components/ui/Button";
 import { ChildCommentCard } from "./ChildCommentCard";
+import { formatCompactNumber } from "../../../utils/formatCompactNumber";
 
 interface CommentCardProps {
   comment: Comment;
@@ -73,7 +74,8 @@ function CommentCard({
             color={comment.voted ? "primary" : "secondary"}
             disabled={isAuthor}
           >
-            <MdArrowUpward className="mr-2 size-5" /> {comment.totalUpvotes}
+            <MdArrowUpward className="mr-2 size-5" />
+            {formatCompactNumber(comment.totalUpvotes)}
           </Button>
           <Button size="sm" color="secondary" onClick={() => onReply(comment)}>
             <MdOutlineReply className="mr-2 size-5" /> Reply

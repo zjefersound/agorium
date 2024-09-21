@@ -167,6 +167,7 @@ class Post
             'tags' => array_map(fn($tag) => $tag->jsonSerialize(), $this->getTags()->toArray()),
             'favoriteCommentId' => $this->getFavoriteComment()?->getId(),
             'totalComments' => $this->getTotalComments(),
+            'totalUpvotes' => 0,
         ];
     }
 }
