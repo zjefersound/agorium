@@ -47,7 +47,8 @@ export const NewPostContext = createContext<NewPostContextType>(
 
 export const NewPostProvider = ({ children }: NewPostProviderProps) => {
   const { launchToast } = useToast();
-  const { postsResource } = useResource();
+  const { postsResource, popularTagsResource, popularCategoriesResource } =
+    useResource();
   const storedPostDraft = localStorage.getItem("postDraft");
   const draft = storedPostDraft ? JSON.parse(storedPostDraft) : undefined;
   const navigate = useNavigate();
@@ -68,6 +69,10 @@ export const NewPostProvider = ({ children }: NewPostProviderProps) => {
           description: TOAST_MESSAGES.Post.createdDescription,
         });
         postsResource.revalidate();
+        popularTagsResource.revalidate();
+        popularTagsResource.fetchData();
+        popularCategoriesResource.revalidate();
+        popularCategoriesResource.fetchData();
         localStorage.removeItem("postDraft");
         navigate("/");
       })
