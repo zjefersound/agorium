@@ -165,7 +165,7 @@ class Post
             'category' => $this->getCategory()->jsonSerialize(),
             'categoryId' => $this->getCategory()->getId(),
             'tags' => array_map(fn($tag) => $tag->jsonSerialize(), $this->getTags()->toArray()),
-            'favoriteComment' => $this->getFavoriteComment()?->getId(),
+            'favoriteCommentId' => $this->getFavoriteComment()?->getId(),
             'totalComments' => $this->getTotalComments(),
         ];
     }

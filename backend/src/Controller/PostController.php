@@ -93,4 +93,25 @@ class PostController
             return $this->unprocessable(["error" => $th->getMessage()]);
         }
     }
+
+    public function updateFavoriteComment($req, $res, $args): Response
+    {
+        $postId = (int)$args['id'];
+        $userId = (int) $req->getAttribute("userId");
+        $data = (array) json_decode($req->getBody()->getContents(), true);
+
+        if (!isset($data['favoriteCommentId'])) {
+            return $this->unprocessable(["error" => "favoriteCommentId is required"]);
+        }
+
+        $favoriteCommentId = (int) $data['favoriteCommentId'];
+
+        try {
+            $this->postService->updateFavoriteComment($postId, $favoriteCommentId, $userId);
+        } catch (\Throwable $th) {
+            return $this->unprocessable(["error" => $th->getMessage()]);
+        }
+
+        return $this->ok("Favorite comment updated successfully.");
+    }
 }

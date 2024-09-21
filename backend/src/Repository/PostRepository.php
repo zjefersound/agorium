@@ -21,15 +21,25 @@ class PostRepository
         return $this->em->getRepository(Post::class)->find($id);
     }
 
-    public function save(Post $post, array $tagNames): void
+    /**
+     * Save a Post entity, optionally handling tags.
+     *
+     * @param Post $post
+     * @param array|null $tagNames Optional tag names to associate with the post.
+     */
+    public function save(Post $post, ?array $tagNames = null): void
     {
-        $this->handleTags($tagNames, $post);
+        if ($tagNames !== null) {
+            $this->handleTags($tagNames, $post);
+        }
 
-        // Persist the post
+        // Persist the post and any changes
         $this->em->persist($post);
         $this->em->flush();
 
-        $this->cleanUpTags();
+        if ($tagNames !== null) {
+            $this->cleanUpTags();
+        }
     }
 
     public function search(PostSearchDTO $search): array
