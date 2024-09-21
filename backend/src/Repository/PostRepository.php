@@ -68,6 +68,16 @@ class PostRepository
         $totalQb = clone $qb;
         $total = (int) $totalQb->select('COUNT(p.id)')->getQuery()->getSingleScalarResult();
 
+        // Join with the votes table to get vote counts and the user's specific vote
+        $qb->leftJoin('p.votes', 'v')
+            ->addSelect(
+                'SUM(CASE WHEN v.voteType = \'upvote\' THEN 1 ELSE 0 END) AS upvotes',
+                'SUM(CASE WHEN v.voteType = \'downvote\' THEN 1 ELSE 0 END) AS downvotes',
+                'MAX(CASE WHEN v.user = :userId THEN v.voteType ELSE \'\' END) AS userVote'
+            )
+            ->setParameter('userId', (int) $search->userId)
+            ->groupBy('p.id');
+
         // Sorting
         if (!empty($search->sortBy)) {
             $qb->orderBy('p.' . $search->sortBy, $search->sortOrder);
@@ -82,7 +92,19 @@ class PostRepository
         $posts = $query->getResult();
 
         return [
-            'data' =>  array_map(fn($post) => $post->jsonSerialize(), $posts),
+            'data' => array_map(function ($post) {
+                $userVote = $post['userVote'];
+                return array_merge(
+                    $post[0]->jsonSerialize(),
+                    [
+                        'upvotes' => (int) $post['upvotes'],
+                        'downvotes' => (int) $post['downvotes'],
+                        'totalVotes' => (int) $post['upvotes'] - (int) $post['downvotes'],
+                        'voted' => !is_null($userVote),
+                        'userVote' => $userVote,
+                    ]
+                );
+            }, $posts),
             'pagination' => [
                 'currentPage' => $search->page,
                 'perPage' => $search->limit,

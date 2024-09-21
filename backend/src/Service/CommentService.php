@@ -70,9 +70,20 @@ class CommentService
         $this->commentRepository->save($comment);
     }
 
-    public function getPostComments(int $postId, ?int $commentId = null): array
+    public function getComment(int $commentId): Comment
     {
-        $comments = $this->commentRepository->getPostComments($postId, $commentId);
+        $comment = $this->commentRepository->find($commentId);
+
+        if (!$comment) {
+            throw new Exception("Comment not found.");
+        }
+
+        return $comment;
+    }
+
+    public function getPostComments(int $postId, int $userId, ?int $commentId = null): array
+    {
+        $comments = $this->commentRepository->getPostComments($postId, $userId, $commentId);
 
         return $comments ?? [];
     }

@@ -690,6 +690,8 @@ paths:
 
   #endregion
 
+  #region Tags
+
   /tags:
     get:
       summary: "Get a list of tags"
@@ -746,6 +748,66 @@ paths:
           description: Unauthorized
       tags:
         - tag
+
+  #endregion
+
+  #region Votes
+
+  /vote:
+    post:
+      summary: "Cast a vote"
+      description: "Cast a vote for either a post or a comment. Only one type of vote is allowed at a time."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                voteType:
+                  type: string
+                  example: "upvote"
+                  description: "The type of vote, e.g., 'upvote' or 'downvote'."
+                postId:
+                  type: integer
+                  nullable: true
+                  example: 1
+                  description: "The ID of the post being voted on (nullable if voting on a comment)."
+                commentId:
+                  type: integer
+                  nullable: true
+                  example: 1
+                  description: "The ID of the comment being voted on (nullable if voting on a post)."
+      responses:
+        "201":
+          description: "Vote cast successfully"
+        "400":
+          description: "Invalid input"
+        "401":
+          description: "Unauthorized"
+      tags:
+        - votes
+
+    delete:
+      summary: "Delete a vote"
+      parameters:
+        - in: path
+          name: voteId
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "204":
+          description: "Vote deleted successfully"
+        "404":
+          description: "Vote not found"
+        "401":
+          description: "Unauthorized"
+      tags:
+        - votes
+
+  #endregion
 
 components:
   securitySchemes:

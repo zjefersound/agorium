@@ -93,16 +93,4 @@ class Vote
         $this->comment = $comment;
         return $this;
     }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'voteType' => $this->getVoteType(),
-            'createdAt' => $this->getCreatedAt()->format(DateTimeImmutable::ATOM),
-            'user' => $this->getUser()->getId(),
-            'post' => $this->getPost()?->getId(),
-            'comment' => $this->getComment()?->getId(),
-        ];
-    }
 }

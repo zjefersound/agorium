@@ -19,7 +19,7 @@ class CommentRepository
         return $this->em->getRepository(Comment::class)->find($id);
     }
 
-    public function getPostComments(int $postId, ?int $commentId = null): array
+    public function getPostComments(int $postId, int $userId, ?int $commentId = null): array
     {
         $conn = $this->em->getConnection();
 
@@ -39,7 +39,10 @@ class CommentRepository
                     u.fullName, 
                     u.username, 
                     u.avatar,
-                    0 AS depth
+                    0 AS depth,
+                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = c.id AND v.voteType = 'upvote') AS upvotes,
+                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = c.id AND v.voteType = 'downvote') AS downvotes,
+                    (SELECT v.voteType FROM votes v WHERE v.comment_id = c.id AND v.user_id = :userId) AS userVoteType
                 FROM comments c
                 JOIN users u ON c.user_id = u.id
                 WHERE c.post_id = :postId $commentCondition
@@ -58,7 +61,10 @@ class CommentRepository
                     u.fullName, 
                     u.username, 
                     u.avatar,
-                    parent.depth + 1 AS depth
+                    parent.depth + 1 AS depth,
+                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = child.id AND v.voteType = 'upvote') AS upvotes,
+                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = child.id AND v.voteType = 'downvote') AS downvotes,
+                    (SELECT v.voteType FROM votes v WHERE v.comment_id = child.id AND v.user_id = :userId) AS userVoteType
                 FROM comments child
                 JOIN users u ON child.user_id = u.id
                 INNER JOIN comment_tree parent ON parent.id = child.parent_comment_id
@@ -69,6 +75,7 @@ class CommentRepository
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue("postId", $postId);
+        $stmt->bindValue("userId", $userId);
 
         if ($commentId) {
             $stmt->bindValue("commentId", $commentId);
@@ -113,8 +120,11 @@ class CommentRepository
                 'id' => $comment['user_id'],
                 'fullName' => $comment['fullName'],
                 'username' => $comment['username'],
-                'avatar' => $comment['avatar'] ? "/user/avatar/" . $comment['user_id'] . "/" . $comment['avatar'] : null,
             ];
+
+            if ($comment['avatar']) {
+                $user['avatar'] = "/user/avatar/" . $comment['user_id'];
+            }
 
             $commentsById[$comment['id']] = [
                 'id' => $comment['id'],
@@ -122,6 +132,10 @@ class CommentRepository
                 'createdAt' => $comment['created_at'],
                 'updatedAt' => $comment['updated_at'],
                 'user' => $user,
+                'upvotes' => (int)$comment['upvotes'],
+                'downvotes' => (int)$comment['downvotes'],
+                'totalVotes' => (int)$comment['upvotes'] - (int)$comment['downvotes'],
+                'userVote' => $comment['userVoteType'],
                 'children' => [],
                 'totalUpvotes' => 0,
             ];

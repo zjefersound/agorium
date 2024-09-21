@@ -1,6 +1,6 @@
 <?php
 
-use App\Controller\{UserController, CategoryController, CommentController, PostController, TagController};
+use App\Controller\{UserController, CategoryController, CommentController, PostController, TagController, VoteController};
 use App\Middleware\AuthMiddleware;
 use Nyholm\Psr7\Response;
 use Nyholm\Psr7\Stream;
@@ -49,6 +49,11 @@ return function (App $app) {
     $app->group('tags', function () use ($app) {
         $app->get('/tags', TagController::class . ':searchTags');
         $app->get('/tags/trending', TagController::class . ':getTrendingTags');
+    })->add(AuthMiddleware::class);
+
+    $app->group('votes', function () use ($app) {
+        $app->post('/vote', VoteController::class . ':vote');
+        $app->delete('/vote/{id}', VoteController::class . ':deleteVote');
     })->add(AuthMiddleware::class);
 
     $app->get('/swagger', function ($req, $res) {

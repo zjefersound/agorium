@@ -56,8 +56,10 @@ class CommentController
         $postId = isset($args['postId']) ? (int)$args['postId'] : 0;
         $commentId = isset($args['commentId']) ? (int)$args['commentId'] : 0;
 
+        $userId = (int) $req->getAttribute("userId") ?? 0;
+
         try {
-            $comments = $this->commentService->getPostComments($postId, $commentId);
+            $comments = $this->commentService->getPostComments($postId, $userId, $commentId);
             return $this->ok($comments);
         } catch (\Throwable $th) {
             return $this->notFound(["error" => $th->getMessage()]);

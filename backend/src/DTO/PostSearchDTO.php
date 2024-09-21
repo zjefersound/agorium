@@ -9,5 +9,8 @@ class PostSearchDTO extends SearchDTO
     use AutoMapper;
 
     public ?int $categoryId;
+
     public ?int $tagId;
+
+    public int $userId;
 }

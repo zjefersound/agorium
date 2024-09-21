@@ -77,6 +77,8 @@ class PostController
             return $this->unprocessable(["error" => "Invalid query parameters"]);
         }
 
+        $search->userId = (int) $req->getAttribute("userId") ?? 0;
+
         $result = $this->postService->searchPosts($search);
 
         return $this->ok($result);
