@@ -55,6 +55,24 @@ class TagRepository extends EntityRepository
         ];
     }
 
+    public function trending(): array
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->select('t as tag, COUNT(p.id) as totalPosts')
+            ->leftJoin('t.posts', 'p')
+            ->groupBy('t.id')
+            ->orderBy('totalPosts', 'DESC')
+            ->setMaxResults(5);
+
+        $results = $qb->getQuery()->getResult();
+
+        return array_map(fn($result) => [
+            'tag' => $result['tag']->jsonSerialize(),
+            'totalPosts' => (int) $result['totalPosts']
+        ], $results);
+    }
+
+
     public function delete(Tag $tag)
     {
         $em = $this->getEntityManager();
