@@ -5,12 +5,7 @@ import { Text } from "../components/ui/Text";
 import { Post } from "../models/Post";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/Button";
-import {
-  MdArrowUpward,
-  MdOutlineEdit,
-  MdOutlineModeComment,
-  MdOutlineShare,
-} from "react-icons/md";
+import { MdArrowUpward, MdOutlineEdit, MdOutlineShare } from "react-icons/md";
 import { Heading } from "../components/ui/Heading";
 import { MarkdownPreview } from "../components/ui/MarkdownPreview";
 import { memo, useCallback, useMemo } from "react";
@@ -77,10 +72,6 @@ function PostContent({ post }: PostContentProps) {
         <Button color={post.voted ? "primary" : "secondary"} size="sm">
           <MdArrowUpward className="size-5 mr-2" />
           {post.totalUpvotes}
-        </Button>
-        <Button color="secondary" size="sm">
-          <MdOutlineModeComment className="size-5 mr-2" />
-          {post.comments?.length ?? 0}
         </Button>
         <Button color="secondary" size="sm" onClick={handleShare}>
           <MdOutlineShare className="size-5 mr-2" />
