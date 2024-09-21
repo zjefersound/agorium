@@ -7,11 +7,8 @@ import { useResource } from "../../hooks/useResource";
 import { IPostSearchableOptions } from "../../services/postService";
 import { ButtonGroup } from "../ui/ButtonGroup";
 import { useSearchParams } from "react-router-dom";
-
-const sortOptions = [
-  { label: "Relevance", value: "title" }, // TO DO: change to upvotes
-  { label: "Newest", value: "createdAt" },
-];
+import { DEFAULT_POST_SORT_OPTIONS } from "../../constants/post";
+import { GrAscend, GrDescend } from "react-icons/gr";
 
 interface PostListProps {
   hideDefaultFilters?: boolean;
@@ -24,11 +21,25 @@ function PostList({ filter = {}, hideDefaultFilters }: PostListProps) {
   const [page, setPage] = useState(1);
 
   const sortType = searchParams.get("sortBy") ?? "createdAt";
+  const sortOrder = searchParams.get("sortOrder") ?? "desc";
   const handleSelectSortType = useCallback(
-    (value: string) => setSearchParams((prev) => ({ ...prev, sortBy: value })),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    (sortBy: string) => {
+      const currentParams = Object.fromEntries(searchParams.entries());
+      setSearchParams({ ...currentParams, sortBy });
+    },
+    [searchParams, setSearchParams],
   );
+
+  const toggleSortOrder = useCallback(() => {
+    const currentParams = Object.fromEntries(searchParams.entries());
+    const newSortOrder = sortOrder === "desc" ? "asc" : "desc";
+
+    setSearchParams({
+      ...currentParams,
+      sortOrder: newSortOrder,
+    });
+  }, [searchParams, setSearchParams, sortOrder]);
+
   const params: IPostSearchableOptions = useMemo(() => {
     const returnParams: IPostSearchableOptions = {
       limit: 5,
@@ -36,6 +47,8 @@ function PostList({ filter = {}, hideDefaultFilters }: PostListProps) {
       sortBy: "createdAt",
       sortOrder: "desc",
     };
+    if (sortOrder === "asc" || sortOrder === "desc")
+      returnParams.sortOrder = sortOrder;
     if (sortType) returnParams.sortBy = sortType;
     if (filter.categoryId?.trim()) returnParams.categoryId = filter.categoryId;
     if (filter.tagId?.trim()) returnParams.tagId = filter.tagId;
@@ -52,6 +65,7 @@ function PostList({ filter = {}, hideDefaultFilters }: PostListProps) {
     filter.sortBy,
     filter.sortOrder,
     sortType,
+    sortOrder,
   ]);
 
   useEffect(() => {
@@ -63,6 +77,7 @@ function PostList({ filter = {}, hideDefaultFilters }: PostListProps) {
     filter.sortBy,
     filter.sortOrder,
     sortType,
+    sortOrder,
   ]);
 
   useEffect(() => {
@@ -77,15 +92,26 @@ function PostList({ filter = {}, hideDefaultFilters }: PostListProps) {
 
   return (
     <div className="flex flex-col space-y-6">
-      <div className="flex justify-between items-center">
-        <span>{postsResource.pagination.total} Posts</span>
+      <div className="flex justify-end items-center gap-3">
+        <span className="mr-auto">{postsResource.pagination.total} Posts</span>
         {!hideDefaultFilters && (
           <ButtonGroup
             value={sortType}
             onChange={handleSelectSortType}
-            options={sortOptions}
+            options={DEFAULT_POST_SORT_OPTIONS}
           />
         )}
+        <button
+          title={sortOrder === "asc" ? "Ascending" : "Descending"}
+          onClick={toggleSortOrder}
+          className="hover:bg-agorium-700 p-2 rounded-md text-agorium-400"
+        >
+          {sortOrder === "asc" ? (
+            <GrAscend className="size-6" />
+          ) : (
+            <GrDescend className="size-6" />
+          )}
+        </button>
       </div>
       {postsResource.data.map((post) => (
         <PostCard key={post.id} post={post} />

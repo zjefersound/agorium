@@ -6,7 +6,6 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { useState } from "react";
-import { Dictionary } from "lodash";
 import clsx from "clsx";
 
 export function HeaderSearch() {
@@ -16,15 +15,11 @@ export function HeaderSearch() {
   const handleSearchSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key !== "Enter") return;
     if (searchText) {
-      const searchObject: Dictionary<string> = {
-        text: searchText,
-      };
-      if (searchParams.get("sortBy")) {
-        searchObject.sortBy = searchParams.get("sortBy")!;
-      }
       navigate({
         pathname: "/search",
-        search: createSearchParams(searchObject).toString(),
+        search: createSearchParams({
+          text: searchText,
+        }).toString(),
       });
     }
   };
