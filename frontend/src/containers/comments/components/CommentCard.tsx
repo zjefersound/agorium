@@ -46,7 +46,7 @@ function CommentCard({
       ? voteService.delete(comment.userVote.id)
       : voteService.create({ voteType: "upvote", commentId: comment.id });
     serviceMethod.then(fetchComments);
-  }, [comment.userVote, comment.id]);
+  }, [comment.userVote, comment.id, fetchComments]);
 
   const handleMarkFavoriteComment = useCallback(() => {
     setFavoriteComment(comment.id);

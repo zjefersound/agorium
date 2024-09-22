@@ -33,7 +33,7 @@ function PostContent({ post }: PostContentProps) {
       postResource.revalidate();
       postResource.fetchData(post.id);
     });
-  }, [post.userVote, post.id]);
+  }, [post.userVote, post.id, postResource]);
 
   const handleShare = useCallback(() => {
     navigator.clipboard.writeText(window.location.href);
