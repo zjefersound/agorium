@@ -78,6 +78,10 @@ class PostController
             return $this->unprocessable(["error" => "Invalid query parameters"]);
         }
 
+        /** 
+         * $search->userId aqui não meu mano!! Esse userId não é um filtro para o search. 
+         * O correto é passar userId no PostSearchDTO só se quiser trazer os posts daquela pessoa
+         * */
         $search->userId = (int) $req->getAttribute("userId") ?? 0;
 
         $result = $this->postService->searchPosts($search);
