@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Domain\Post;
 use App\Domain\Tag;
+use App\Domain\Vote;
 use App\DTO\PostSearchDTO;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -20,6 +21,43 @@ class PostRepository
     {
         return $this->em->getRepository(Post::class)->find($id);
     }
+
+    public function findDetailed(int $postId, int $userId): ?array
+    {
+        $qb = $this->em->getRepository(Post::class)->createQueryBuilder('p')
+            ->leftJoin('p.votes', 'v')
+            ->addSelect(
+                'SUM(CASE WHEN v.voteType = \'upvote\' THEN 1 WHEN v.voteType = \'downvote\' THEN -1 ELSE 0 END) AS totalUpvotes'
+            )
+            ->where('p.id = :postId')
+            ->setParameter('postId', $postId)
+            ->groupBy('p.id');
+
+        $post = $qb->getQuery()->getOneOrNullResult();
+
+        if (!$post) {
+            return null;
+        }
+
+        $userVote = $this->em->getRepository(Vote::class)->findOneBy([
+            'post' => $postId,
+            'user' => $userId,
+        ]);
+
+        $userVoteData = $userVote ? $userVote->jsonSerialize() : null;
+
+        $totalUpvotes = (int) $post['totalUpvotes'];
+
+        return array_merge(
+            $post[0]->jsonSerialize(),
+            [
+                'totalUpvotes' => $totalUpvotes,
+                'userVote' => $userVoteData,
+            ]
+        );
+    }
+
+
 
     /**
      * Save a Post entity, optionally handling tags.
@@ -99,8 +137,7 @@ class PostRepository
                     [
                         'upvotes' => (int) $post['upvotes'],
                         'downvotes' => (int) $post['downvotes'],
-                        'totalVotes' => (int) $post['upvotes'] - (int) $post['downvotes'],
-                        'voted' => !is_null($userVote),
+                        'totalUpvotes' => (int) $post['upvotes'] - (int) $post['downvotes'],
                         'userVote' => $userVote,
                     ]
                 );

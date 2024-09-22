@@ -40,9 +40,28 @@ class CommentRepository
                     u.username, 
                     u.avatar,
                     0 AS depth,
-                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = c.id AND v.voteType = 'upvote') AS upvotes,
-                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = c.id AND v.voteType = 'downvote') AS downvotes,
-                    (SELECT v.voteType FROM votes v WHERE v.comment_id = c.id AND v.user_id = :userId) AS userVoteType
+                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = c.id AND v.voteType = 'upvote') AS totalUpvotes,
+                    (
+                        SELECT v.id
+                        FROM votes v 
+                        WHERE v.comment_id = c.id 
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteId,
+                    (
+                        SELECT v.voteType
+                        FROM votes v 
+                        WHERE v.comment_id = c.id 
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteType,
+                    (
+                        SELECT v.created_at
+                        FROM votes v 
+                        WHERE v.comment_id = c.id 
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteCreatedAt
                 FROM comments c
                 JOIN users u ON c.user_id = u.id
                 WHERE c.post_id = :postId $commentCondition
@@ -62,9 +81,28 @@ class CommentRepository
                     u.username, 
                     u.avatar,
                     parent.depth + 1 AS depth,
-                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = child.id AND v.voteType = 'upvote') AS upvotes,
-                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = child.id AND v.voteType = 'downvote') AS downvotes,
-                    (SELECT v.voteType FROM votes v WHERE v.comment_id = child.id AND v.user_id = :userId) AS userVoteType
+                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = child.id AND v.voteType = 'upvote') AS totalUpvotes,
+                    (
+                        SELECT v.id
+                        FROM votes v 
+                        WHERE v.comment_id = child.id 
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteId,
+                    (
+                        SELECT v.voteType
+                        FROM votes v 
+                        WHERE v.comment_id = child.id 
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteType,
+                    (
+                        SELECT v.created_at
+                        FROM votes v 
+                        WHERE v.comment_id = child.id 
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteCreatedAt
                 FROM comments child
                 JOIN users u ON child.user_id = u.id
                 INNER JOIN comment_tree parent ON parent.id = child.parent_comment_id
@@ -123,7 +161,18 @@ class CommentRepository
             ];
 
             if ($comment['avatar']) {
-                $user['avatar'] = "/user/avatar/" . $comment['user_id'];
+                $user['avatar'] = "/user/avatar/" . $comment['user_id'] . "/" . $comment['avatar'];
+            }
+
+            // Construct the userVote array
+            $userVote = null;
+            if (!empty($comment['userVoteId'])) {
+                $userVote = [
+                    'id' => (int)$comment['userVoteId'],
+                    'voteType' => $comment['userVoteType'],
+                    'commentId' => $comment['id'],
+                    'createdAt' => $comment['userVoteCreatedAt'],
+                ];
             }
 
             $commentsById[$comment['id']] = [
@@ -132,12 +181,9 @@ class CommentRepository
                 'createdAt' => $comment['created_at'],
                 'updatedAt' => $comment['updated_at'],
                 'user' => $user,
-                'upvotes' => (int)$comment['upvotes'],
-                'downvotes' => (int)$comment['downvotes'],
-                'totalVotes' => (int)$comment['upvotes'] - (int)$comment['downvotes'],
-                'userVote' => $comment['userVoteType'],
+                'totalUpvotes' => (int)$comment['totalUpvotes'],
+                'userVote' => $userVote,
                 'children' => [],
-                'totalUpvotes' => 0,
             ];
         }
 
