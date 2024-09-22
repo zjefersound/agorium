@@ -13,7 +13,7 @@ export type Post = {
   categoryId: number;
   userId: number;
 
-  voted?: Vote;
+  userVote?: Vote;
   totalUpvotes: number;
   totalComments: number;
 

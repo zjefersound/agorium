@@ -15,6 +15,7 @@ import { memo, useCallback, useMemo } from "react";
 import { Button } from "../../../components/ui/Button";
 import { ChildCommentCard } from "./ChildCommentCard";
 import { formatCompactNumber } from "../../../utils/formatCompactNumber";
+import { voteService } from "../../../services/voteService";
 
 interface CommentCardProps {
   comment: Comment;
@@ -29,12 +30,23 @@ function CommentCard({
   onReply,
 }: CommentCardProps) {
   const { user } = useAuth();
-  const { deleteComment, setCommentToUpdate, setFavoriteComment } =
-    useComments();
+  const {
+    deleteComment,
+    setCommentToUpdate,
+    setFavoriteComment,
+    fetchComments,
+  } = useComments();
   const isAuthor = useMemo(
     () => user!.id === comment.user!.id,
     [user, comment],
   );
+
+  const handleVote = useCallback(() => {
+    const serviceMethod = comment.userVote
+      ? voteService.delete(comment.userVote.id)
+      : voteService.create({ voteType: "upvote", commentId: comment.id });
+    serviceMethod.then(fetchComments);
+  }, [comment.userVote, comment.id]);
 
   const handleMarkFavoriteComment = useCallback(() => {
     setFavoriteComment(comment.id);
@@ -71,8 +83,8 @@ function CommentCard({
         <footer className="flex items-center gap-3 flex-wrap">
           <Button
             size="sm"
-            color={comment.voted ? "primary" : "secondary"}
-            disabled={isAuthor}
+            color={comment.userVote ? "primary" : "secondary"}
+            onClick={handleVote}
           >
             <MdArrowUpward className="mr-2 size-5" />
             {formatCompactNumber(comment.totalUpvotes)}

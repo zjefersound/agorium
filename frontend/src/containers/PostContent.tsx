@@ -13,14 +13,28 @@ import { useToast } from "../hooks/useToast";
 import { useAuth } from "../hooks/useAuth";
 import { Tag } from "../components/ui/Tag";
 import { formatCompactNumber } from "../utils/formatCompactNumber";
+import { voteService } from "../services/voteService";
+import { useResource } from "../hooks/useResource";
 
 interface PostContentProps {
   post: Post;
 }
 function PostContent({ post }: PostContentProps) {
   const { user } = useAuth();
+  const { postResource } = useResource();
   const isAuthor = useMemo(() => user!.id === post?.user.id, [user, post]);
   const { launchToast } = useToast();
+
+  const handleVote = useCallback(() => {
+    const serviceMethod = post.userVote
+      ? voteService.delete(post.userVote.id)
+      : voteService.create({ voteType: "upvote", postId: post.id });
+    serviceMethod.then(() => {
+      postResource.revalidate();
+      postResource.fetchData(post.id);
+    });
+  }, [post.userVote, post.id]);
+
   const handleShare = useCallback(() => {
     navigator.clipboard.writeText(window.location.href);
     launchToast({
@@ -70,7 +84,11 @@ function PostContent({ post }: PostContentProps) {
       </div>
       <MarkdownPreview>{post.content}</MarkdownPreview>
       <div className="flex space-x-3">
-        <Button color={post.voted ? "primary" : "secondary"} size="sm">
+        <Button
+          color={post.userVote ? "primary" : "secondary"}
+          onClick={handleVote}
+          size="sm"
+        >
           <MdArrowUpward className="size-5 mr-2" />
           {formatCompactNumber(post.totalUpvotes)}
         </Button>
