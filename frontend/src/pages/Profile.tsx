@@ -6,6 +6,7 @@ import { RankingCard } from "../components/shared/RankingCard";
 import { Card } from "../components/ui/Card";
 import { ProfileCard } from "../containers/profile/ProfileCard";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
+import { Tabs } from "../components/ui/Tabs";
 
 export function Profile() {
   return (
@@ -14,6 +15,15 @@ export function Profile() {
         <GlobalSidebar />
       </Content.Sidebar>
       <Content.Main>
+        <Tabs
+          value="month"
+          onChange={() => {}}
+          options={[
+            { label: "Month", value: "month" },
+            { label: "Year", value: "year" },
+            { label: "All time", value: "all time" },
+          ]}
+        />
         <ProfileCard />
         <Card>User info placeholder</Card>
       </Content.Main>
