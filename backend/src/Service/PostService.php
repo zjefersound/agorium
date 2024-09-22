@@ -62,6 +62,17 @@ class PostService
         return $post;
     }
 
+    public function getDetailedPost(int $postId, int $userId)
+    {
+        $post = $this->postRepository->findDetailed($postId, $userId);
+
+        if (!$post) {
+            throw new Exception("Post not found.");
+        }
+
+        return $post;
+    }
+
     public function updateFavoriteComment(int $postId, int $favoriteCommentId, int $userId): void
     {
         $post = $this->postRepository->find($postId);

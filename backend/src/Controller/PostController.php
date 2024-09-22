@@ -58,11 +58,12 @@ class PostController
 
     public function getPost($req, $res, $args): Response
     {
+        $userId = (int) $req->getAttribute("userId");
         $postId = (int)$args['id'];
 
         try {
-            $post = $this->postService->getPost($postId);
-            return $this->ok($post->jsonSerialize());
+            $post = $this->postService->getDetailedPost($postId, $userId);
+            return $this->ok($post);
         } catch (\Throwable $th) {
             return $this->notFound(["error" => $th->getMessage()]);
         }
