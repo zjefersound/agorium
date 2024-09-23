@@ -16,15 +16,12 @@ import { useState } from "react";
 
 export function ProfileEdit() {
   const [selectedTab, setSelectedTab] = useState("profile");
-  const isFormValid = true;
 
   const handleTabChange = (newValue: string) => {
     setSelectedTab(newValue);
   };
 
   const renderForm = () => {
-    if (!isFormValid) return null;
-
     switch (selectedTab) {
       case "profile":
         return <UserInfoForm />;
