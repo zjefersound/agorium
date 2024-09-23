@@ -7,24 +7,32 @@ import { Card } from "../components/ui/Card";
 import { ProfileCard } from "../containers/profile/ProfileCard";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
 import { Tabs } from "../components/ui/Tabs";
+import { useState } from "react";
 
 export function Profile() {
+  const [selectedTab, setSelectedTab] = useState("post");
+
+  const handleTabChange = (newValue: string) => {
+    setSelectedTab(newValue);
+  };
+
   return (
     <Content.Root>
       <Content.Sidebar>
         <GlobalSidebar />
       </Content.Sidebar>
       <Content.Main>
-        <Tabs
-          value="month"
-          onChange={() => {}}
-          options={[
-            { label: "Month", value: "month" },
-            { label: "Year", value: "year" },
-            { label: "All time", value: "all time" },
-          ]}
-        />
         <ProfileCard />
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          options={[
+            { label: "Posts", value: "posts" },
+            { label: "Comments", value: "comments" },
+            { label: "Upvotes", value: "upvotes" },
+          ]}
+          placement="left"
+        />
         <Card>User info placeholder</Card>
       </Content.Main>
       <Content.Sidebar>
