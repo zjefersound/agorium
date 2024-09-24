@@ -14,7 +14,11 @@ export const DEFAULT_POST_SORT_OPTIONS = [
   { label: "Newest", value: POST_SORT_BY.createdAt },
 ];
 
-const availableSortOptions = [POST_SORT_BY.createdAt, POST_SORT_BY.title];
+const availableSortOptions = [
+  POST_SORT_BY.createdAt,
+  POST_SORT_BY.title,
+  POST_SORT_BY.upvotes,
+];
 
 export const HOME_POST_SORT_OPTIONS = [
   { Icon: RxClock, label: "New", value: POST_SORT_BY.createdAt },
