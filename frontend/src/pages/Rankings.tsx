@@ -15,6 +15,8 @@ import { Pagination } from "../components/ui/Pagination";
 import { IPaginatedResponse } from "../models/IPaginatedResponse";
 import { ISearchableOptions } from "../models/ISearchableOptions";
 
+const RANKING_FILTER_ENABLED = false;
+
 export function Rankings() {
   const { user } = useAuth();
   const [page, setPage] = useState(1);
@@ -51,15 +53,17 @@ export function Rankings() {
             <h2 className="text-amber-100 ml-3">{"Rankings"}</h2>
           </Heading>
         </div>
-        <Tabs
-          value={selectedTab}
-          onChange={handleTabChange}
-          options={[
-            { label: "Month", value: "month" },
-            { label: "Year", value: "year" },
-            { label: "All time", value: "all time" },
-          ]}
-        />
+        {RANKING_FILTER_ENABLED && (
+          <Tabs
+            value={selectedTab}
+            onChange={handleTabChange}
+            options={[
+              { label: "Month", value: "month" },
+              { label: "Year", value: "year" },
+              { label: "All time", value: "all time" },
+            ]}
+          />
+        )}
         <Card className="flex flex-col items-center">
           <Podium items={firstPageItems} />
           <PodiumList items={rankingResource.data.data} />
