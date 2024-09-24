@@ -29,15 +29,15 @@ export function Tabs({
         {options.map((option) => (
           <li key={option.value}>
             <button
+              onClick={() => onChange(option.value)}
               className={clsx(
-                "flex items-center text-sm h-10 rounded-full px-5 whitespace-nowrap",
+                "flex rounded-full px-5 whitespace-nowrap items-center text-sm h-10",
                 {
                   "bg-agorium-700 text-agorium-50 font-semibold":
                     value === option.value,
                   "bg-agorium-900 hover:bg-agorium-700": value !== option.value,
                 },
               )}
-              onClick={() => onChange(option.value)}
             >
               {option.Icon && <option.Icon className="size-4 mr-2" />}
               {option.label}
