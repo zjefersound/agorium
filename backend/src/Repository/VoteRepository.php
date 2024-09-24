@@ -36,4 +36,20 @@ class VoteRepository
         $this->em->remove($user);
         $this->em->flush();
     }
+
+    public function getUserTotalUpvotes(int $userId): int
+    {
+        $qb = $this->em->createQueryBuilder();
+
+        $qb->select('COUNT(v.id)')
+            ->from(Vote::class, 'v')
+            ->leftJoin('v.post', 'p')
+            ->leftJoin('v.comment', 'c')
+            ->where('(p.user = :userId OR c.user = :userId)')
+            ->andWhere('v.voteType = :upvote')
+            ->setParameter('userId', $userId)
+            ->setParameter('upvote', 'upvote');
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
 }

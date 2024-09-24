@@ -148,6 +148,16 @@ class CommentRepository
         $this->em->flush();
     }
 
+    public function getUserTotalComments(int $userId): int
+    {
+        return $this->em->getRepository(Comment::class)->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.user = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     private function buildHierarchy(array $comments): array
     {
         $commentsById = [];

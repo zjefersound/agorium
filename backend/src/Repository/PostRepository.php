@@ -155,6 +155,16 @@ class PostRepository
         ];
     }
 
+    public function getUserTotalPosts(int $userId): int
+    {
+        return $this->em->getRepository(Post::class)->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->where('p.user = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function delete(Post $post)
     {
         $this->em->remove($post);

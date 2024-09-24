@@ -15,6 +15,7 @@ return function (App $app) {
 
     $app->group('user', function () use ($app) {
         $app->get('/user/me', UserController::class . ':getUser');
+        $app->get('/user/overview/{id}', UserController::class . ':getUserOverview');
         $app->put('/user/me/info', UserController::class . ':updateUserInfo');
         $app->post('/user/me/avatar', UserController::class . ':updateUserAvatar');
         $app->put('/user/me/password', UserController::class . ':updateUserPassword');

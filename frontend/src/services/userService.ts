@@ -72,10 +72,22 @@ function updatePassword(payload: UserUpdatePasswordPayload) {
   return api.put("/user/me/password", payload);
 }
 
+export type UserOverviewResponse = {
+  user: User;
+  rankingPosition: number;
+  totalPosts: number;
+  totalComments: number;
+  totalUpvotes: number;
+};
+function getOverviewById(id: number | string) {
+  return api.get<UserOverviewResponse>(`/user/overview/${id}`);
+}
+
 export const userService = {
+  getOverviewById,
   login,
-  signup,
   me,
+  signup,
   updateAvatar,
   updateInfo,
   updatePassword,
