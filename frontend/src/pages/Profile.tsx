@@ -1,7 +1,6 @@
 import { Content } from "../components/layout/Content";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
-import { mockedPosts, rankingCardItems } from "../examples/mocks/mocks";
-import { RankingCard } from "../components/shared/RankingCard";
+import { mockedPosts } from "../examples/mocks/mocks";
 import { ProfileCard } from "../containers/profile/ProfileCard";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
 import { Tabs } from "../components/ui/Tabs";

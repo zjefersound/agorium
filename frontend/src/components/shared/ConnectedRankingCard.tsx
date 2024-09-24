@@ -12,6 +12,7 @@ export function ConnectedRankingCard() {
 
   useEffect(() => {
     rankingResource.fetchData({ page: 1, limit: 5 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (rankingResource.loading) return "loading";

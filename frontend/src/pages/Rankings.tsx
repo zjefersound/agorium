@@ -37,6 +37,7 @@ export function Rankings() {
     rankingResource.fetchData({ page }).then((data) => {
       if (page === 1) setFirstPageItems(data.data);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   if (rankingResource.loading && page === 1) return "loading";
