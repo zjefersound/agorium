@@ -40,7 +40,12 @@ class UserRepository extends EntityRepository
         $qb = $this->createQueryBuilder('u')
             ->select(
                 'u',
-                '(SELECT COUNT(v.id) FROM App\Domain\Vote v LEFT JOIN v.post p LEFT JOIN v.comment c WHERE p.user = u OR c.user = u AND v.voteType = \'upvote\') AS totalUpvotes'
+                '(SELECT COUNT(v.id) FROM App\Domain\Vote v 
+                LEFT JOIN v.post postVote 
+                LEFT JOIN v.comment commentVote 
+                WHERE (postVote.user = u OR commentVote.user = u) AND v.voteType = \'upvote\') AS totalUpvotes',
+                '(SELECT COUNT(post.id) FROM App\Domain\Post post WHERE post.user = u) AS totalPosts',
+                '(SELECT COUNT(comment.id) FROM App\Domain\Comment comment WHERE comment.user = u) AS totalComments'
             )
             ->groupBy('u.id')
             ->orderBy('totalUpvotes', 'DESC');
@@ -64,6 +69,8 @@ class UserRepository extends EntityRepository
                 'userId' => $user[0]->getId(),
                 'user' => $user[0]->jsonSerializePublic(),
                 'totalUpvotes' => (int) $user['totalUpvotes'],
+                'totalPosts' => (int) $user['totalPosts'],
+                'totalComments' => (int) $user['totalComments'],
                 'position' => ($page - 1) * $limit + $key + 1
             ];
         }
@@ -78,9 +85,6 @@ class UserRepository extends EntityRepository
             ],
         ];
     }
-
-
-
 
     public function save(User $user): User
     {
