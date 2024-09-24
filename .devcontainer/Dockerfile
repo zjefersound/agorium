@@ -9,7 +9,7 @@ RUN apk add --no-cache --update \
     nodejs npm \
     php php83 \
     php83-curl php83-mbstring php83-phar php83-openssl \
-    php83-tokenizer php83-fileinfo \
+    php83-tokenizer php83-fileinfo php83-sockets \
     php83-mysqli php83-mysqlnd php83-pdo_mysql \
     php83-pecl-xdebug
 

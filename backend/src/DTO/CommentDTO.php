@@ -17,6 +17,9 @@ class CommentDTO
     #[Assert\GreaterThan(0, message: "Post id is invalid.")]
     public int $postId;
 
+    #[Assert\GreaterThan(0, message: "User id is invalid.")]
+    public int $userId;
+
     #[Assert\NotBlank(message: "Content is required.")]
     public ?string $content;
 

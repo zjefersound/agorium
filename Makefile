@@ -4,7 +4,7 @@ default: help
 
 dev:
 	@echo "Starting backend and frontend servers in screen sessions..."
-	@screen -dmS backend_server bash -c 'cd backend && composer serve'
+	@screen -dmS backend_server bash -c 'cd backend && composer serve && composer consume'
 	@screen -dmS frontend_server bash -c 'cd frontend && npm run dev'
 	@echo "Servers started. Use 'screen -ls' to list active sessions."
 
@@ -24,10 +24,15 @@ seed:
 	@echo "Seeding database..."
 	@(cd backend && composer seed)
 
+consume:
+	@echo "Running consumer..."
+	@(cd backend && composer consume)
+
 lazy:
 	@echo "Starting backend server in screen session..."
 	@(cd backend && composer install)
 	@(cd backend && composer migrate)
+	@(cd backend && composer seed)
 	@screen -dmS backend_server bash -c 'cd backend && composer serve'
 	@echo "Installing frontend dependencies and starting frontend server in screen session..."
 	@screen -dmS frontend_server bash -c 'cd frontend && npm i && npm run dev'

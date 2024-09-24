@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Domain\User;
 use App\DTO\CommentDTO;
 use App\Helper\ErrorMapper;
 use App\Service\CommentService;
@@ -33,14 +34,14 @@ class CommentController
         $commentDTO = new CommentDTO($data);
         $commentDTO->postId = isset($args['postId']) ? (int)$args['postId'] : 0;
         $commentDTO->commentId = isset($args['commentId']) ? (int)$args['commentId'] : 0;
+        
+        $userId = (int) $req->getAttribute("userId") ?? 0;
+        $commentDTO->userId = $userId;
 
         $errors = $this->validator->validate($commentDTO);
         if (count($errors) > 0) {
             return $this->unprocessable(["error" => ErrorMapper::getDTOErrorMessages($errors)]);
         }
-
-        $userId = (int) $req->getAttribute("userId");
-        $commentDTO->user = $this->userService->getUserById($userId);
 
         try {
             $this->commentService->saveComment($commentDTO);
