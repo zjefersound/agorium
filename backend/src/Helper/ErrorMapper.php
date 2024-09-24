@@ -6,7 +6,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class ErrorMapper
 {
-    public static function GetDTOErrorMessages(ConstraintViolationListInterface $errors): array
+    public static function getDTOErrorMessages(ConstraintViolationListInterface $errors): array
     {
         $errorMessages = [];
 

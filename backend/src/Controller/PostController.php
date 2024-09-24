@@ -35,7 +35,7 @@ class PostController
         $errors = $this->validator->validate($postDTO);
 
         if (count($errors) > 0) {
-            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
+            return $this->unprocessable(["error" => ErrorMapper::getDTOErrorMessages($errors)]);
         }
 
         $postId = isset($args['id']) ? (int)$args['id'] : 0;
