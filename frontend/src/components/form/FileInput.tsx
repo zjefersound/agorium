@@ -157,6 +157,7 @@ function FileInputInput({
         onDragLeave={handleDragLeave}
         onDragOver={handleDragEnter}
         onDrop={handleDrop}
+        role="button"
       >
         <input
           id={name}
