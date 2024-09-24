@@ -34,6 +34,32 @@ export function ProfileEdit() {
     }
   };
 
+  const renderFormTitle = () => {
+    switch (selectedTab) {
+      case "profile":
+        return "Edit Profile Information";
+      case "avatar":
+        return "Change Avatar";
+      case "password":
+        return "Update Password";
+      default:
+        return null;
+    }
+  };
+
+  const renderFormDescripition = () => {
+    switch (selectedTab) {
+      case "profile":
+        return "Update your personal information to keep your profile up-to-date.";
+      case "avatar":
+        return "Upload a new avatar to personalize your profile appearance.";
+      case "password":
+        return "Secure your account by updating your password regularly.";
+      default:
+        return null;
+    }
+  };
+
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -53,21 +79,9 @@ export function ProfileEdit() {
         />
         <Card>
           <Heading size="xs" asChild>
-            <h2 className="mb-4">
-              {selectedTab === "profile"
-                ? "Edit Profile Information"
-                : selectedTab === "avatar"
-                ? "Change Avatar"
-                : "Update Password"}
-            </h2>
+            <h2 className="mb-4">{renderFormTitle()}</h2>
           </Heading>
-          <Text className="mb-6">
-            {selectedTab === "profile"
-              ? "Update your personal information to keep your profile up-to-date."
-              : selectedTab === "avatar"
-              ? "Upload a new avatar to personalize your profile appearance."
-              : "Secure your account by updating your password regularly."}
-          </Text>
+          <Text className="mb-6">{renderFormDescripition()}</Text>
           {renderForm()}
         </Card>
       </Content.Main>

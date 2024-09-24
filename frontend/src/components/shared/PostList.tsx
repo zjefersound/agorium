@@ -37,13 +37,14 @@ function PostList({ filter = {} }: PostListProps) {
     };
     if (filter.categoryId?.trim()) returnParams.categoryId = filter.categoryId;
     if (filter.tagId?.trim()) returnParams.tagId = filter.tagId;
+    if (filter.userId?.trim()) returnParams.userId = filter.userId;
 
     return returnParams;
-  }, [page, filter.categoryId, filter.tagId]);
+  }, [page, filter.categoryId, filter.tagId, filter.userId]);
 
   useEffect(() => {
     setPage(1);
-  }, [filter.categoryId, filter.tagId]);
+  }, [filter.categoryId, filter.tagId, filter.userId]);
 
   useEffect(() => {
     postsResource.fetchData(params);
