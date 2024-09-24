@@ -6,6 +6,8 @@ namespace App\Domain;
 
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity, ORM\Table(name: 'comments')]
 class Comment
@@ -17,6 +19,7 @@ class Comment
         $this->user = $user;
         $this->parentComment = $parentComment;
         $this->createdAt = new DateTimeImmutable();
+        $this->votes = new ArrayCollection();
     }
 
     #[ORM\Id, ORM\Column(type: 'integer'), ORM\GeneratedValue(strategy: 'AUTO')]
@@ -39,6 +42,9 @@ class Comment
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
     private User $user;
 
+    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: Vote::class, cascade: ['persist', 'remove'])]
+    private Collection $votes;
+
     #[ORM\ManyToOne(targetEntity: self::class)]
     #[ORM\JoinColumn(name: 'parent_comment_id', referencedColumnName: 'id', nullable: true)]
     private ?Comment $parentComment = null;
@@ -46,6 +52,11 @@ class Comment
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getVotes(): Collection
+    {
+        return $this->votes;
     }
 
     public function getContent(): string

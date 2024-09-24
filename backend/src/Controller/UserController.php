@@ -156,6 +156,20 @@ class UserController
 
         return new Response(200, $responseHeaders, file_get_contents($filePath));
     }
+    public function getRankedUsers($request, $response): Response
+    {
+        $params = $request->getQueryParams();
+        $page = isset($params['page']) ? (int)$params['page'] : 1;
+        $limit = isset($params['limit']) ? (int)$params['limit'] : 10;
+
+        try {
+            $data = $this->userService->getRankedUsers($page, $limit);
+            return $this->ok($data);
+        } catch (\Throwable $th) {
+            return $this->unprocessable(['error' => $th->getMessage()]);
+        }
+    }
+
 
     public function getUserOverview($req, $res, $args)
     {

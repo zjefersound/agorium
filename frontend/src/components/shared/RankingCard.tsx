@@ -31,10 +31,10 @@ export function RankingCard({ items }: RankingCardProps) {
       <ul className="mt-6">
         {items.map((item) => (
           <li key={item.user.id}>
-            <div className="flex items-center py-1">
+            <div className="flex items-center py-1 gap-3">
               <span
                 className={clsx(
-                  "size-6 text-sm rounded-full flex items-center justify-center mr-3 font-semibold",
+                  "size-6 shrink-0 text-sm rounded-full flex items-center justify-center font-semibold",
                   {
                     "bg-amber-500": item.position === 1,
                     "bg-agorium-300 text-agorium-900": item.position === 2,
@@ -50,11 +50,11 @@ export function RankingCard({ items }: RankingCardProps) {
                 name={item.user.fullName}
                 url={item.user.avatar}
               />
-              <span className="ml-3 flex flex-1 text-xs truncate tracking-wider">
+              <span className="w-full text-xs truncate tracking-wider">
                 {item.user.fullName}
               </span>
               <Text asChild>
-                <span className="ml-3 flex items-center tracking-wider">
+                <span className="flex items-center tracking-wider">
                   <MdArrowUpward /> {item.totalUpvotes}
                 </span>
               </Text>

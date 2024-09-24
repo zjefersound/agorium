@@ -40,7 +40,7 @@ export function useGenericResource<T, O = undefined>({
       const isNotExpired =
         cachedValue && !isDateExpired(cachedValue.updatedAt, expiresIn);
 
-      if (validRef.current && isNotExpired) return;
+      if (validRef.current && isNotExpired) return cachedValue.data;
 
       setLoading(true);
       return fetch(options)

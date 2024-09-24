@@ -37,6 +37,7 @@ export function UserCard({
       <p className="text-amber-100 flex items-center text-xl font-bold mt-2">
         <LuAward className="size-6 mr-1" />
         {formatOrdinals(rankingPosition)}
+        {rankingPosition > 100 && "+"}
       </p>
       <div className="w-full space-y-2 mt-4">
         <p className="flex justify-between tracking-wider font-semibold">

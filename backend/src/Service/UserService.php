@@ -139,6 +139,19 @@ class UserService
         return $this->userRepository->find($id);
     }
 
+    public function getRankedUsers(int $page = 1, int $limit = 10): array
+    {
+        $page = max($page, 1);
+        $limit = max($limit, 1);
+
+        try {
+            return $this->userRepository->getRankedUsers($page, $limit);
+        } catch (\Throwable $th) {
+            throw new \Exception("An error occurred while fetching ranked users.");
+        }
+    }
+
+
     public function getUserOverview(int $userId): array
     {
         $user = $this->userRepository->find($userId);
@@ -147,13 +160,27 @@ class UserService
             throw new Exception("User not found.");
         }
 
-        $totalPosts = $this->postRepository->getUserTotalPosts($userId);
-        $totalComments = $this->commentRepository->getUserTotalComments($userId);
-        $totalUpvotes = $this->voteRepository->getUserTotalUpvotes($userId);
+        try {
+            $totalPosts = $this->postRepository->getUserTotalPosts($userId);
+            $totalComments = $this->commentRepository->getUserTotalComments($userId);
+            $totalUpvotes = $this->voteRepository->getUserTotalUpvotes($userId);
+        } catch (\Throwable $th) {
+            throw new \Exception("An error occurred while fetching posts, comments and upvotes for user.");
+        }
+
+        $rankedUsers = $this->userRepository->getRankedUsers(1, 100);
+
+        $position = 101; // Default value for those who are out of the top 100
+        foreach ($rankedUsers['data'] as $rankedUser) {
+            if ($rankedUser['userId'] === $userId) {
+                $position = $rankedUser['position'];
+                break;
+            }
+        }
 
         return [
             'user' => $user->jsonSerializePublic(),
-            'rankingPosition' => 1,
+            'rankingPosition' => $position,
             'totalPosts' => $totalPosts,
             'totalComments' => $totalComments,
             'totalUpvotes' => $totalUpvotes,
