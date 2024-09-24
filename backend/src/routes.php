@@ -19,6 +19,7 @@ return function (App $app) {
         $app->put('/user/me/info', UserController::class . ':updateUserInfo');
         $app->post('/user/me/avatar', UserController::class . ':updateUserAvatar');
         $app->put('/user/me/password', UserController::class . ':updateUserPassword');
+        $app->get('/user/ranking', UserController::class . ':getRankedUsers');
     })->add(AuthMiddleware::class);
 
     $app->group('posts', function () use ($app) {

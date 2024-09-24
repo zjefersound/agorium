@@ -7,6 +7,8 @@ namespace App\Domain;
 use App\DTO\UserSignupDTO;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity, ORM\Table(name: 'users')]
 class User
@@ -16,6 +18,8 @@ class User
         $this->fullName = $userSignupDTO->fullName;
         $this->username = $userSignupDTO->username;
         $this->email = $userSignupDTO->email;
+        $this->comments = new ArrayCollection();
+        $this->posts = new ArrayCollection();
         $this->passwordHash = password_hash($userSignupDTO->password, PASSWORD_BCRYPT);
         $this->createdAt = new DateTimeImmutable();
         $this->avatar = $userSignupDTO->avatar ?? null;
@@ -38,6 +42,12 @@ class User
 
     #[ORM\Column(name: 'password_hash', type: 'string', length: 255, nullable: false)]
     private string $passwordHash;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Post::class)]
+    private Collection $posts;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
+    private Collection $comments;
 
     #[ORM\Column(name: 'created_at', type: 'datetimetz_immutable', nullable: false)]
     private DateTimeImmutable $createdAt;
@@ -109,6 +119,22 @@ class User
     {
         $this->passwordHash = password_hash($password, PASSWORD_BCRYPT);
         return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
     }
 
     public function getCreatedAt(): DateTimeImmutable

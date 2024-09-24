@@ -1,11 +1,11 @@
 import { Content } from "../components/layout/Content";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
-import { mockedPosts, rankingCardItems } from "../examples/mocks/mocks";
-import { RankingCard } from "../components/shared/RankingCard";
+import { mockedPosts } from "../examples/mocks/mocks";
 import { HomeContent } from "../containers/HomeContent";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
 import { ConnectedUserCard } from "../components/shared/ConnectedUserCard";
 import { useAuth } from "../hooks/useAuth";
+import { ConnectedRankingCard } from "../components/shared/ConnectedRankingCard";
 
 export function Home() {
   const { user } = useAuth();
@@ -19,7 +19,7 @@ export function Home() {
       </Content.Main>
       <Content.Sidebar>
         <ConnectedUserCard id={user!.id} />
-        <RankingCard items={rankingCardItems} />
+        <ConnectedRankingCard />
         <TrendingPosts
           posts={[mockedPosts[0], mockedPosts[1], mockedPosts[2]]}
         />

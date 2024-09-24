@@ -1,7 +1,6 @@
 import { Content } from "../components/layout/Content";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
-import { mockedPosts, rankingCardItems } from "../examples/mocks/mocks";
-import { RankingCard } from "../components/shared/RankingCard";
+import { mockedPosts } from "../examples/mocks/mocks";
 import { ProfileCard } from "../containers/profile/ProfileCard";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
 import { Tabs } from "../components/ui/Tabs";
@@ -9,6 +8,7 @@ import { useMemo, useState } from "react";
 import { PostList } from "../components/shared/PostList";
 import { useAuth } from "../hooks/useAuth";
 import { ConnectedUserCard } from "../components/shared/ConnectedUserCard";
+import { ConnectedRankingCard } from "../components/shared/ConnectedRankingCard";
 
 export function Profile() {
   const [selectedTab, setSelectedTab] = useState("post");
@@ -43,7 +43,7 @@ export function Profile() {
       </Content.Main>
       <Content.Sidebar>
         <ConnectedUserCard id={user!.id} />
-        <RankingCard items={rankingCardItems} />
+        <ConnectedRankingCard />
         <TrendingPosts
           posts={[mockedPosts[0], mockedPosts[1], mockedPosts[2]]}
         />
