@@ -8,6 +8,8 @@ Agorium is a gamified educational app where students connect, ask questions, and
 
 ![image](https://github.com/user-attachments/assets/6b8932dc-bae1-4c49-b886-b9373f834024)
 
+## Project article:
+PT-BR: https://hackmd.io/@joaoz/agorium
 
 ## Tech Stack
 
