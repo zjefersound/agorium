@@ -103,9 +103,9 @@ class PostRepository
                 ->setParameter('tagId', $search->tagId);
         }
         // Filter by userId
-        if (!empty($search->categoryId)) {
+        if (!empty($search->userId)) {
             $qb->andWhere('p.user = :userId')
-                ->setParameter('categoryId', $search->userId);
+                ->setParameter('userId', $search->userId);
         }
 
         $totalQb = clone $qb;
