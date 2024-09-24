@@ -37,7 +37,7 @@ class VoteRepository
         $this->em->flush();
     }
 
-    public function getUserTotalVotes(int $userId): int
+    public function getUserTotalUpvotes(int $userId): int
     {
         $qb = $this->em->createQueryBuilder();
 
@@ -46,7 +46,9 @@ class VoteRepository
             ->leftJoin('v.post', 'p')
             ->leftJoin('v.comment', 'c')
             ->where('(p.user = :userId OR c.user = :userId)')
-            ->setParameter('userId', $userId);
+            ->andWhere('v.voteType = :upvote')
+            ->setParameter('userId', $userId)
+            ->setParameter('upvote', 'upvote');
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }

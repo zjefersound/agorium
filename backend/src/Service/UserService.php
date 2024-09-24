@@ -8,20 +8,31 @@ use App\DTO\UserSignupDTO;
 use App\DTO\UserInfoUpdateDTO;
 use App\DTO\UserPasswordUpdateDTO;
 use App\Helper\UploadHelper;
+use App\Repository\CommentRepository;
+use App\Repository\PostRepository;
 use App\Repository\VoteRepository;
 use Exception;
 use Nyholm\Psr7\UploadedFile;
 
 class UserService
 {
+    private CommentRepository $commentRepository;
+    private PostRepository $postRepository;
     private UserRepository $userRepository;
     private VoteRepository $voteRepository;
     private MailerService $mailerService;
 
-    public function __construct(UserRepository $userRepository, VoteRepository $voteRepository, MailerService $mailerService)
-    {
+    public function __construct(
+        CommentRepository $commentRepository,
+        PostRepository $postRepository,
+        UserRepository $userRepository,
+        VoteRepository $voteRepository,
+        MailerService $mailerService
+    ) {
         $this->userRepository = $userRepository;
         $this->voteRepository = $voteRepository;
+        $this->postRepository = $postRepository;
+        $this->commentRepository = $commentRepository;
         $this->mailerService = $mailerService;
     }
 
@@ -128,10 +139,23 @@ class UserService
         return $this->userRepository->find($id);
     }
 
-    public function getUserOverview(int $userId)
+    public function getUserOverview(int $userId): array
     {
-        $totalReceivedVotes = $this->voteRepository->getUserTotalVotes($userId);
+        $user = $this->userRepository->find($userId);
 
-        return $totalReceivedVotes;
+        if (!$user) {
+            throw new Exception("User not found.");
+        }
+
+        $totalPosts = $this->postRepository->getUserTotalPosts($userId);
+        $totalComments = $this->commentRepository->getUserTotalComments($userId);
+        $totalUpvotes = $this->voteRepository->getUserTotalUpvotes($userId);
+
+        return [
+            'user' => $user->jsonSerializePublic(),
+            'totalPosts' => $totalPosts,
+            'totalComments' => $totalComments,
+            'totalUpvotes' => $totalUpvotes,
+        ];
     }
 }

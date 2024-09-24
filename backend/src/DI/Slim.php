@@ -111,6 +111,8 @@ final class Slim implements ServiceProvider
 
         $c->set(UserService::class, static function (ContainerInterface $c): UserService {
             return new UserService(
+                $c->get(CommentRepository::class),
+                $c->get(PostRepository::class),
                 $c->get(UserRepository::class),
                 $c->get(VoteRepository::class),
                 $c->get(MailerService::class)
