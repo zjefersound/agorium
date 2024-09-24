@@ -4,8 +4,10 @@ namespace App\Helper;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ErrorMapper {
-    static function GetDTOErrorMessages(ConstraintViolationListInterface $errors): array {
+class ErrorMapper
+{
+    public static function getDTOErrorMessages(ConstraintViolationListInterface $errors): array
+    {
         $errorMessages = [];
 
         foreach ($errors as $error) {

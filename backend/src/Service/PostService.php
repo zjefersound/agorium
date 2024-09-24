@@ -108,7 +108,7 @@ class PostService
         }
     }
 
-    public function searchPosts(PostSearchDTO $search): array
+    public function searchPosts(PostSearchDTO $search, int $loggedUserId): array
     {
         $search->term ??= "";
         $search->page ??= 1;
@@ -117,7 +117,7 @@ class PostService
         $search->sortOrder = strtolower($search->sortOrder ?? 'asc') === 'desc' ? 'desc' : 'asc';
 
         try {
-            return $this->postRepository->search($search);
+            return $this->postRepository->search($search, $loggedUserId);
         } catch (\Throwable $th) {
             throw new Exception("An error occured while searching for posts.");
         }

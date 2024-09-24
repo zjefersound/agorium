@@ -374,7 +374,7 @@ paths:
           schema:
             type: string
             example: "title"
-          description: "Field to sort by, e.g., id or title."
+          description: "Field to sort by, e.g., id, title, totalUpotes."
         - in: query
           name: sortOrder
           required: false
@@ -396,6 +396,13 @@ paths:
             type: integer
             example: "1"
           description: "Filter by tag"
+        - in: query
+          name: userId
+          required: false
+          schema:
+            type: integer
+            example: "1"
+          description: "Filter by user"
       responses:
         "200":
           description: Categories retrieved successfully

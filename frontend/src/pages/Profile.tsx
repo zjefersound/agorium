@@ -3,11 +3,25 @@ import { SimpleUserCard } from "../components/shared/SimpleUserCard";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts, rankingCardItems } from "../examples/mocks/mocks";
 import { RankingCard } from "../components/shared/RankingCard";
-import { Card } from "../components/ui/Card";
 import { ProfileCard } from "../containers/profile/ProfileCard";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
+import { Tabs } from "../components/ui/Tabs";
+import { useMemo, useState } from "react";
+import { PostList } from "../components/shared/PostList";
+import { useAuth } from "../hooks/useAuth";
 
 export function Profile() {
+  const [selectedTab, setSelectedTab] = useState("post");
+  const { user } = useAuth();
+
+  const handleTabChange = (newValue: string) => {
+    setSelectedTab(newValue);
+  };
+
+  const postsFilter = useMemo(() => {
+    return { userId: String(user!.id) };
+  }, [user]);
+
   return (
     <Content.Root>
       <Content.Sidebar>
@@ -15,7 +29,17 @@ export function Profile() {
       </Content.Sidebar>
       <Content.Main>
         <ProfileCard />
-        <Card>User info placeholder</Card>
+        <Tabs
+          value={selectedTab}
+          onChange={handleTabChange}
+          options={[
+            { label: "Posts", value: "posts" },
+            { label: "Comments", value: "comments" },
+            { label: "Upvotes", value: "upvotes" },
+          ]}
+          placement="left"
+        />
+        <PostList filter={postsFilter} />
       </Content.Main>
       <Content.Sidebar>
         <SimpleUserCard

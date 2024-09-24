@@ -35,6 +35,7 @@ function deletePost(id: number | string) {
 export interface IPostSearchableOptions extends ISearchableOptions {
   categoryId?: string;
   tagId?: string;
+  userId?: string;
 }
 function getAll(options?: IPostSearchableOptions) {
   return api.get<IPaginatedResponse<Post>>("/posts", {

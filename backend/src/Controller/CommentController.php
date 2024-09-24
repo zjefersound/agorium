@@ -36,7 +36,7 @@ class CommentController
 
         $errors = $this->validator->validate($commentDTO);
         if (count($errors) > 0) {
-            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
+            return $this->unprocessable(["error" => ErrorMapper::getDTOErrorMessages($errors)]);
         }
 
         $userId = (int) $req->getAttribute("userId");

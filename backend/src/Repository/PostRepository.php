@@ -80,7 +80,7 @@ class PostRepository
         }
     }
 
-    public function search(PostSearchDTO $search): array
+    public function search(PostSearchDTO $search, int $loggedUserId): array
     {
         $qb = $this->em->getRepository(Post::class)->createQueryBuilder('p');
 
@@ -102,6 +102,11 @@ class PostRepository
                 ->andWhere('t.id = :tagId')
                 ->setParameter('tagId', $search->tagId);
         }
+        // Filter by userId
+        if (!empty($search->userId)) {
+            $qb->andWhere('p.user = :userId')
+                ->setParameter('userId', $search->userId);
+        }
 
         $totalQb = clone $qb;
         $total = (int) $totalQb->select('COUNT(p.id)')->getQuery()->getSingleScalarResult();
@@ -109,15 +114,16 @@ class PostRepository
         // Join with the votes table to get vote counts and the user's specific vote
         $qb->leftJoin('p.votes', 'v')
             ->addSelect(
-                'SUM(CASE WHEN v.voteType = \'upvote\' THEN 1 ELSE 0 END) AS upvotes',
-                'SUM(CASE WHEN v.voteType = \'downvote\' THEN 1 ELSE 0 END) AS downvotes',
-                'MAX(CASE WHEN v.user = :userId THEN v.voteType ELSE \'\' END) AS userVote'
+                'SUM(CASE WHEN v.voteType = \'upvote\' THEN 1 WHEN v.voteType = \'downvote\' THEN -1 ELSE 0 END) AS totalUpvotes',
+                'MAX(CASE WHEN v.user = :loggedUserId THEN v.voteType ELSE \'\' END) AS userVote'
             )
-            ->setParameter('userId', (int) $search->userId)
+            ->setParameter('loggedUserId', $loggedUserId)
             ->groupBy('p.id');
 
         // Sorting
-        if (!empty($search->sortBy)) {
+        if ($search->sortBy === 'totalUpvotes') {
+            $qb->orderBy('totalUpvotes', $search->sortOrder);
+        } else {
             $qb->orderBy('p.' . $search->sortBy, $search->sortOrder);
         }
 
@@ -135,9 +141,7 @@ class PostRepository
                 return array_merge(
                     $post[0]->jsonSerialize(),
                     [
-                        'upvotes' => (int) $post['upvotes'],
-                        'downvotes' => (int) $post['downvotes'],
-                        'totalUpvotes' => (int) $post['upvotes'] - (int) $post['downvotes'],
+                        'totalUpvotes' => (int) $post['totalUpvotes'],
                         'userVote' => $userVote,
                     ]
                 );

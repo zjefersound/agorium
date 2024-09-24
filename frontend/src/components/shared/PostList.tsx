@@ -52,6 +52,7 @@ function PostList({ filter = {}, hideDefaultFilters }: PostListProps) {
     if (sortType) returnParams.sortBy = sortType;
     if (filter.categoryId?.trim()) returnParams.categoryId = filter.categoryId;
     if (filter.tagId?.trim()) returnParams.tagId = filter.tagId;
+    if (filter.userId?.trim()) returnParams.userId = filter.userId;
     if (filter.term?.trim()) returnParams.term = filter.term;
     if (filter.sortBy) returnParams.sortBy = filter.sortBy;
     if (filter.sortOrder) returnParams.sortBy = filter.sortOrder;
@@ -61,6 +62,7 @@ function PostList({ filter = {}, hideDefaultFilters }: PostListProps) {
     page,
     filter.categoryId,
     filter.tagId,
+    filter.userId,
     filter.term,
     filter.sortBy,
     filter.sortOrder,
@@ -73,6 +75,7 @@ function PostList({ filter = {}, hideDefaultFilters }: PostListProps) {
   }, [
     filter.categoryId,
     filter.tagId,
+    filter.userId,
     filter.term,
     filter.sortBy,
     filter.sortOrder,
