@@ -35,7 +35,7 @@ class UserController
         $errors = $this->validator->validate($userSignupDTO);
 
         if (count($errors) > 0) {
-            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
+            return $this->unprocessable(["error" => ErrorMapper::getDTOErrorMessages($errors)]);
         }
 
         $uploadedFiles = $req->getUploadedFiles();
@@ -61,7 +61,7 @@ class UserController
         $errors = $this->validator->validate($userInfoUpdateDTO);
 
         if (count($errors) > 0) {
-            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
+            return $this->unprocessable(["error" => ErrorMapper::getDTOErrorMessages($errors)]);
         }
 
         try {
@@ -101,7 +101,7 @@ class UserController
 
         $errors = $this->validator->validate($userPasswordUpdateDTO);
         if (count($errors) > 0) {
-            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
+            return $this->unprocessable(["error" => ErrorMapper::getDTOErrorMessages($errors)]);
         }
 
         try {

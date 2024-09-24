@@ -44,13 +44,13 @@ export function TrendingPosts({ posts }: TrendingPostsProps) {
                   </span>
                   <Text asChild>
                     <span className="flex items-center">
-                      {post.tags?.length || 0} tags
+                      {post.tags?.length ?? 0} tags
                     </span>
                   </Text>
                   <Text asChild>
                     <span className="flex items-center">
                       <MdOutlineModeComment className="mr-1" />{" "}
-                      {post.comments?.length || 0}
+                      {post.totalComments}
                     </span>
                   </Text>
                   <Text asChild>

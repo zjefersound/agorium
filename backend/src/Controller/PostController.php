@@ -35,7 +35,7 @@ class PostController
         $errors = $this->validator->validate($postDTO);
 
         if (count($errors) > 0) {
-            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
+            return $this->unprocessable(["error" => ErrorMapper::getDTOErrorMessages($errors)]);
         }
 
         $postId = isset($args['id']) ? (int)$args['id'] : 0;
@@ -58,11 +58,12 @@ class PostController
 
     public function getPost($req, $res, $args): Response
     {
+        $userId = (int) $req->getAttribute("userId");
         $postId = (int)$args['id'];
 
         try {
-            $post = $this->postService->getPost($postId);
-            return $this->ok($post->jsonSerialize());
+            $post = $this->postService->getDetailedPost($postId, $userId);
+            return $this->ok($post);
         } catch (\Throwable $th) {
             return $this->notFound(["error" => $th->getMessage()]);
         }
@@ -77,7 +78,8 @@ class PostController
             return $this->unprocessable(["error" => "Invalid query parameters"]);
         }
 
-        $result = $this->postService->searchPosts($search);
+        $loggedUserId = (int) $req->getAttribute("userId") ?? 0;
+        $result = $this->postService->searchPosts($search, $loggedUserId);
 
         return $this->ok($result);
     }

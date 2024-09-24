@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Domain\Post;
 use App\Domain\Tag;
+use App\Domain\Vote;
 use App\DTO\PostSearchDTO;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -20,6 +21,43 @@ class PostRepository
     {
         return $this->em->getRepository(Post::class)->find($id);
     }
+
+    public function findDetailed(int $postId, int $userId): ?array
+    {
+        $qb = $this->em->getRepository(Post::class)->createQueryBuilder('p')
+            ->leftJoin('p.votes', 'v')
+            ->addSelect(
+                'SUM(CASE WHEN v.voteType = \'upvote\' THEN 1 WHEN v.voteType = \'downvote\' THEN -1 ELSE 0 END) AS totalUpvotes'
+            )
+            ->where('p.id = :postId')
+            ->setParameter('postId', $postId)
+            ->groupBy('p.id');
+
+        $post = $qb->getQuery()->getOneOrNullResult();
+
+        if (!$post) {
+            return null;
+        }
+
+        $userVote = $this->em->getRepository(Vote::class)->findOneBy([
+            'post' => $postId,
+            'user' => $userId,
+        ]);
+
+        $userVoteData = $userVote ? $userVote->jsonSerialize() : null;
+
+        $totalUpvotes = (int) $post['totalUpvotes'];
+
+        return array_merge(
+            $post[0]->jsonSerialize(),
+            [
+                'totalUpvotes' => $totalUpvotes,
+                'userVote' => $userVoteData,
+            ]
+        );
+    }
+
+
 
     /**
      * Save a Post entity, optionally handling tags.
@@ -42,7 +80,7 @@ class PostRepository
         }
     }
 
-    public function search(PostSearchDTO $search): array
+    public function search(PostSearchDTO $search, int $loggedUserId): array
     {
         $qb = $this->em->getRepository(Post::class)->createQueryBuilder('p');
 
@@ -64,12 +102,28 @@ class PostRepository
                 ->andWhere('t.id = :tagId')
                 ->setParameter('tagId', $search->tagId);
         }
+        // Filter by userId
+        if (!empty($search->userId)) {
+            $qb->andWhere('p.user = :userId')
+                ->setParameter('userId', $search->userId);
+        }
 
         $totalQb = clone $qb;
         $total = (int) $totalQb->select('COUNT(p.id)')->getQuery()->getSingleScalarResult();
 
+        // Join with the votes table to get vote counts and the user's specific vote
+        $qb->leftJoin('p.votes', 'v')
+            ->addSelect(
+                'SUM(CASE WHEN v.voteType = \'upvote\' THEN 1 WHEN v.voteType = \'downvote\' THEN -1 ELSE 0 END) AS totalUpvotes',
+                'MAX(CASE WHEN v.user = :loggedUserId THEN v.voteType ELSE \'\' END) AS userVote'
+            )
+            ->setParameter('loggedUserId', $loggedUserId)
+            ->groupBy('p.id');
+
         // Sorting
-        if (!empty($search->sortBy)) {
+        if ($search->sortBy === 'totalUpvotes') {
+            $qb->orderBy('totalUpvotes', $search->sortOrder);
+        } else {
             $qb->orderBy('p.' . $search->sortBy, $search->sortOrder);
         }
 
@@ -82,7 +136,16 @@ class PostRepository
         $posts = $query->getResult();
 
         return [
-            'data' =>  array_map(fn($post) => $post->jsonSerialize(), $posts),
+            'data' => array_map(function ($post) {
+                $userVote = $post['userVote'];
+                return array_merge(
+                    $post[0]->jsonSerialize(),
+                    [
+                        'totalUpvotes' => (int) $post['totalUpvotes'],
+                        'userVote' => $userVote,
+                    ]
+                );
+            }, $posts),
             'pagination' => [
                 'currentPage' => $search->page,
                 'perPage' => $search->limit,

@@ -19,7 +19,7 @@ class CommentRepository
         return $this->em->getRepository(Comment::class)->find($id);
     }
 
-    public function getPostComments(int $postId, ?int $commentId = null): array
+    public function getPostComments(int $postId, int $userId, ?int $commentId = null): array
     {
         $conn = $this->em->getConnection();
 
@@ -28,37 +28,81 @@ class CommentRepository
         $sql = <<<SQL
             WITH RECURSIVE comment_tree AS (
                 SELECT 
-                    c.id, 
-                    c.content, 
-                    c.created_at, 
-                    c.updated_at, 
-                    c.post_id, 
+                    c.id,
+                    c.content,
+                    c.created_at,
+                    c.updated_at,
+                    c.post_id,
                     c.user_id AS comment_user_id,
                     c.parent_comment_id,
-                    u.id AS user_id, 
-                    u.fullName, 
-                    u.username, 
+                    u.id AS user_id,
+                    u.fullName,
+                    u.username,
                     u.avatar,
-                    0 AS depth
+                    0 AS depth,
+                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = c.id AND v.voteType = 'upvote') AS totalUpvotes,
+                    (
+                        SELECT v.id
+                        FROM votes v
+                        WHERE v.comment_id = c.id
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteId,
+                    (
+                        SELECT v.voteType
+                        FROM votes v
+                        WHERE v.comment_id = c.id
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteType,
+                    (
+                        SELECT v.created_at
+                        FROM votes v
+                        WHERE v.comment_id = c.id
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteCreatedAt
                 FROM comments c
                 JOIN users u ON c.user_id = u.id
                 WHERE c.post_id = :postId $commentCondition
-        
+
                 UNION ALL
-        
-                SELECT 
-                    child.id, 
-                    child.content, 
-                    child.created_at, 
-                    child.updated_at, 
-                    child.post_id, 
+
+                SELECT
+                    child.id,
+                    child.content,
+                    child.created_at,
+                    child.updated_at,
+                    child.post_id,
                     child.user_id AS comment_user_id,
                     child.parent_comment_id,
-                    u.id AS user_id, 
-                    u.fullName, 
-                    u.username, 
+                    u.id AS user_id,
+                    u.fullName,
+                    u.username,
                     u.avatar,
-                    parent.depth + 1 AS depth
+                    parent.depth + 1 AS depth,
+                    (SELECT COUNT(*) FROM votes v WHERE v.comment_id = child.id AND v.voteType = 'upvote') AS totalUpvotes,
+                    (
+                        SELECT v.id
+                        FROM votes v
+                        WHERE v.comment_id = child.id
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteId,
+                    (
+                        SELECT v.voteType
+                        FROM votes v
+                        WHERE v.comment_id = child.id
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteType,
+                    (
+                        SELECT v.created_at
+                        FROM votes v
+                        WHERE v.comment_id = child.id
+                        AND v.user_id = :userId
+                        LIMIT 1
+                    ) AS userVoteCreatedAt
                 FROM comments child
                 JOIN users u ON child.user_id = u.id
                 INNER JOIN comment_tree parent ON parent.id = child.parent_comment_id
@@ -69,6 +113,7 @@ class CommentRepository
 
         $stmt = $conn->prepare($sql);
         $stmt->bindValue("postId", $postId);
+        $stmt->bindValue("userId", $userId);
 
         if ($commentId) {
             $stmt->bindValue("commentId", $commentId);
@@ -113,8 +158,22 @@ class CommentRepository
                 'id' => $comment['user_id'],
                 'fullName' => $comment['fullName'],
                 'username' => $comment['username'],
-                'avatar' => $comment['avatar'] ? "/user/avatar/" . $comment['user_id'] . "/" . $comment['avatar'] : null,
             ];
+
+            if ($comment['avatar']) {
+                $user['avatar'] = "/user/avatar/" . $comment['user_id'] . "/" . $comment['avatar'];
+            }
+
+            // Construct the userVote array
+            $userVote = null;
+            if (!empty($comment['userVoteId'])) {
+                $userVote = [
+                    'id' => (int)$comment['userVoteId'],
+                    'voteType' => $comment['userVoteType'],
+                    'commentId' => $comment['id'],
+                    'createdAt' => $comment['userVoteCreatedAt'],
+                ];
+            }
 
             $commentsById[$comment['id']] = [
                 'id' => $comment['id'],
@@ -122,8 +181,9 @@ class CommentRepository
                 'createdAt' => $comment['created_at'],
                 'updatedAt' => $comment['updated_at'],
                 'user' => $user,
+                'totalUpvotes' => (int)$comment['totalUpvotes'],
+                'userVote' => $userVote,
                 'children' => [],
-                'totalUpvotes' => 0,
             ];
         }
 

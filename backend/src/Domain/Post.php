@@ -21,6 +21,7 @@ class Post
         $this->tags = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
         $this->comments = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     #[ORM\Id, ORM\Column(type: 'integer'), ORM\GeneratedValue(strategy: 'AUTO')]
@@ -60,6 +61,9 @@ class Post
         inverseJoinColumns: [new ORM\JoinColumn(name: 'tag_id', referencedColumnName: 'id')]
     )]
     private Collection $tags;
+
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'post')]
+    private Collection $votes;
 
     public function getId(): int
     {
@@ -150,6 +154,11 @@ class Post
     public function getTotalComments(): int
     {
         return $this->comments->count();
+    }
+
+    public function getVotes(): Collection
+    {
+        return $this->votes;
     }
 
     public function jsonSerialize(): array

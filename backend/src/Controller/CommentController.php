@@ -36,7 +36,7 @@ class CommentController
 
         $errors = $this->validator->validate($commentDTO);
         if (count($errors) > 0) {
-            return $this->unprocessable(["error" => ErrorMapper::GetDTOErrorMessages($errors)]);
+            return $this->unprocessable(["error" => ErrorMapper::getDTOErrorMessages($errors)]);
         }
 
         $userId = (int) $req->getAttribute("userId");
@@ -56,8 +56,10 @@ class CommentController
         $postId = isset($args['postId']) ? (int)$args['postId'] : 0;
         $commentId = isset($args['commentId']) ? (int)$args['commentId'] : 0;
 
+        $userId = (int) $req->getAttribute("userId") ?? 0;
+
         try {
-            $comments = $this->commentService->getPostComments($postId, $commentId);
+            $comments = $this->commentService->getPostComments($postId, $userId, $commentId);
             return $this->ok($comments);
         } catch (\Throwable $th) {
             return $this->notFound(["error" => $th->getMessage()]);

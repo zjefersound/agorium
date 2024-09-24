@@ -4,22 +4,11 @@ declare(strict_types=1);
 
 namespace App\DI;
 
-use App\Controller\CategoryController;
-use App\Controller\CommentController;
-use App\Controller\PostController;
-use App\Controller\UserController;
-use App\Controller\TagController;
-use App\Domain\Category;
-use App\Domain\Comment;
-use App\Domain\Tag;
-use App\Domain\User;
+use App\Domain\{Category, Comment, Tag, User};
+use App\Controller\{CategoryController, CommentController, PostController, UserController, TagController, VoteController};
+use App\Repository\{CategoryRepository, CommentRepository, PostRepository, TagRepository, UserRepository, VoteRepository};
+use App\Service\{AuthService, CategoryService, CommentService, MailerService, PostService, TagService, UserService, VoteService};
 use App\Middleware\AuthMiddleware;
-use App\Repository\CategoryRepository;
-use App\Repository\CommentRepository;
-use App\Repository\PostRepository;
-use App\Repository\TagRepository;
-use App\Repository\UserRepository;
-use App\Service\{AuthService, CategoryService, CommentService, MailerService, PostService, TagService, UserService};
 use Doctrine\ORM\EntityManager;
 use Nyholm\Psr7\Response;
 use Psr\Container\ContainerInterface;
@@ -99,6 +88,12 @@ final class Slim implements ServiceProvider
                 $c->get(EntityManager::class)->getClassMetadata(Tag::class)
             );
         });
+
+        $c->set(VoteRepository::class, static function (ContainerInterface $c): VoteRepository {
+            return new VoteRepository(
+                $c->get(EntityManager::class)
+            );
+        });
     }
 
     private function provideServices(Container $c): void
@@ -140,6 +135,10 @@ final class Slim implements ServiceProvider
         $c->set(TagService::class, static function (ContainerInterface $c): TagService {
             return new TagService($c->get(TagRepository::class));
         });
+
+        $c->set(VoteService::class, static function (ContainerInterface $c): VoteService {
+            return new VoteService($c->get(VoteRepository::class));
+        });
     }
 
     private function provideControllers(Container $c): void
@@ -170,6 +169,15 @@ final class Slim implements ServiceProvider
 
         $c->set(TagController::class, static function (ContainerInterface $c): TagController {
             return new TagController($c->get(TagService::class));
+        });
+
+        $c->set(VoteController::class, static function (ContainerInterface $c): VoteController {
+            return new VoteController(
+                $c->get(VoteService::class),
+                $c->get(UserService::class),
+                $c->get(PostService::class),
+                $c->get(CommentService::class)
+            );
         });
     }
 
