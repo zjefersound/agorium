@@ -40,4 +40,20 @@ class MailerService
             return false;
         }
     }
+
+    public function sendCommentedEmail(string $to, int $postId): bool
+    {
+        try {
+            $this->mailer->addAddress($to);
+
+            $this->mailer->isHTML(true);
+            $this->mailer->Subject = 'New Comment on Your Post!';
+            $this->mailer->Body    = "<p>A user has commented on your post! <a href=\"/post/$postId\">Go to post</a></p>";
+
+            $this->mailer->send();
+            return true;
+        } catch (Throwable $th) {
+            return false;
+        }
+    }
 }

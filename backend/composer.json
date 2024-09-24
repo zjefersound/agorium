@@ -7,12 +7,14 @@
   "require": {
     "ext-ctype": "*",
     "ext-json": "*",
+    "ext-sockets": "*",
     "doctrine/annotations": "^2.0",
     "doctrine/dbal": "^4.1",
     "doctrine/orm": "^3.2",
     "firebase/php-jwt": "^6.10",
     "nyholm/psr7": "^1.8",
     "nyholm/psr7-server": "^1.1",
+    "php-amqplib/php-amqplib": "^3.2",
     "phpmailer/phpmailer": "^6.9",
     "slim/slim": "^4.14",
     "symfony/cache": "^7.1",
@@ -22,9 +24,10 @@
   "scripts": {
     "migrate": "./bin/doctrine orm:schema-tool:update --force",
     "seed": "./bin/seed",
+    "consume": "./bin/consume",
     "serve": [
       "@composer install",
-      "php -S 0.0.0.0:8000 index.php"
+      "php -S 0.0.0.0:8000 index.php &"
     ]
   },
   "config": {

@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+use App\Command\EmailConsumer;
+use App\DI;
+use App\Service\MailerService;
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$container = require_once __DIR__ . '/../src/bootstrap.php';
+
+$container->register(new DI\Slim());
+
+$mailerService = $container->get(MailerService::class);
+
+$consumer = new EmailConsumer($mailerService);
+$consumer->consume();

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Domain\Comment;
 use App\DTO\CommentDTO;
+use App\Helper\QueueHelper;
 use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
@@ -31,14 +32,17 @@ class CommentService
 
     public function saveComment(CommentDTO $commentDTO)
     {
+        /** @var \App\Domain\Post $post */
         $post = $this->postRepository->find($commentDTO->postId);
         if (!$post) {
             throw new Exception("Post not found.");
         }
 
-        /** @var \App\Domain\User $user */
-        $user = $this->userRepository->find($commentDTO->user->getId());
-        if (!$user) {
+        $commentDTO->post = $post;
+
+        /** @var \App\Domain\User $requestUser */
+        $requestUser = $this->userRepository->find($commentDTO->userId);
+        if (!$requestUser) {
             throw new Exception("User not found.");
         }
 
@@ -58,13 +62,18 @@ class CommentService
             $comment = new Comment(
                 $commentDTO->content,
                 $post,
-                $user,
+                $requestUser,
                 $parentComment
             );
         }
 
-        if ($comment->getUser()->getId() != $user->getId()) {
+        if ($comment->getUser()->getId() != $requestUser->getId()) {
             throw new Exception("This comment belongs to another user.");
+        }
+
+        $postUser = $post->getUser();
+        if ($postUser->getId() != $requestUser->getId()) {
+            QueueHelper::queueUserCommentedEmail($commentDTO);
         }
 
         $this->commentRepository->save($comment);
