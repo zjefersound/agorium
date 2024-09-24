@@ -9,7 +9,7 @@ function ConnectedUserCard({ id }: { id: number }) {
   const { data, loading, fetchData } = userOverviewResource;
   useEffect(() => {
     fetchData(id);
-  }, [id]);
+  }, [id, fetchData]);
   if (loading) return <UserCardSkeleton />;
   if (!data) return <Card>Not found</Card>;
   return (
