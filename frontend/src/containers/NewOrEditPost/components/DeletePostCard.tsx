@@ -10,7 +10,8 @@ import { useResource } from "../../../hooks/useResource";
 
 export function DeletePostCard() {
   const { id } = useParams();
-  const { postsResource } = useResource();
+  const { postsResource, popularTagsResource, popularCategoriesResource } =
+    useResource();
   const navigate = useNavigate();
   const { launchToast } = useToast();
   const handleDeletePost = () => {
@@ -19,6 +20,10 @@ export function DeletePostCard() {
       .delete(id)
       .then(() => {
         postsResource.revalidate();
+        popularTagsResource.revalidate();
+        popularCategoriesResource.revalidate();
+        popularTagsResource.fetchData();
+        popularCategoriesResource.fetchData();
         navigate("/");
         launchToast({
           title: TOAST_MESSAGES.Post.deletedTitle,

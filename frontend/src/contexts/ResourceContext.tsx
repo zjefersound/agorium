@@ -12,7 +12,7 @@ import { IPostSearchableOptions, postService } from "../services/postService";
 import { IGenericResource } from "../models/IGenericResource";
 import { useGenericResource } from "../hooks/resources/useGenericResource";
 import { Tag } from "../models/Tag";
-import { tagService } from "../services/tagService";
+import { ITrendingTag, tagService } from "../services/tagService";
 
 interface ResourceProviderProps {
   children: React.ReactNode;
@@ -21,6 +21,8 @@ interface ResourceProviderProps {
 export interface ResourceContextType {
   categoriesResource: IPaginatedResource<Category>;
   popularCategoriesResource: IGenericResource<ITrendingCategory[]>;
+  popularTagsResource: IGenericResource<ITrendingTag[]>;
+  postResource: IGenericResource<Post, number>;
   postsResource: IPaginatedResource<Post, IPostSearchableOptions>;
   tagsResource: IPaginatedResource<Tag>;
 }
@@ -35,10 +37,22 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
     alias: "categories",
     fetch: categoryService.getAll,
   });
+
   const popularCategoriesResource = useGenericResource<ITrendingCategory[]>({
-    alias: "posts",
+    alias: "popular categories",
     fetch: categoryService.getTrending,
     expiresIn: 1000 * 60 * 5, // 5 min
+  });
+  const popularTagsResource = useGenericResource<ITrendingTag[]>({
+    alias: "popular tags",
+    fetch: tagService.getTrending,
+    expiresIn: 1000 * 60 * 5, // 5 min
+  });
+
+  const postResource = useGenericResource<Post, number>({
+    alias: "post",
+    fetch: postService.getById,
+    expiresIn: 1000 * 60 * 1, // 5 min
   });
 
   const tagsResource = usePaginatedResource<Tag>({
@@ -56,12 +70,16 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
     () => ({
       categoriesResource,
       popularCategoriesResource,
+      popularTagsResource,
+      postResource,
       postsResource,
       tagsResource,
     }),
     [
       categoriesResource,
       popularCategoriesResource,
+      popularTagsResource,
+      postResource,
       postsResource,
       tagsResource,
     ],
@@ -70,6 +88,7 @@ export const ResourceProvider = ({ children }: ResourceProviderProps) => {
   useEffect(() => {
     if (!authenticated) return;
     popularCategoriesResource.fetchData();
+    popularTagsResource.fetchData();
     categoriesResource.fetchData();
     // eslint-disable-next-line
   }, [authenticated]);

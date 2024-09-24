@@ -26,6 +26,7 @@ return function (App $app) {
         $app->post('/post', PostController::class . ':savePost');
         $app->put('/post/{id}', PostController::class . ':savePost');
         $app->delete('/post/{id}', PostController::class . ':deletePost');
+        $app->patch('/post/{id}/favorite-comment', PostController::class . ':updateFavoriteComment');
     })->add(AuthMiddleware::class);
 
     $app->group('comments', function () use ($app) {
@@ -47,6 +48,7 @@ return function (App $app) {
 
     $app->group('tags', function () use ($app) {
         $app->get('/tags', TagController::class . ':searchTags');
+        $app->get('/tags/trending', TagController::class . ':getTrendingTags');
     })->add(AuthMiddleware::class);
 
     $app->get('/swagger', function ($req, $res) {

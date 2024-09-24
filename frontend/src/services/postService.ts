@@ -22,6 +22,13 @@ function update(id: number | string, data: PostPayload) {
   return api.put(`/post/${id}`, data);
 }
 
+function updateFavoriteComment(
+  id: number | string,
+  favoriteCommentId: number | string,
+) {
+  return api.patch(`/post/${id}/favorite-comment`, { favoriteCommentId });
+}
+
 function deletePost(id: number | string) {
   return api.delete(`/post/${id}`);
 }
@@ -44,4 +51,5 @@ export const postService = {
   getAll,
   getById,
   update,
+  updateFavoriteComment,
 };

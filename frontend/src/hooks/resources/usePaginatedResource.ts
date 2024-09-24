@@ -36,10 +36,10 @@ export function usePaginatedResource<
     totalPages: 1,
   });
   const [loading, setLoading] = useState(false);
-  const [valid, setValid] = useState(true);
+  const validRef = useRef(true);
 
   const revalidate = useCallback(async () => {
-    setValid(false);
+    validRef.current = false;
   }, []);
   const fetchData = useCallback(
     async (options?: O) => {
@@ -54,7 +54,7 @@ export function usePaginatedResource<
         cachedValue && !isDateExpired(cachedValue.updatedAt, expiresIn);
 
       // if it's valid and not expired skip fetch
-      if (valid && isNotExpired) return;
+      if (validRef.current && isNotExpired) return;
 
       setLoading(true);
       return fetch(options)
@@ -81,13 +81,13 @@ export function usePaginatedResource<
             });
           }
           pagination.current = res.data.pagination;
-          setValid(true);
+          validRef.current = true;
         })
         .catch((error) => console.error("Failed to fetch " + alias, error))
         .finally(() => setLoading(false));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [valid],
+    [fetch, expiresIn, alias],
   );
 
   return {

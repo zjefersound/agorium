@@ -296,6 +296,35 @@ paths:
       tags:
         - posts
 
+  /post/{postId}/favorite-comment:
+    patch:
+      summary: "Set favorite comment"
+      description: "Updates the details of an existing post to set the favorite comment"
+      parameters:
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                favoriteCommentId:
+                  type: integer
+                  example: 1
+      responses:
+        "200":
+          description: Post saved
+        "401":
+          description: Unauthorized
+      tags:
+        - posts
+
   /posts:
     get:
       summary: "Search posts with pagination and sorting"
@@ -707,6 +736,17 @@ paths:
           description: Unauthorized
       tags:
         - tag
+  /tags/trending:
+    get:
+      summary: "Search trending tags"
+      responses:
+        "200":
+          description: Tags retrieved successfully
+        "401":
+          description: Unauthorized
+      tags:
+        - tag
+
 components:
   securitySchemes:
     BearerAuth:

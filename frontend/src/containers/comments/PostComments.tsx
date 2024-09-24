@@ -1,4 +1,4 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { Empty } from "../../components/ui/Empty";
 import { Text } from "../../components/ui/Text";
 import { useCommentCreation } from "./hooks/useCommentCreation";
@@ -32,10 +32,19 @@ function PostComments({
     [handleCreateComment, fetchComments],
   );
 
+  const totalComments = useMemo(
+    () =>
+      comments.reduce(
+        (total, comment) => total + 1 + comment.children.length,
+        0,
+      ),
+    [comments],
+  );
+
   return (
     <>
       <span id="comments-count" className="block">
-        {comments?.length || 0} comment(s)
+        {totalComments} comment(s)
       </span>
       <CommentEditor
         comment={commentToReply}
@@ -57,7 +66,7 @@ function PostComments({
       {comments.map((comment) => (
         <CommentCard
           key={comment.id}
-          favorite={comment.id === favoriteCommentId}
+          favoriteCommentId={favoriteCommentId}
           comment={comment}
           isPostAuthor={isAuthor}
           onReply={setCommentToReply}

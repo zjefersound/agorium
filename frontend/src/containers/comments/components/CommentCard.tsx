@@ -14,25 +14,32 @@ import { CommentActionsDropdown } from "./CommentActionsDropdown";
 import { memo, useCallback, useMemo } from "react";
 import { Button } from "../../../components/ui/Button";
 import { ChildCommentCard } from "./ChildCommentCard";
+import { formatCompactNumber } from "../../../utils/formatCompactNumber";
 
 interface CommentCardProps {
   comment: Comment;
-  favorite?: boolean;
+  favoriteCommentId?: number;
   isPostAuthor?: boolean;
   onReply: (comment: Comment) => void;
 }
 function CommentCard({
   comment,
-  favorite,
+  favoriteCommentId,
   isPostAuthor,
   onReply,
 }: CommentCardProps) {
   const { user } = useAuth();
-  const { deleteComment, setCommentToUpdate } = useComments();
+  const { deleteComment, setCommentToUpdate, setFavoriteComment } =
+    useComments();
   const isAuthor = useMemo(
     () => user!.id === comment.user!.id,
     [user, comment],
   );
+
+  const handleMarkFavoriteComment = useCallback(() => {
+    setFavoriteComment(comment.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [comment.id]);
 
   const handleEditComment = useCallback(() => {
     setCommentToUpdate(comment);
@@ -61,14 +68,19 @@ function CommentCard({
           )}
         </div>
         <MarkdownPreview>{comment.content}</MarkdownPreview>
-        <footer className="flex items-center space-x-3">
-          <Button size="sm" color={comment.voted ? "primary" : "secondary"}>
-            <MdArrowUpward className="mr-2 size-5" /> {comment.totalUpvotes}
+        <footer className="flex items-center gap-3 flex-wrap">
+          <Button
+            size="sm"
+            color={comment.voted ? "primary" : "secondary"}
+            disabled={isAuthor}
+          >
+            <MdArrowUpward className="mr-2 size-5" />
+            {formatCompactNumber(comment.totalUpvotes)}
           </Button>
           <Button size="sm" color="secondary" onClick={() => onReply(comment)}>
             <MdOutlineReply className="mr-2 size-5" /> Reply
           </Button>
-          {!isPostAuthor && favorite && (
+          {!isPostAuthor && comment.id === favoriteCommentId && (
             <span className="text-xs leading-3 text-emerald-400 flex items-center">
               <MdCheckCircleOutline className="size-6 mr-2 shrink-0" />
               <span className="hidden min-[360px]:inline">
@@ -79,10 +91,11 @@ function CommentCard({
           {!isAuthor && isPostAuthor && (
             <Button
               size="sm"
-              color={favorite ? "success" : "secondary"}
-              className="ml-auto"
+              color={comment.id === favoriteCommentId ? "success" : "secondary"}
+              onClick={handleMarkFavoriteComment}
             >
-              <MdCheckCircleOutline className="mr-2 size-5" /> Accept answer
+              <MdCheckCircleOutline className="mr-2 size-5" />{" "}
+              {comment.id === favoriteCommentId ? "Favorited" : "Favorite"}
             </Button>
           )}
           <Text>{comment.children.length} replies</Text>

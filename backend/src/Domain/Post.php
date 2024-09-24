@@ -20,6 +20,7 @@ class Post
         $this->user = $postDTO->user;
         $this->tags = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
+        $this->comments = new ArrayCollection();
     }
 
     #[ORM\Id, ORM\Column(type: 'integer'), ORM\GeneratedValue(strategy: 'AUTO')]
@@ -27,6 +28,9 @@ class Post
 
     #[ORM\Column(type: 'string', length: 255, nullable: false)]
     private string $title;
+
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Comment::class, cascade: ['remove'])]
+    private Collection $comments;
 
     #[ORM\Column(type: 'text', nullable: false)]
     private string $content;
@@ -138,6 +142,16 @@ class Post
         return $this->tags;
     }
 
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function getTotalComments(): int
+    {
+        return $this->comments->count();
+    }
+
     public function jsonSerialize(): array
     {
         return [
@@ -151,7 +165,9 @@ class Post
             'category' => $this->getCategory()->jsonSerialize(),
             'categoryId' => $this->getCategory()->getId(),
             'tags' => array_map(fn($tag) => $tag->jsonSerialize(), $this->getTags()->toArray()),
-            'favoriteComment' => $this->getFavoriteComment()?->getId(),
+            'favoriteCommentId' => $this->getFavoriteComment()?->getId(),
+            'totalComments' => $this->getTotalComments(),
+            'totalUpvotes' => 0,
         ];
     }
 }
