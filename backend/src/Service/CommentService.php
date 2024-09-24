@@ -76,7 +76,6 @@ class CommentService
             QueueHelper::queueUserCommentedEmail($commentDTO);
         }
 
-        return 0;
         $this->commentRepository->save($comment);
     }
 
