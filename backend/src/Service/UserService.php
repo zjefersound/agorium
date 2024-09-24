@@ -139,6 +139,19 @@ class UserService
         return $this->userRepository->find($id);
     }
 
+    public function getRankedUsers(int $page = 1, int $limit = 10): array
+    {
+        $page = max($page, 1);
+        $limit = max($limit, 1);
+
+        try {
+            return $this->userRepository->getRankedUsers($page, $limit);
+        } catch (\Throwable $th) {
+            throw new \Exception("An error occurred while fetching ranked users.");
+        }
+    }
+
+
     public function getUserOverview(int $userId): array
     {
         $user = $this->userRepository->find($userId);
