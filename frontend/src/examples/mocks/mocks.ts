@@ -199,79 +199,18 @@ export interface RankingDataItem extends RankingCardItem {
   totalPosts: number;
 }
 
-export const rankingData: RankingDataItem[] = [
-  {
+const numberOfRecords = 11;
+
+export const rankingData: RankingDataItem[] = Array.from(
+  { length: numberOfRecords },
+  (_, index) => ({
     id: Math.random(),
-    user: users[0],
+    user: users[index % users.length], // Cycles through users array
     totalPosts: randomIntFromInterval(30, 150),
     totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-  {
-    id: Math.random(),
-    user: users[1],
-    totalPosts: randomIntFromInterval(30, 150),
-    totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-  {
-    id: Math.random(),
-    user: users[2],
-    totalPosts: randomIntFromInterval(30, 150),
-    totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-  {
-    id: Math.random(),
-    user: users[3],
-    totalPosts: randomIntFromInterval(30, 150),
-    totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-  {
-    id: Math.random(),
-    user: users[4],
-    totalPosts: randomIntFromInterval(30, 150),
-    totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-  {
-    id: Math.random(),
-    user: users[5],
-    totalPosts: randomIntFromInterval(30, 150),
-    totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-  {
-    id: Math.random(),
-    user: users[1],
-    totalPosts: randomIntFromInterval(30, 150),
-    totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-  {
-    id: Math.random(),
-    user: users[2],
-    totalPosts: randomIntFromInterval(30, 150),
-    totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-  {
-    id: Math.random(),
-    user: users[3],
-    totalPosts: randomIntFromInterval(30, 150),
-    totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-  {
-    id: Math.random(),
-    user: users[4],
-    totalPosts: randomIntFromInterval(30, 150),
-    totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-  {
-    id: Math.random(),
-    user: users[5],
-    totalPosts: randomIntFromInterval(30, 150),
-    totalUpvotes: randomIntFromInterval(500, 1500),
-  },
-].map((item, index) => {
-  return {
-    ...item,
     position: index + 1,
-  };
-});
+  }),
+);
 
 export const academicTags: Tag[] = [
   { id: 1, name: "Research Methodology" },
