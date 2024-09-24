@@ -1,5 +1,5 @@
 import { memo, useEffect } from "react";
-import { SimpleUserCard } from "./SimpleUserCard";
+import { UserCard } from "./UserCard";
 import { UserCardSkeleton } from "./skeletons/UserCardSkeleton";
 import { Card } from "../ui/Card";
 import { useResource } from "../../hooks/useResource";
@@ -13,11 +13,12 @@ function ConnectedUserCard({ id }: { id: number }) {
   if (loading) return <UserCardSkeleton />;
   if (!data) return <Card>Not found</Card>;
   return (
-    <SimpleUserCard
+    <UserCard
       name={data.user.fullName}
       url={data.user.avatar}
       username={data.user.username}
       rankingPosition={data.rankingPosition}
+      totalComments={data.totalComments}
       totalPosts={data.totalPosts}
       totalUpvotes={data.totalUpvotes}
     />

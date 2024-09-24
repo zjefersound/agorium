@@ -5,22 +5,24 @@ import { Text } from "../ui/Text";
 import { formatCompactNumber } from "../../utils/formatCompactNumber";
 import { formatOrdinals } from "../../utils/formatOrdinals";
 
-interface SimpleUserCardProps {
+interface UserCardProps {
   name: string;
   username: string;
   totalUpvotes: number;
+  totalComments: number;
   totalPosts: number;
   rankingPosition: number;
   url?: string;
 }
-export function SimpleUserCard({
+export function UserCard({
   name,
   totalPosts,
+  totalComments,
   totalUpvotes,
   username,
   rankingPosition,
   url,
-}: SimpleUserCardProps) {
+}: UserCardProps) {
   return (
     <Card className="flex flex-col items-center">
       <Avatar name={name} url={url} size="2xl" />
@@ -36,10 +38,20 @@ export function SimpleUserCard({
         <LuAward className="size-6 mr-1" />
         {formatOrdinals(rankingPosition)}
       </p>
-      <span className="tracking-wider text-agorium-400 mt-2">
-        {formatCompactNumber(totalUpvotes)} upvotes -{" "}
-        {formatCompactNumber(totalPosts)} posts
-      </span>
+      <div className="w-full space-y-2 mt-4">
+        <p className="flex justify-between tracking-wider font-semibold">
+          <span>Aura:</span>
+          <span>{formatCompactNumber(totalUpvotes)}</span>
+        </p>
+        <p className="flex justify-between tracking-wider">
+          <span>Posts:</span>
+          <span>{formatCompactNumber(totalPosts)}</span>
+        </p>
+        <p className="flex justify-between tracking-wider">
+          <span>Comments:</span>
+          <span>{formatCompactNumber(totalComments)}</span>
+        </p>
+      </div>
     </Card>
   );
 }
