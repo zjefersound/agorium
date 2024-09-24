@@ -4,7 +4,7 @@ import { RxArrowTopRight, RxClock } from "react-icons/rx";
 export const POST_SORT_BY = {
   createdAt: "createdAt",
   title: "title",
-  upvotes: "upvotes",
+  upvotes: "totalUpvotes",
   totalComments: "totalComments",
   favoriteCommentId: "favoriteCommentId",
 };

@@ -114,15 +114,16 @@ class PostRepository
         // Join with the votes table to get vote counts and the user's specific vote
         $qb->leftJoin('p.votes', 'v')
             ->addSelect(
-                'SUM(CASE WHEN v.voteType = \'upvote\' THEN 1 ELSE 0 END) AS upvotes',
-                'SUM(CASE WHEN v.voteType = \'downvote\' THEN 1 ELSE 0 END) AS downvotes',
+                'SUM(CASE WHEN v.voteType = \'upvote\' THEN 1 WHEN v.voteType = \'downvote\' THEN -1 ELSE 0 END) AS totalUpvotes',
                 'MAX(CASE WHEN v.user = :loggedUserId THEN v.voteType ELSE \'\' END) AS userVote'
             )
             ->setParameter('loggedUserId', $loggedUserId)
             ->groupBy('p.id');
 
         // Sorting
-        if (!empty($search->sortBy)) {
+        if ($search->sortBy === 'totalUpvotes') {
+            $qb->orderBy('totalUpvotes', $search->sortOrder);
+        } else {
             $qb->orderBy('p.' . $search->sortBy, $search->sortOrder);
         }
 
@@ -140,9 +141,7 @@ class PostRepository
                 return array_merge(
                     $post[0]->jsonSerialize(),
                     [
-                        'upvotes' => (int) $post['upvotes'],
-                        'downvotes' => (int) $post['downvotes'],
-                        'totalUpvotes' => (int) $post['upvotes'] - (int) $post['downvotes'],
+                        'totalUpvotes' => (int) $post['totalUpvotes'],
                         'userVote' => $userVote,
                     ]
                 );
