@@ -1,8 +1,4 @@
 import { Content } from "../components/layout/Content";
-import { SimpleUserCard } from "../components/shared/SimpleUserCard";
-import { TrendingPosts } from "../components/shared/TrendingPosts";
-import { mockedPosts, rankingCardItems } from "../examples/mocks/mocks";
-import { RankingCard } from "../components/shared/RankingCard";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
 import { UserInfoForm } from "../containers/profile/UserInfoForm";
 import { Card } from "../components/ui/Card";
@@ -13,8 +9,11 @@ import { UserPasswordForm } from "../containers/profile/UserPasswordForm";
 import { Text } from "../components/ui/Text";
 import { Tabs } from "../components/ui/Tabs";
 import { useState } from "react";
+import { ConnectedUserCard } from "../components/shared/ConnectedUserCard";
+import { useAuth } from "../hooks/useAuth";
 
 export function ProfileEdit() {
+  const { user } = useAuth();
   const [selectedTab, setSelectedTab] = useState("profile");
 
   const handleTabChange = (newValue: string) => {
@@ -86,18 +85,7 @@ export function ProfileEdit() {
         </Card>
       </Content.Main>
       <Content.Sidebar>
-        <SimpleUserCard
-          name="Joana Darc"
-          rankingPosition={12}
-          totalPosts={32}
-          totalUpvotes={642123}
-          username="@joanadarc"
-          url=""
-        />
-        <RankingCard items={rankingCardItems} />
-        <TrendingPosts
-          posts={[mockedPosts[0], mockedPosts[1], mockedPosts[2]]}
-        />
+        <ConnectedUserCard id={user!.id} />
       </Content.Sidebar>
     </Content.Root>
   );

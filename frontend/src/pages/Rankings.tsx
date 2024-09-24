@@ -1,5 +1,4 @@
 import { Content } from "../components/layout/Content";
-import { SimpleUserCard } from "../components/shared/SimpleUserCard";
 import { Card } from "../components/ui/Card";
 import { GoBack } from "../components/ui/GoBack";
 import { Heading } from "../components/ui/Heading";
@@ -9,8 +8,11 @@ import { rankingData } from "../examples/mocks/mocks";
 import { PodiumList } from "../components/shared/PodiumList";
 import { Tabs } from "../components/ui/Tabs";
 import { useState } from "react";
+import { ConnectedUserCard } from "../components/shared/ConnectedUserCard";
+import { useAuth } from "../hooks/useAuth";
 
 export function Rankings() {
+  const { user } = useAuth();
   const [selectedTab, setSelectedTab] = useState("month");
 
   const handleTabChange = (newValue: string) => {
@@ -44,14 +46,7 @@ export function Rankings() {
         </Card>
       </Content.Main>
       <Content.Sidebar>
-        <SimpleUserCard
-          name="Joana Darc"
-          rankingPosition={12}
-          totalPosts={32}
-          totalUpvotes={642123}
-          username="@joanadarc"
-          url=""
-        />
+        <ConnectedUserCard id={user!.id} />
       </Content.Sidebar>
     </Content.Root>
   );

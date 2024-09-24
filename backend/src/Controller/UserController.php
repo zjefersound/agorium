@@ -157,8 +157,9 @@ class UserController
         return new Response(200, $responseHeaders, file_get_contents($filePath));
     }
 
-    public function getUserOverview(Request $req) {
-        $userId = (int) $req->getAttribute("userId");
+    public function getUserOverview($req, $res, $args)
+    {
+        $userId = $args["id"];
 
         if (!$userId) {
             $this->badRequest(["error" => "User id is required."]);
@@ -166,7 +167,7 @@ class UserController
 
         try {
             $overview = $this->userService->getUserOverview($userId);
-            return $this->ok($overview);    
+            return $this->ok($overview);
         } catch (\Throwable $th) {
             return $this->unprocessable(["error" => $th->getMessage()]);
         }

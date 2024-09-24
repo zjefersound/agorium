@@ -153,6 +153,7 @@ class UserService
 
         return [
             'user' => $user->jsonSerializePublic(),
+            'rankingPosition' => 1,
             'totalPosts' => $totalPosts,
             'totalComments' => $totalComments,
             'totalUpvotes' => $totalUpvotes,

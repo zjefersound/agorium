@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { Content } from "../components/layout/Content";
-import { SimpleUserCard } from "../components/shared/SimpleUserCard";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
 import { mockedPosts } from "../examples/mocks/mocks";
 import { Card } from "../components/ui/Card";
@@ -14,6 +13,7 @@ import { PostContent } from "../containers/PostContent";
 import { CommentsProvider } from "../containers/comments/contexts/CommentsContext";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
 import { useResource } from "../hooks/useResource";
+import { ConnectedUserCard } from "../components/shared/ConnectedUserCard";
 
 export function PostPage() {
   const { id } = useParams();
@@ -38,14 +38,7 @@ export function PostPage() {
         <CommentsProvider post={post} />
       </Content.Main>
       <Content.Sidebar>
-        <SimpleUserCard
-          name={post.user.fullName}
-          rankingPosition={12}
-          totalPosts={32}
-          totalUpvotes={642123}
-          username={post.user.username}
-          url={post.user.avatar}
-        />
+        <ConnectedUserCard id={post.user.id} />
         {post.tags?.length && (
           <Card>
             <Heading size="xs" asChild>

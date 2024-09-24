@@ -51,6 +51,7 @@ export function useGenericResource<T, O = undefined>({
             updatedAt: new Date(),
           });
           validRef.current = true; // Update ref value to true
+          return res.data;
         })
         .catch((error) => console.error("Failed to fetch " + alias, error))
         .finally(() => setLoading(false));
@@ -61,8 +62,8 @@ export function useGenericResource<T, O = undefined>({
   return {
     data,
     fetchData: fetchData as O extends undefined
-      ? () => Promise<unknown>
-      : (options: O) => Promise<unknown>,
+      ? () => Promise<T>
+      : (options: O) => Promise<T>,
     loading,
     revalidate,
   };
