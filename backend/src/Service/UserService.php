@@ -8,17 +8,20 @@ use App\DTO\UserSignupDTO;
 use App\DTO\UserInfoUpdateDTO;
 use App\DTO\UserPasswordUpdateDTO;
 use App\Helper\UploadHelper;
+use App\Repository\VoteRepository;
 use Exception;
 use Nyholm\Psr7\UploadedFile;
 
 class UserService
 {
     private UserRepository $userRepository;
+    private VoteRepository $voteRepository;
     private MailerService $mailerService;
 
-    public function __construct(UserRepository $userRepository, MailerService $mailerService)
+    public function __construct(UserRepository $userRepository, VoteRepository $voteRepository, MailerService $mailerService)
     {
         $this->userRepository = $userRepository;
+        $this->voteRepository = $voteRepository;
         $this->mailerService = $mailerService;
     }
 
@@ -123,5 +126,12 @@ class UserService
     public function getUserById(int $id): ?User
     {
         return $this->userRepository->find($id);
+    }
+
+    public function getUserOverview(int $userId)
+    {
+        $totalReceivedVotes = $this->voteRepository->getUserTotalVotes($userId);
+
+        return $totalReceivedVotes;
     }
 }

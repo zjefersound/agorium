@@ -183,6 +183,24 @@ paths:
       tags:
         - user
 
+  /user/overview/{id}:
+    get:
+      summary: Get user overview
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: User Id
+      responses:
+        "200":
+          description: User overview retrieved
+        "401":
+          description: Unauthorized
+      tags:
+        - user
+
   #endregion
 
   #region Posts
