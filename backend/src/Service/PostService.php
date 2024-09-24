@@ -62,6 +62,15 @@ class PostService
         return $post;
     }
 
+    public function getTrendingPosts(int $loggedUserId)
+    {
+        try {
+            return $this->postRepository->getTrendingPosts($loggedUserId);
+        } catch (\Throwable $th) {
+            throw new Exception("An error occured while searching for posts.");
+        }
+    }
+
     public function getDetailedPost(int $postId, int $userId)
     {
         $post = $this->postRepository->findDetailed($postId, $userId);

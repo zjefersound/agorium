@@ -405,7 +405,17 @@ paths:
           description: "Filter by user"
       responses:
         "200":
-          description: Categories retrieved successfully
+          description: Posts retrieved successfully
+        "401":
+          description: Unauthorized
+      tags:
+        - posts
+  /posts/trending:
+    get:
+      summary: "Search trending posts"
+      responses:
+        "200":
+          description: Posts retrieved successfully
         "401":
           description: Unauthorized
       tags:
