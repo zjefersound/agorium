@@ -31,7 +31,7 @@ class VoteController
         $this->commentService = $commentService;
     }
 
-    public function vote(ServerRequest $req, Response $res, $args): Response
+    public function vote(ServerRequest $req): Response
     {
         $data = (array) json_decode($req->getBody()->getContents(), true);
 

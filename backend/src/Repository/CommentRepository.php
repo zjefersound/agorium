@@ -28,78 +28,78 @@ class CommentRepository
         $sql = <<<SQL
             WITH RECURSIVE comment_tree AS (
                 SELECT 
-                    c.id, 
-                    c.content, 
-                    c.created_at, 
-                    c.updated_at, 
-                    c.post_id, 
+                    c.id,
+                    c.content,
+                    c.created_at,
+                    c.updated_at,
+                    c.post_id,
                     c.user_id AS comment_user_id,
                     c.parent_comment_id,
-                    u.id AS user_id, 
-                    u.fullName, 
-                    u.username, 
+                    u.id AS user_id,
+                    u.fullName,
+                    u.username,
                     u.avatar,
                     0 AS depth,
                     (SELECT COUNT(*) FROM votes v WHERE v.comment_id = c.id AND v.voteType = 'upvote') AS totalUpvotes,
                     (
                         SELECT v.id
-                        FROM votes v 
-                        WHERE v.comment_id = c.id 
+                        FROM votes v
+                        WHERE v.comment_id = c.id
                         AND v.user_id = :userId
                         LIMIT 1
                     ) AS userVoteId,
                     (
                         SELECT v.voteType
-                        FROM votes v 
-                        WHERE v.comment_id = c.id 
+                        FROM votes v
+                        WHERE v.comment_id = c.id
                         AND v.user_id = :userId
                         LIMIT 1
                     ) AS userVoteType,
                     (
                         SELECT v.created_at
-                        FROM votes v 
-                        WHERE v.comment_id = c.id 
+                        FROM votes v
+                        WHERE v.comment_id = c.id
                         AND v.user_id = :userId
                         LIMIT 1
                     ) AS userVoteCreatedAt
                 FROM comments c
                 JOIN users u ON c.user_id = u.id
                 WHERE c.post_id = :postId $commentCondition
-        
+
                 UNION ALL
-        
-                SELECT 
-                    child.id, 
-                    child.content, 
-                    child.created_at, 
-                    child.updated_at, 
-                    child.post_id, 
+
+                SELECT
+                    child.id,
+                    child.content,
+                    child.created_at,
+                    child.updated_at,
+                    child.post_id,
                     child.user_id AS comment_user_id,
                     child.parent_comment_id,
-                    u.id AS user_id, 
-                    u.fullName, 
-                    u.username, 
+                    u.id AS user_id,
+                    u.fullName,
+                    u.username,
                     u.avatar,
                     parent.depth + 1 AS depth,
                     (SELECT COUNT(*) FROM votes v WHERE v.comment_id = child.id AND v.voteType = 'upvote') AS totalUpvotes,
                     (
                         SELECT v.id
-                        FROM votes v 
-                        WHERE v.comment_id = child.id 
+                        FROM votes v
+                        WHERE v.comment_id = child.id
                         AND v.user_id = :userId
                         LIMIT 1
                     ) AS userVoteId,
                     (
                         SELECT v.voteType
-                        FROM votes v 
-                        WHERE v.comment_id = child.id 
+                        FROM votes v
+                        WHERE v.comment_id = child.id
                         AND v.user_id = :userId
                         LIMIT 1
                     ) AS userVoteType,
                     (
                         SELECT v.created_at
-                        FROM votes v 
-                        WHERE v.comment_id = child.id 
+                        FROM votes v
+                        WHERE v.comment_id = child.id
                         AND v.user_id = :userId
                         LIMIT 1
                     ) AS userVoteCreatedAt
