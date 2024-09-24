@@ -8,7 +8,7 @@ interface PodiumList {
 }
 export function PodiumList({ items }: PodiumList) {
   return (
-    <table className="w-full border-separate border-spacing-x-3 mt-6">
+    <table className="w-full border-separate border-spacing-x-3 my-6">
       <colgroup>
         <col span={1} className="w-6" />
         <col span={1} className="w-[36px]" />

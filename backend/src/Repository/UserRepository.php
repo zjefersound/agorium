@@ -48,7 +48,9 @@ class UserRepository extends EntityRepository
                 '(SELECT COUNT(comment.id) FROM App\Domain\Comment comment WHERE comment.user = u) AS totalComments'
             )
             ->groupBy('u.id')
-            ->orderBy('totalUpvotes', 'DESC');
+            ->orderBy('totalUpvotes', 'DESC')
+            ->addOrderBy('totalPosts', 'DESC')
+            ->addOrderBy('totalComments', 'DESC');
 
         // Pagination logic
         $qb->setFirstResult(($page - 1) * $limit)

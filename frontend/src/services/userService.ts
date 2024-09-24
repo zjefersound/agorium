@@ -1,4 +1,6 @@
 import { UploadedFile } from "../components/form/FileInput";
+import { IPaginatedResponse } from "../models/IPaginatedResponse";
+import { ISearchableOptions } from "../models/ISearchableOptions";
 import { User } from "../models/User";
 import { dataURLtoBlob } from "../utils/dataURLToBlob";
 import { api } from "./api";
@@ -83,8 +85,23 @@ function getOverviewById(id: number | string) {
   return api.get<UserOverviewResponse>(`/user/overview/${id}`);
 }
 
+export type RankedUser = {
+  userId: number;
+  user: User;
+  totalUpvotes: number;
+  totalPosts: number;
+  totalComments: number;
+  position: number;
+};
+function getRanking(options?: ISearchableOptions) {
+  return api.get<IPaginatedResponse<RankedUser>>(`/user/ranking`, {
+    params: options,
+  });
+}
+
 export const userService = {
   getOverviewById,
+  getRanking,
   login,
   me,
   signup,
