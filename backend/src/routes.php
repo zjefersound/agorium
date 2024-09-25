@@ -24,6 +24,7 @@ return function (App $app) {
 
     $app->group('posts', function () use ($app) {
         $app->get('/posts', PostController::class . ':searchPosts');
+        $app->get('/posts/trending', PostController::class . ':getTrendingPosts');
         $app->get('/post/{id}', PostController::class . ':getPost');
         $app->post('/post', PostController::class . ':savePost');
         $app->put('/post/{id}', PostController::class . ':savePost');

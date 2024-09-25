@@ -1,6 +1,5 @@
 import { Content } from "../components/layout/Content";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
-import { mockedPosts } from "../examples/mocks/mocks";
 import { useSearchParams } from "react-router-dom";
 import { useMemo } from "react";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
@@ -26,9 +25,7 @@ export function Search() {
         </div>
       </Content.Main>
       <Content.Sidebar>
-        <TrendingPosts
-          posts={[mockedPosts[0], mockedPosts[1], mockedPosts[2]]}
-        />
+        <TrendingPosts />
       </Content.Sidebar>
     </Content.Root>
   );

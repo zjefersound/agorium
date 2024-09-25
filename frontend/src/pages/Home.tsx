@@ -1,6 +1,5 @@
 import { Content } from "../components/layout/Content";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
-import { mockedPosts } from "../examples/mocks/mocks";
 import { HomeContent } from "../containers/HomeContent";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
 import { ConnectedUserCard } from "../components/shared/ConnectedUserCard";
@@ -20,9 +19,7 @@ export function Home() {
       <Content.Sidebar>
         <ConnectedUserCard id={user!.id} />
         <ConnectedRankingCard />
-        <TrendingPosts
-          posts={[mockedPosts[0], mockedPosts[1], mockedPosts[2]]}
-        />
+        <TrendingPosts />
       </Content.Sidebar>
     </Content.Root>
   );

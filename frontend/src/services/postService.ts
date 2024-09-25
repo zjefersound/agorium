@@ -45,11 +45,16 @@ function getAll(options?: IPostSearchableOptions) {
   });
 }
 
+function getTrending() {
+  return api.get<Post[]>("/posts/trending");
+}
+
 export const postService = {
   create,
   delete: deletePost,
   getAll,
   getById,
+  getTrending,
   update,
   updateFavoriteComment,
 };

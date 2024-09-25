@@ -56,6 +56,13 @@ class PostController
         return $this->created("Post saved successfully.");
     }
 
+    public function getTrendingPosts($req): Response
+    {
+        $loggedUserId = (int) $req->getAttribute("userId") ?? 0;
+        $result = $this->postService->getTrendingPosts($loggedUserId);
+
+        return $this->ok($result);
+    }
     public function getPost($req, $res, $args): Response
     {
         $userId = (int) $req->getAttribute("userId");

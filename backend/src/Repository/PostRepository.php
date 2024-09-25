@@ -57,8 +57,6 @@ class PostRepository
         );
     }
 
-
-
     /**
      * Save a Post entity, optionally handling tags.
      *
@@ -153,6 +151,42 @@ class PostRepository
                 'totalPages' => ceil($total / $search->limit),
             ],
         ];
+    }
+
+    public function getTrendingPosts(int $loggedUserId): array
+    {
+        $qb = $this->em->getRepository(Post::class)->createQueryBuilder('p');
+
+        // Join with the votes table to get vote counts and the user's specific vote
+        $qb->leftJoin('p.votes', 'v')
+            ->addSelect(
+                'SUM(CASE WHEN v.voteType = \'upvote\' THEN 1 WHEN v.voteType = \'downvote\' THEN -1 ELSE 0 END) AS totalUpvotes',
+                'MAX(CASE WHEN v.user = :loggedUserId THEN v.voteType ELSE \'\' END) AS userVote'
+            )
+            ->setParameter('loggedUserId', $loggedUserId)
+            ->groupBy('p.id');
+
+        $qb->orderBy('totalUpvotes', 'desc')->setMaxResults(5);
+
+        $twoDaysAgo = (new \DateTime())->modify('-5 days');
+
+        $qb->where('p.createdAt >= :twoDaysAgo')
+            ->setParameter('twoDaysAgo', $twoDaysAgo);
+
+        // Get paginated results
+        $query = $qb->getQuery();
+        $posts = $query->getResult();
+
+        return array_map(function ($post) {
+            $userVote = $post['userVote'];
+            return array_merge(
+                $post[0]->jsonSerialize(),
+                [
+                    'totalUpvotes' => (int) $post['totalUpvotes'],
+                    'userVote' => $userVote,
+                ]
+            );
+        }, $posts);
     }
 
     public function getUserTotalPosts(int $userId): int

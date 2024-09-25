@@ -5,9 +5,11 @@ import { useAuth } from "../../hooks/useAuth";
 import { printFirstAndLastName } from "../../utils/printFirstAndLastName";
 import { Avatar } from "../ui/Avatar";
 import { NAVIGATION_ITEMS } from "../../constants/navigationItems";
+import { AlertDialog } from "../ui/AlertDialog";
+import { MdLogout } from "react-icons/md";
 
 export function DrawerMenu() {
-  const { user } = useAuth();
+  const { user, handleLogout } = useAuth();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export function DrawerMenu() {
             <span className="text-xs text-agorium-400">{user!.email}</span>
           </div>
         </Link>
-        <div className="py-4 flex flex-col flex-1 overflow-y-auto">
+        <div className="py-4 flex flex-col flex-1 gap-1.5 overflow-y-auto">
           {NAVIGATION_ITEMS.map((menu) => (
             <Link
               key={menu.path}
@@ -43,6 +45,16 @@ export function DrawerMenu() {
               <p>{menu.label}</p>
             </Link>
           ))}
+          <AlertDialog
+            confirmText="Log Out"
+            title="Are you sure you want to log out?"
+            description="Any unsaved changes will be lost permanently."
+            onConfirm={handleLogout}
+          >
+            <button className="flex items-center space-x-2 px-3 py-2 transition-all hover:bg-agorium-700 active:bg-agorium-600">
+              <MdLogout className="h-6 w-6 text-red-400" /> <p>Log Out</p>
+            </button>
+          </AlertDialog>
         </div>
       </Drawer.Root>
     </>
