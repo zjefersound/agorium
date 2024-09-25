@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Content } from "../components/layout/Content";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
-import { mockedPosts } from "../examples/mocks/mocks";
 import { Card } from "../components/ui/Card";
 import { Tag } from "../components/ui/Tag";
 import { Heading } from "../components/ui/Heading";
@@ -53,9 +52,7 @@ export function PostPage() {
             </ul>
           </Card>
         )}
-        <TrendingPosts
-          posts={[mockedPosts[0], mockedPosts[1], mockedPosts[2]]}
-        />
+        <TrendingPosts />
       </Content.Sidebar>
     </Content.Root>
   );

@@ -1,6 +1,5 @@
 import { Content } from "../components/layout/Content";
 import { TrendingPosts } from "../components/shared/TrendingPosts";
-import { mockedPosts } from "../examples/mocks/mocks";
 import { SmallTabs } from "../components/ui/SmallTabs";
 import { useNavigate, useParams } from "react-router-dom";
 import { GlobalSidebar } from "../components/shared/GlobalSidebar";
@@ -50,9 +49,7 @@ export function Tags() {
         </div>
       </Content.Main>
       <Content.Sidebar>
-        <TrendingPosts
-          posts={[mockedPosts[0], mockedPosts[1], mockedPosts[2]]}
-        />
+        <TrendingPosts />
       </Content.Sidebar>
     </Content.Root>
   );
