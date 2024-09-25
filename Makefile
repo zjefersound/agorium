@@ -33,7 +33,7 @@ lazy:
 	@(cd backend && composer install)
 	@(cd backend && composer migrate)
 	@(cd backend && composer seed)
-	@screen -dmS backend_server bash -c 'cd backend && composer serve'
+	@screen -dmS backend_server bash -c 'cd backend && composer serve && composer consume'
 	@echo "Installing frontend dependencies and starting frontend server in screen session..."
 	@screen -dmS frontend_server bash -c 'cd frontend && npm i && npm run dev'
 	@echo "Servers started. Use 'screen -ls' to list active sessions."
