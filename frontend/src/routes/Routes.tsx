@@ -20,6 +20,7 @@ import { EditPost } from "../pages/EditPost";
 import { Rankings } from "../pages/Rankings";
 import { Profile } from "../pages/Profile";
 import { ProfileEdit } from "../pages/ProfileEdit";
+import { NotFound } from "../components/layout/NotFound";
 
 const routes: { [key: string]: RouteObject[] } = {
   protected: [
@@ -112,7 +113,7 @@ const router = createBrowserRouter([
   ...routes.public,
   {
     path: "*",
-    element: "<NotFound />",
+    element: <NotFound />,
   },
 ]);
 
