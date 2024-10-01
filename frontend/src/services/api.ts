@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const BASE_URL = process.env.NODE_ENV === "production" 
-  ? "http://3.144.107.244" 
+  ? "https://agorium-alb-922956380.us-east-2.elb.amazonaws.com/" 
   : "http://localhost/api";
 
 export const api = axios.create({
