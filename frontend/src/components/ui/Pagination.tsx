@@ -28,14 +28,14 @@ const PaginationButton = memo(
           {
             "bg-amber-100 text-agorium-900 hover:bg-amber-50": active,
             "text-agorium-400 bg-agorium-700 hover:bg-agorium-600": !active,
-          },
+          }
         )}
         aria-current={active ? "page" : undefined}
       >
         {children}
       </button>
     );
-  },
+  }
 );
 
 interface PaginationProps {
@@ -81,6 +81,8 @@ export function Pagination({
   };
 
   const pages = getPageNumbers();
+
+  if (totalPages <= 1) return null;
 
   return (
     <div className="inline-flex -space-x-px text-sm">

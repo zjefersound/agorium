@@ -22,7 +22,7 @@ export function TrendingPosts() {
 
   if (loading)
     return (
-      <Card>
+      <Card className="space-y-4">
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-[80%]" />
         <Skeleton className="h-4 w-[60%]" />
