@@ -16,7 +16,7 @@ class EmailConsumer
 
     public function consume()
     {
-        $connection = new AMQPStreamConnection('rabbitmq', 5672, 'user', 'password');
+        $connection = new AMQPStreamConnection(getenv("RABBITMQ_HOST"), getenv("RABBITMQ_PORT"), getenv("RABBITMQ_USER"), getenv("RABBITMQ_PASSWORD"));
         $channel = $connection->channel();
 
         $channel->queue_declare('email_queue', false, true, false, false);

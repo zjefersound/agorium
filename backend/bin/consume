@@ -5,6 +5,7 @@ use App\Command\EmailConsumer;
 use App\DI;
 use App\Service\MailerService;
 
+require __DIR__ . '/../src/Env/index.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $container = require_once __DIR__ . '/../src/bootstrap.php';

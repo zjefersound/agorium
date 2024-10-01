@@ -1,3 +1,4 @@
 vendor/
 uploads/*
 !uploads/.gitkeep
+.env

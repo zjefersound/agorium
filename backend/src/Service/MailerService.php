@@ -18,10 +18,10 @@ class MailerService
     private function configure(): void
     {
         $this->mailer->isSMTP();
-        $this->mailer->Host = 'mailhog';
-        $this->mailer->Port = 1025;
+        $this->mailer->Host = getenv('MAILER_HOST');
+        $this->mailer->Port = getenv('MAILER_PORT');
 
-        $this->mailer->setFrom('agorium@email.com', 'Agorium');
+        $this->mailer->setFrom(getenv('MAILER_MAIL'), getenv('MAILER_MAIL_NAME'));
     }
 
     public function sendWelcomeEmail(string $to, string $username): bool
