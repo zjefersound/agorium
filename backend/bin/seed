@@ -7,6 +7,7 @@ use App\Command\DatabaseSeeder;
 use Doctrine\ORM\EntityManager;
 use App\DI;
 
+require __DIR__ . '/../src/Env/index.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $container = require_once __DIR__ . '/../src/bootstrap.php';
