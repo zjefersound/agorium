@@ -14,15 +14,23 @@ $settings = [
             'dev_mode' => true,
             'metadata_dirs' => [__DIR__ . '/Domain'],
             'connection' => [
-                'dbname' => 'docker',
-                'user' => 'docker',
-                'password' => 'docker',
-                'host' => 'mysql',
+                'dbname' => getenv("DB_NAME"),
+                'user' => getenv("DB_USER"),
+                'password' => getenv("DB_PASSWORD"),
+                'host' => getenv("DB_HOST"),
                 'driver' => 'pdo_mysql'
             ]
         ],
         'jwt' => [
-            'secret' => 'chambres'
+            'secret' => getenv("JWT_SECRET")
+        ],
+        'rabbitmq' => [
+            'connection' => [
+                'host' => getenv('RABBITMQ_HOST'),
+                'port' => getenv('RABBITMQ_PORT'),
+                'user' => getenv('RABBITMQ_USER'),
+                'password' => getenv('RABBITMQ_PASSWORD'),
+            ]
         ]
     ]
 ];

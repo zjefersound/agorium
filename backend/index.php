@@ -5,6 +5,7 @@ use App\DI;
 
 date_default_timezone_set('America/Sao_Paulo');
 
+require __DIR__ . '/src/Env/index.php';
 $container = require_once __DIR__ . '/src/bootstrap.php';
 
 $container->register(new DI\Doctrine());
