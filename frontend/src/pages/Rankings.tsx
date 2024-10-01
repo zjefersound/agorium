@@ -14,6 +14,7 @@ import { RankedUser, userService } from "../services/userService";
 import { Pagination } from "../components/ui/Pagination";
 import { IPaginatedResponse } from "../models/IPaginatedResponse";
 import { ISearchableOptions } from "../models/ISearchableOptions";
+import { ContentSkeleton } from "../components/shared/skeletons/ContentSkeleton";
 
 const RANKING_FILTER_ENABLED = false;
 
@@ -40,7 +41,7 @@ export function Rankings() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
-  if (rankingResource.loading && page === 1) return "loading";
+  if (rankingResource.loading && page === 1) return <ContentSkeleton />;
   if (!rankingResource.data?.data) return "Not found";
   return (
     <Content.Root>

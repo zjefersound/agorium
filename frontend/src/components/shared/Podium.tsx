@@ -7,6 +7,7 @@ interface PodiumProps {
   items: RankingDataItem[];
 }
 export function Podium({ items }: PodiumProps) {
+  if (items.length < 3) return;
   return (
     <div className="flex justify-center items-end w-[342px] h-[294px]">
       <div className="flex items-center flex-col">
