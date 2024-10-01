@@ -66,4 +66,8 @@ return function (App $app) {
             ->withHeader('Content-Disposition', 'attachment; filename=openapi.yaml')
             ->withBody($stream);
     });
+
+    $app->options('/{routes:.+}', function ($request, $response) {
+        return $response;
+    });
 };
