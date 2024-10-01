@@ -1,9 +1,9 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" },
     {
       "source": "/api/:path*",
       "destination": "https://agorium-alb-922956380.us-east-2.elb.amazonaws.com/:path*"
-    }
+    },
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
