@@ -150,8 +150,7 @@ class DatabaseSeeder
             $voteCount = $this->faker->numberBetween(0, 20);
             $votedUsers = $this->faker->randomElements($users, $voteCount);
             foreach ($votedUsers as $user) {
-                $voteType = $this->faker->randomElement(['upvote', 'downvote']);
-                $vote = new Vote($voteType, $user, $post);
+                $vote = new Vote('upvote', $user, $post);
                 $this->entityManager->persist($vote);
             }
         }
@@ -161,8 +160,7 @@ class DatabaseSeeder
             $voteCount = $this->faker->numberBetween(0, 10);
             $votedUsers = $this->faker->randomElements($users, $voteCount);
             foreach ($votedUsers as $user) {
-                $voteType = $this->faker->randomElement(['upvote', 'downvote']);
-                $vote = new Vote($voteType, $user, null, $comment);
+                $vote = new Vote('upvote', $user, null, $comment);
                 $this->entityManager->persist($vote);
             }
         }
