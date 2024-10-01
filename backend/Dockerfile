@@ -1,3 +1,4 @@
+# Use PHP 8.3 FPM based on Alpine Linux
 FROM php:8.3-fpm-alpine
 
 WORKDIR /var/www/
@@ -9,10 +10,13 @@ RUN apk add --no-cache tzdata && \
 
 # Install PHP extensions and necessary tools
 RUN apk add --no-cache --update \
-    php83-curl php83-mbstring php83-phar php83-openssl \
-    php83-tokenizer php83-fileinfo php83-sockets \
-    php83-mysqli php83-mysqlnd php83-pdo_mysql \
-    curl git
+    curl git libpng-dev libjpeg-turbo-dev freetype-dev \
+    libzip-dev oniguruma-dev bash \
+    mariadb-connector-c-dev # MySQL client
+
+# Install PHP extensions including PDO and PDO_MYSQL
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install gd pdo pdo_mysql zip
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
