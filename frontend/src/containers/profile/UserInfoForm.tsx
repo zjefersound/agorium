@@ -3,12 +3,14 @@ import { FieldConfig } from "../../components/form/SmartField/types";
 import { SmartForm } from "../../components/form/SmartForm";
 import { useSmartForm } from "../../components/form/SmartForm/hooks/useSmartForm";
 import { userService, UserUpdateInfoPayload } from "../../services/userService";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Alert } from "../../components/ui/Alert";
 import { TOAST_MESSAGES } from "../../constants/toastMessages";
 import { useToast } from "../../hooks/useToast";
 import { useAuth } from "../../hooks/useAuth";
 import { userFields } from "../../constants/forms/userFields";
+import { FormErrors } from "../../models/IValidationReturn";
+import { getApiErrorMessage } from "../../utils/getApiErrorMessage";
 
 const userInfoFormFields: FieldConfig[] = [
   userFields.fullName,
@@ -25,7 +27,7 @@ export function UserInfoForm() {
   };
   const { launchToast } = useToast();
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [error, setError] = useState<FormErrors>({});
   const onSubmit = (data: UserUpdateInfoPayload) => {
     return userService
       .updateInfo(data)
@@ -39,8 +41,9 @@ export function UserInfoForm() {
       })
       .catch((error) => {
         setError(
-          error.response?.data?.error ||
-            TOAST_MESSAGES.common.unexpectedErrorDescription,
+          typeof error.response?.data.error === "string"
+            ? { message: getApiErrorMessage(error) }
+            : error.response?.data.error,
         );
       });
   };
@@ -49,12 +52,22 @@ export function UserInfoForm() {
     fields: userInfoFormFields,
     onSubmit,
   });
+  const formStateWithErrors = useMemo(
+    () => ({
+      ...formState,
+      errors: { ...formState.errors, ...error },
+    }),
+    [formState, error],
+  );
   return (
     <>
-      <SmartForm submitText="Save information" formState={formState} />
-      {error && (
+      <SmartForm
+        submitText="Save information"
+        formState={formStateWithErrors}
+      />
+      {error?.message && (
         <Alert color="error" className="mt-6">
-          {error}
+          {error.message}
         </Alert>
       )}
     </>
