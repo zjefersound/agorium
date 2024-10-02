@@ -46,11 +46,10 @@ class UserService
             throw new Exception("Username is already taken!");
         }
 
-        if (isset($uploadedAvatar) && isset($uploadedAvatar->file)) {
+        if (isset($uploadedAvatar)) {
             $avatarGuid = UploadHelper::uploadUserAvatar($uploadedAvatar);
             $userSignupDTO->avatar = $avatarGuid;
         }
-
         $user = new User($userSignupDTO);
 
         try {
