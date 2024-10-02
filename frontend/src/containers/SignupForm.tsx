@@ -3,11 +3,13 @@ import { FieldConfig } from "../components/form/SmartField/types";
 import { SmartForm } from "../components/form/SmartForm";
 import { useSmartForm } from "../components/form/SmartForm/hooks/useSmartForm";
 import { userService, UserSignupPayload } from "../services/userService";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Alert } from "../components/ui/Alert";
 import { TOAST_MESSAGES } from "../constants/toastMessages";
 import { useToast } from "../hooks/useToast";
 import { userFields } from "../constants/forms/userFields";
+import { getApiErrorMessage } from "../utils/getApiErrorMessage";
+import { FormErrors } from "../models/IValidationReturn";
 
 const signupFormFields: FieldConfig[] = [
   userFields.fullName,
@@ -21,7 +23,7 @@ const signupFormFields: FieldConfig[] = [
 export function SignupForm() {
   const { launchToast } = useToast();
   const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [error, setError] = useState<FormErrors>({});
   const onSubmit = (data: UserSignupPayload) => {
     return userService
       .signup(data)
@@ -34,8 +36,9 @@ export function SignupForm() {
       })
       .catch((error) => {
         setError(
-          error.response?.data?.error ||
-            TOAST_MESSAGES.common.unexpectedErrorDescription,
+          typeof error.response?.data.error === "string"
+            ? { message: getApiErrorMessage(error) }
+            : error.response?.data.error,
         );
       });
   };
@@ -43,10 +46,19 @@ export function SignupForm() {
     fields: signupFormFields,
     onSubmit,
   });
+
+  const formStateWithErrors = useMemo(
+    () => ({
+      ...formState,
+      errors: { ...formState.errors, ...error },
+    }),
+    [formState, error],
+  );
+
   return (
     <>
-      <SmartForm submitText="Create account" formState={formState} />
-      {error && <Alert color="error">{error}</Alert>}
+      <SmartForm submitText="Create account" formState={formStateWithErrors} />
+      {error?.message && <Alert color="error">{error.message}</Alert>}
     </>
   );
 }

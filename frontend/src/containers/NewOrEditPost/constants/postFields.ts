@@ -74,8 +74,8 @@ export const postFields: FieldConfig[] = [
         message: "Content is required",
       },
       {
-        rule: (value) => value.length >= 50,
-        message: "Content must be at least 50 characters long",
+        rule: (value) => value.length >= 10,
+        message: "Content must be at least 10 characters long",
       },
     ],
   },
