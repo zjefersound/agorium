@@ -72,8 +72,13 @@ class CommentService
         }
 
         $postUser = $post->getUser();
-        if ($postUser->getId() != $requestUser->getId()) {
-            QueueHelper::queueUserCommentedEmail($commentDTO);
+        try {
+            $isQueueEnabled = getenv("RABBITMQ_ENABLED") === 'true';
+            if ($isQueueEnabled && $postUser->getId() != $requestUser->getId()) {
+                QueueHelper::queueUserCommentedEmail($commentDTO);
+            }
+        } catch (Exception $th) {
+            // Should throw something
         }
 
         $this->commentRepository->save($comment);
