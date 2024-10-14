@@ -11,6 +11,7 @@
     "doctrine/annotations": "^2.0",
     "doctrine/dbal": "^4.1",
     "doctrine/orm": "^3.2",
+    "fakerphp/faker": "^1.23",
     "firebase/php-jwt": "^6.10",
     "nyholm/psr7": "^1.8",
     "nyholm/psr7-server": "^1.1",
